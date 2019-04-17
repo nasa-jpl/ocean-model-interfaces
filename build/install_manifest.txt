@@ -1,0 +1,11 @@
+/usr/local/lib/libocean_models.0.1.dylib
+/usr/local/lib/libocean_models.dylib
+/usr/local/include/fvcom/LRUCache.h
+/usr/local/include/fvcom/FVCOMStructure.h
+/usr/local/include/fvcom/FVCOM.h
+/usr/local/include/fvcom/FVCOMChunk.h
+/usr/local/include/model_interface/ModelInterface.h
+/usr/local/include/model_interface/ModelData.h
+/usr/local/include/general_models/ConstantModel.h
+/usr/local/include/general_models/LinearModel.h
+/usr/local/share/OceanModelsConfig/cmake/OceanModelsConfig.cmake
