@@ -44,7 +44,7 @@ FVCOM::FVCOM(std::string filename,
 		endLoad(endLoad)
 {}
 
-ModelData FVCOM::interpolate(FVCOMStructure::Point interpolatePoint, double time)
+ModelData FVCOM::interpolate(FVCOMStructure::Point interpolatePoint, float time)
 {	
 	int time1Index, time2Index;
 	double time1Percent;

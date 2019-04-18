@@ -10,13 +10,10 @@ set(CMAKE_MAKEFILE_DEPENDS
   "CMakeFiles/3.12.4/CMakeSystem.cmake"
   "CMakeLists.txt"
   "googletest-prefix/tmp/googletest-cfgcmd.txt.in"
-  "/usr/local/Cellar/cmake/3.12.4/share/cmake/Modules/CMakeDetermineSystem.cmake"
   "/usr/local/Cellar/cmake/3.12.4/share/cmake/Modules/CMakeGenericSystem.cmake"
   "/usr/local/Cellar/cmake/3.12.4/share/cmake/Modules/CMakeInitializeConfigs.cmake"
-  "/usr/local/Cellar/cmake/3.12.4/share/cmake/Modules/CMakeSystem.cmake.in"
   "/usr/local/Cellar/cmake/3.12.4/share/cmake/Modules/CMakeSystemSpecificInformation.cmake"
   "/usr/local/Cellar/cmake/3.12.4/share/cmake/Modules/CMakeSystemSpecificInitialize.cmake"
-  "/usr/local/Cellar/cmake/3.12.4/share/cmake/Modules/CMakeUnixFindMake.cmake"
   "/usr/local/Cellar/cmake/3.12.4/share/cmake/Modules/ExternalProject.cmake"
   "/usr/local/Cellar/cmake/3.12.4/share/cmake/Modules/FindGit.cmake"
   "/usr/local/Cellar/cmake/3.12.4/share/cmake/Modules/FindPackageHandleStandardArgs.cmake"
@@ -35,7 +32,6 @@ set(CMAKE_MAKEFILE_OUTPUTS
 
 # Byproducts of CMake generate step:
 set(CMAKE_MAKEFILE_PRODUCTS
-  "CMakeFiles/3.12.4/CMakeSystem.cmake"
   "googletest-prefix/src/googletest-stamp/googletest-gitinfo.txt"
   "googletest-prefix/tmp/googletest-cfgcmd.txt"
   "CMakeFiles/CMakeDirectoryInformation.cmake"

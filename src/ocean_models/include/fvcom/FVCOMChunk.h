@@ -14,16 +14,16 @@ class FVCOMChunk
 public:
 	struct NodeData
 	{
-		double temp;
-		double salt;
-		double dye;
+		float temp;
+		float salt;
+		float dye;
 	};
 
 	struct TriangleData
 	{
-		double u;
-		double v;
-		double w;
+		float u;
+		float v;
+		float w;
 	};
 
 	typedef std::vector<FVCOMChunk::NodeData> NodeVector;

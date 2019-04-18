@@ -17,12 +17,12 @@ FVCOMChunk::FVCOMChunk(const std::vector<FVCOMStructure::ModelFile> modelFiles, 
 	nodes.reserve(nodesToLoad.size());
 	triangles.reserve(trianglesToLoad.size());
 
-	std::vector<double> uLoad;
-	std::vector<double> vLoad;
-	std::vector<double> wLoad;
-	std::vector<double> tempLoad;
-	std::vector<double> saltLoad;	
-	std::vector<double> dyeLoad;
+	std::vector<float> uLoad;
+	std::vector<float> vLoad;
+	std::vector<float> wLoad;
+	std::vector<float> tempLoad;
+	std::vector<float> saltLoad;	
+	std::vector<float> dyeLoad;
 
 	//Initalize node data storage
 	for(unsigned int i = 0; i < nodesToLoad.size(); i++)
