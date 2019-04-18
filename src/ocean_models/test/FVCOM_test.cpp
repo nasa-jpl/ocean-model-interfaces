@@ -46,25 +46,25 @@ TEST(FVCOMTest, XYInterpolation)
 
     ModelData data1 = fvcomMultiple.getData(12314, -9648, 0, 0);
     FVCOMStructure::Plane plane1 = structure.getTriangleSiglayPlane(9152, 3);
-    float height = (-plane1.d - plane1.a * p1.x - plane1.b * p1.y) / plane1.c;
+    double height = (-plane1.d - plane1.a * p1.x - plane1.b * p1.y) / plane1.c;
 
     ModelData data2 = fvcomMultiple.getData(12314, -9648, height, 0);
     ModelData data3 = fvcomMultiple.getData(12314, -9648, height, 0.125);
 
-    ASSERT_FLOAT_EQ(3.84160121445, data1.temp);
-    ASSERT_FLOAT_EQ(34.312494441, data1.salt);
-    ASSERT_FLOAT_EQ(0.0, data1.dye);
-    ASSERT_FLOAT_EQ(1890.6309, data1.depth);
+    EXPECT_FLOAT_EQ(3.84160121445, data1.temp);
+    EXPECT_FLOAT_EQ(34.312494441, data1.salt);
+    EXPECT_FLOAT_EQ(0.0, data1.dye);
+    EXPECT_FLOAT_EQ(1890.6309, data1.depth);
     
-    ASSERT_FLOAT_EQ(3.80200850181, data2.temp);
-    ASSERT_FLOAT_EQ(34.3184551724, data2.salt);
-    ASSERT_FLOAT_EQ(0.0, data2.dye);
-    ASSERT_FLOAT_EQ(1890.6309, data1.depth);
+    EXPECT_FLOAT_EQ(3.80200850181, data2.temp);
+    EXPECT_FLOAT_EQ(34.3184551724, data2.salt);
+    EXPECT_FLOAT_EQ(0.0, data2.dye);
+    EXPECT_FLOAT_EQ(1890.6309, data1.depth);
 
-    ASSERT_FLOAT_EQ(3.80200575432, data3.temp);
-    ASSERT_FLOAT_EQ(34.3184615073, data3.salt);
-    ASSERT_FLOAT_EQ(0.0, data3.dye);
-    ASSERT_FLOAT_EQ(1890.6309, data1.depth);
+    EXPECT_FLOAT_EQ(3.80200575432, data3.temp);
+    EXPECT_FLOAT_EQ(34.3184615073, data3.salt);
+    EXPECT_FLOAT_EQ(0.0, data3.dye);
+    EXPECT_FLOAT_EQ(1890.6309, data1.depth);
 }
 
 TEST(FVCOMTest, TimeInterpolation)
@@ -92,18 +92,18 @@ TEST(FVCOMTest, TimeInterpolation)
     p1.h = 0;
     
     FVCOMStructure::Plane plane1 = structure.getTriangleSiglayPlane(13325, 3);
-    float height = (-plane1.d - plane1.a * p1.x - plane1.b * p1.y) / plane1.c;
+    double height = (-plane1.d - plane1.a * p1.x - plane1.b * p1.y) / plane1.c;
     ModelData data1 = fvcomMultiple.getData(-96.5869768, 50.2484645, 0, 0.11);
     ModelData data2 = fvcomMultiple.getData(-96.5869768, 50.2484645, height, 0.11);
 
 
-    ASSERT_FLOAT_EQ(3.84275123598, data1.temp);
-    ASSERT_FLOAT_EQ(34.3123211329, data1.salt);
-    ASSERT_FLOAT_EQ(0.0, data1.dye);
+    EXPECT_FLOAT_EQ(3.84275123598, data1.temp);
+    EXPECT_FLOAT_EQ(34.3123211329, data1.salt);
+    EXPECT_FLOAT_EQ(0.0, data1.dye);
 
-    ASSERT_FLOAT_EQ(3.81006514743, data2.temp);
-    ASSERT_FLOAT_EQ(34.3172469516, data2.salt);
-    ASSERT_FLOAT_EQ(0.0, data2.dye);
+    EXPECT_FLOAT_EQ(3.81006514743, data2.temp);
+    EXPECT_FLOAT_EQ(34.3172469516, data2.salt);
+    EXPECT_FLOAT_EQ(0.0, data2.dye);
 }
 
 
@@ -123,9 +123,9 @@ TEST(FVCOMTest, DepthInterpolation)
     //dye: 0, 0
     ModelData data1 = fvcomMultiple.getData(-96.5869768, 50.2484645, -70, 0);
 
-    ASSERT_FLOAT_EQ(3.78614325, data1.temp);
-    ASSERT_FLOAT_EQ(34.320852, data1.salt);
-    ASSERT_FLOAT_EQ(0.0, data1.dye);
+    EXPECT_FLOAT_EQ(3.78614325, data1.temp);
+    EXPECT_FLOAT_EQ(34.320852, data1.salt);
+    EXPECT_FLOAT_EQ(0.0, data1.dye);
 
 }
 
@@ -183,9 +183,9 @@ TEST(FVCOMTest, AllInterpolation)
     //siglay 5 h: -81.8777  0.52157265784
     //siglay 6 h: -96.7646  0.47842734216
 
-    ASSERT_FLOAT_EQ(3.7692957782, data1.temp);
-    ASSERT_FLOAT_EQ(34.3233909259, data1.salt);
-    ASSERT_FLOAT_EQ(0.0, data1.dye);
+    EXPECT_FLOAT_EQ(3.7692957782, data1.temp);
+    EXPECT_FLOAT_EQ(34.3233909259, data1.salt);
+    EXPECT_FLOAT_EQ(0.0, data1.dye);
 
  FVCOMStructure::Point p1;
     p1.x = 12314;
@@ -220,26 +220,26 @@ TEST(FVCOMTest, GetDataMultipleFiles) {
 	ModelData data6 = fvcomMultiple.getData(-138453.56466666667, -25886.79643333335, -381.232432006, 0.375);
 
 
-	ASSERT_FLOAT_EQ(3.8386462639531507, data1.temp);
-	ASSERT_FLOAT_EQ(34.3129397553773, data1.salt);
-	ASSERT_FLOAT_EQ(0.0, data1.dye);
+	EXPECT_FLOAT_EQ(3.8386462639531507, data1.temp);
+	EXPECT_FLOAT_EQ(34.3129397553773, data1.salt);
+	EXPECT_FLOAT_EQ(0.0, data1.dye);
 
-	ASSERT_FLOAT_EQ(3.552034178027694, data2.temp);
-	ASSERT_FLOAT_EQ(34.3561324173774, data2.salt);
-	ASSERT_FLOAT_EQ(0.0, data2.dye);
+	EXPECT_FLOAT_EQ(3.552034178027694, data2.temp);
+	EXPECT_FLOAT_EQ(34.3561324173774, data2.salt);
+	EXPECT_FLOAT_EQ(0.0, data2.dye);
 
-	ASSERT_FLOAT_EQ(3.5520324460792474, data3.temp);
-	ASSERT_FLOAT_EQ(34.35613267838961, data3.salt);
-	ASSERT_FLOAT_EQ(0.0, data3.dye);
+	EXPECT_FLOAT_EQ(3.5520324460792474, data3.temp);
+	EXPECT_FLOAT_EQ(34.35613267838961, data3.salt);
+	EXPECT_FLOAT_EQ(0.0, data3.dye);
 
-	ASSERT_FLOAT_EQ(0.0, data4.u);
-	ASSERT_FLOAT_EQ(0.0, data4.v);
+	EXPECT_FLOAT_EQ(0.0, data4.u);
+	EXPECT_FLOAT_EQ(0.0, data4.v);
 
-	ASSERT_FLOAT_EQ(0.0, data5.u);
-	ASSERT_FLOAT_EQ(0.0, data5.v);
+	EXPECT_FLOAT_EQ(0.0, data5.u);
+	EXPECT_FLOAT_EQ(0.0, data5.v);
 
-	ASSERT_FLOAT_EQ(0.00038683573810392144, data6.u);
-	ASSERT_FLOAT_EQ(-0.0019926347599095754, data6.v);
+	EXPECT_FLOAT_EQ(0.00038683573810392144, data6.u);
+	EXPECT_FLOAT_EQ(-0.0019926347599095754, data6.v);
 
 
 }
@@ -315,9 +315,9 @@ TEST(FVCOMTest, ModelEdge) {
 	//Test node at edge of model
 	//Node: 180
 	ModelData data = fvcomMultiple.getData(150000, 150000, 0, 0);
-	ASSERT_FLOAT_EQ(3.8387627679688694, data.temp);
-	ASSERT_FLOAT_EQ(34.31292219813244, data.salt);
-	ASSERT_FLOAT_EQ(0.0, data.dye);
+	EXPECT_FLOAT_EQ(3.8387627679688694, data.temp);
+	EXPECT_FLOAT_EQ(34.31292219813244, data.salt);
+	EXPECT_FLOAT_EQ(0.0, data.dye);
 }
 
 int main(int argc, char **argv)

@@ -44,7 +44,7 @@ FVCOM::FVCOM(std::string filename,
 		endLoad(endLoad)
 {}
 
-ModelData FVCOM::interpolate(FVCOMStructure::Point interpolatePoint, float time)
+ModelData FVCOM::interpolate(FVCOMStructure::Point interpolatePoint, double time)
 {	
 	int time1Index, time2Index;
 	double time1Percent;
@@ -60,15 +60,15 @@ ModelData FVCOM::interpolate(FVCOMStructure::Point interpolatePoint, float time)
 
 
 	//Interpolate X, Y
-	FVCOMChunk::NodeData siglay1Time1NodeData; 
-	FVCOMChunk::NodeData siglay1Time2NodeData;
-	FVCOMChunk::NodeData siglay2Time1NodeData;
-	FVCOMChunk::NodeData siglay2Time2NodeData;
+	FVCOMChunk::NodeDataInterp siglay1Time1NodeData; 
+	FVCOMChunk::NodeDataInterp siglay1Time2NodeData;
+	FVCOMChunk::NodeDataInterp siglay2Time1NodeData;
+	FVCOMChunk::NodeDataInterp siglay2Time2NodeData;
 
-	FVCOMChunk::TriangleData siglay1Time1TriangleData; 
-	FVCOMChunk::TriangleData siglay1Time2TriangleData;
-	FVCOMChunk::TriangleData siglay2Time1TriangleData;
-	FVCOMChunk::TriangleData siglay2Time2TriangleData;
+	FVCOMChunk::TriangleDataInterp siglay1Time1TriangleData; 
+	FVCOMChunk::TriangleDataInterp siglay1Time2TriangleData;
+	FVCOMChunk::TriangleDataInterp siglay2Time1TriangleData;
+	FVCOMChunk::TriangleDataInterp siglay2Time2TriangleData;
 
 	siglay1Time1NodeData = nodeInterpolation(interpolatePoint, containingTriangle, siglay1Index, time1Index);
 	siglay1Time2NodeData = nodeInterpolation(interpolatePoint, containingTriangle, siglay1Index, time2Index);
@@ -81,11 +81,11 @@ ModelData FVCOM::interpolate(FVCOMStructure::Point interpolatePoint, float time)
 	siglay2Time2TriangleData = triangleInterpolation(interpolatePoint, containingTriangle, siglay2Index, time2Index);
 
 	//Interpolate time
-	FVCOMChunk::NodeData siglay1NodeData;
-	FVCOMChunk::NodeData siglay2NodeData;
+	FVCOMChunk::NodeDataInterp siglay1NodeData;
+	FVCOMChunk::NodeDataInterp siglay2NodeData;
 
-	FVCOMChunk::TriangleData siglay1TriangleData;
-	FVCOMChunk::TriangleData siglay2TriangleData;
+	FVCOMChunk::TriangleDataInterp siglay1TriangleData;
+	FVCOMChunk::TriangleDataInterp siglay2TriangleData;
 	
 	siglay1NodeData.dye = siglay1Time1NodeData.dye * time1Percent + siglay1Time2NodeData.dye * (1 - time1Percent);
 	siglay1NodeData.temp = siglay1Time1NodeData.temp * time1Percent + siglay1Time2NodeData.temp * (1 - time1Percent);
@@ -127,9 +127,9 @@ ModelData FVCOM::interpolate(FVCOMStructure::Point interpolatePoint, float time)
 	return returnData;
 }
 
-FVCOMChunk::NodeData FVCOM::nodeInterpolation(const FVCOMStructure::Point& interpolatePoint, int containingTriangle, int siglayIndex, int timeIndex)
+FVCOMChunk::NodeDataInterp FVCOM::nodeInterpolation(const FVCOMStructure::Point& interpolatePoint, int containingTriangle, int siglayIndex, int timeIndex)
 {
-	FVCOMChunk::NodeData interpolatedData;
+	FVCOMChunk::NodeDataInterp interpolatedData;
 	const std::vector<int>& surroundingNodes = structure.getNodesInTriangle(containingTriangle);
 
 	FVCOMStructure::Point p1 = structure.getNodePoint(surroundingNodes[0]);
@@ -155,9 +155,15 @@ FVCOMChunk::NodeData FVCOM::nodeInterpolation(const FVCOMStructure::Point& inter
 	return interpolatedData;
 }
 
-FVCOMChunk::TriangleData FVCOM::triangleInterpolation(const FVCOMStructure::Point& interpolatedPoint, int containingTriangle, int siglayIndex, int timeIndex)
+FVCOMChunk::TriangleDataInterp FVCOM::triangleInterpolation(const FVCOMStructure::Point& interpolatedPoint, int containingTriangle, int siglayIndex, int timeIndex)
 {
-	return getTriangleData(containingTriangle, siglayIndex, timeIndex);
+	FVCOMChunk::TriangleDataInterp interpolatedData;
+	FVCOMChunk::TriangleData triData = getTriangleData(containingTriangle, siglayIndex, timeIndex);
+	interpolatedData.u = triData.u;
+	interpolatedData.v = triData.v;
+	interpolatedData.w = triData.w;
+
+	return interpolatedData;
 }
 
 const double FVCOM::areaOfTriangle(const FVCOMStructure::Point& p1, const FVCOMStructure::Point& p2, const FVCOMStructure::Point& p3) const

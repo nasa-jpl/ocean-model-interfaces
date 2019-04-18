@@ -154,14 +154,14 @@ TEST(FVCOMStructureTest, InterpolateSiglay)
 	FVCOMStructure::Plane plane3a = structureAxial.getTriangleSiglayPlane(13325, 7);
 	FVCOMStructure::Plane plane3b = structureAxial.getTriangleSiglayPlane(13325, 8);
 
-	float upperH = (-plane3a.d - plane3a.a * p3.x - plane3a.b * p3.y) / plane3a.c;
-	float lowerH = (-plane3b.d - plane3b.a * p3.x - plane3b.b * p3.y) / plane3b.c;
+	double upperH = (-plane3a.d - plane3a.a * p3.x - plane3a.b * p3.y) / plane3a.c;
+	double lowerH = (-plane3b.d - plane3b.a * p3.x - plane3b.b * p3.y) / plane3b.c;
 
 
 
 	ASSERT_EQ(7, siglay1IndexP3);
 	ASSERT_EQ(8, siglay2IndexP3);
-	ASSERT_FLOAT_EQ((lowerH - p3.h) / (lowerH - upperH), siglay1PercentP3);
+	ASSERT_DOUBLE_EQ((lowerH - p3.h) / (lowerH - upperH), siglay1PercentP3);
 }
 
 
@@ -273,8 +273,9 @@ TEST(FVCOMStructureTest, PointInTriangle) {
 	//////X,Y 385: -48.038475, 10
 	//////X,Y 329: -56.69873, 5
 	//////X,Y 342: -56.69873, 15.0
-	pEdge.x = -48.038475;
-	pEdge.y = 10;
+	FVCOMStructure::Point node385 = structure.getNodePoint(385); //Get the exact x and y for edge point
+	pEdge.x = node385.x;
+	pEdge.y = node385.y;
 	pOut.x = 0;
 	pOut.y = 0;
 	pIn.x = -50;
@@ -302,8 +303,9 @@ TEST(FVCOMStructureTest, GetContainingTriangle) {
 	//////X,Y 385: -48.038475, 10
 	//////X,Y 329: -56.69873, 5
 	//////X,Y 342: -56.69873, 15.0
-	pEdge.x = -48.038475;
-	pEdge.y = 10;
+	FVCOMStructure::Point node385 = structure.getNodePoint(385); //Get the exact x and y for edge point
+	pEdge.x = node385.x;
+	pEdge.y = node385.y;
 	pOut.x = 0;
 	pOut.y = 0;
 	pIn.x = -50;

@@ -26,6 +26,20 @@ public:
 		float w;
 	};
 
+	struct NodeDataInterp
+	{
+		double temp;
+		double salt;
+		double dye;
+	};
+
+	struct TriangleDataInterp
+	{
+		double u;
+		double v;
+		double w;
+	};
+
 	typedef std::vector<FVCOMChunk::NodeData> NodeVector;
 	typedef std::vector<FVCOMChunk::TriangleData> TriangleVector;
 
