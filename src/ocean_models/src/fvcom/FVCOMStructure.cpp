@@ -52,7 +52,7 @@ FVCOMStructure::Plane::Plane(FVCOMStructure::Point& p0, FVCOMStructure::Point& p
 	d = -(p0.x * a + p0.y * b + p0.h * c);
 }
 
-float FVCOMStructure::Plane::getHeight(Point& interpolatePoint)
+double FVCOMStructure::Plane::getHeight(Point& interpolatePoint)
 {
 	return (-d - a * interpolatePoint.x - b * interpolatePoint.y) / c;
 }
@@ -89,7 +89,7 @@ void FVCOMStructure::loadStructureData(const std::string directory)
 		netCDF::NcFile dataFile(filename, netCDF::NcFile::read);
 		timeDim += dataFile.getDim("time").getSize();
 		
-		std::vector<float> tempTimes;
+		std::vector<double> tempTimes;
 		tempTimes.resize(dataFile.getDim("time").getSize());
 		netCDF::NcVar timeVar = dataFile.getVar("time");
 		timeVar.getVar(tempTimes.data());
@@ -138,13 +138,13 @@ void FVCOMStructure::loadStructureData(const std::string directory)
 	netCDF::NcVar siglayVar = dataFile.getVar("siglay");
 	netCDF::NcVar centerSiglayVar = dataFile.getVar("siglay_center");
 
-	std::vector<float> nodeX;
-	std::vector<float> nodeY;
-	std::vector<float> nodeH;
+	std::vector<double> nodeX;
+	std::vector<double> nodeY;
+	std::vector<double> nodeH;
 
-	std::vector<float> triangleX;
-	std::vector<float> triangleY;
-	std::vector<float> triangleH;
+	std::vector<double> triangleX;
+	std::vector<double> triangleY;
+	std::vector<double> triangleH;
 
 	nodeX.resize(nodeDim);
 	nodeY.resize(nodeDim);
@@ -324,13 +324,13 @@ bool FVCOMStructure::pointInTriangle(Point testPoint, int triangle) const
 	Point p2 = nodes[p2Index];
 
 	//Calculate barycentric coordinates
-	float alpha = ((p1.y - p2.y)*(testPoint.x - p2.x) + (p2.x - p1.x)*(testPoint.y - p2.y)) /
+	double alpha = ((p1.y - p2.y)*(testPoint.x - p2.x) + (p2.x - p1.x)*(testPoint.y - p2.y)) /
         ((p1.y - p2.y)*(p0.x - p2.x) + (p2.x - p1.x)*(p0.y - p2.y));
 
-	float beta = ((p2.y - p0.y)*(testPoint.x - p2.x) + (p0.x - p2.x)*(testPoint.y - p2.y)) /
+	double beta = ((p2.y - p0.y)*(testPoint.x - p2.x) + (p0.x - p2.x)*(testPoint.y - p2.y)) /
        	((p1.y - p2.y)*(p0.x - p2.x) + (p2.x - p1.x)*(p0.y - p2.y));
 
-	float gamma = 1.0f - alpha - beta;
+	double gamma = 1.0f - alpha - beta;
 
 	//if all coordinates are none negative then the point is in the triangle
 	return alpha >= 0 && beta >= 0 && gamma >= 0;
@@ -394,7 +394,7 @@ const std::vector<FVCOMStructure::ModelFile> FVCOMStructure::getModelFiles() con
 int FVCOMStructure::getClosestNode(Point testPoint) const
 {
 	//Checks distance between testPoint and every node, this is slow and will probably need to be improved
-	float closestDistance = std::numeric_limits<float>::max();
+	double closestDistance = std::numeric_limits<double>::max();
 	int node = -1;
 	for(int i = 0; i < nodes.size(); i++)
 	{
@@ -410,7 +410,7 @@ int FVCOMStructure::getClosestNode(Point testPoint) const
 }
 
 
-int FVCOMStructure::getClosestTime(float time) const
+int FVCOMStructure::getClosestTime(double time) const
 {
 	auto lower = std::lower_bound(times.begin(), times.end(), time);
 
@@ -429,7 +429,7 @@ int FVCOMStructure::getClosestTime(float time) const
 
 }
 
-int FVCOMStructure::getPreviousTimeIndex(float time) const
+int FVCOMStructure::getPreviousTimeIndex(double time) const
 {
 	auto lower = std::lower_bound(times.begin(), times.end(), time);
 	int index = std::distance(times.begin(), lower);
@@ -442,7 +442,7 @@ int FVCOMStructure::getPreviousTimeIndex(float time) const
 	return index - 1;
 }
 
-float FVCOMStructure::getTime(int timeIndex) const
+double FVCOMStructure::getTime(int timeIndex) const
 {
 	return times[timeIndex];
 }
@@ -452,7 +452,7 @@ int FVCOMStructure::getClosestNodeSiglay(Point testPoint) const
 {
 	int nodeIndex = getClosestNode(testPoint);
 	int closestSiglay = -1;
-	float closest = std::numeric_limits<float>::max();
+	double closest = std::numeric_limits<double>::max();
 
 	for(int i = 0; i < nodeSiglay[nodeIndex].size(); i++)
 	{
@@ -495,7 +495,7 @@ FVCOMStructure::Plane FVCOMStructure::getTriangleSiglayPlane(int triangle, unsig
 int FVCOMStructure::getClosestTriangleSiglay(Point testPoint, int triangleIndex)
 {
 	int closestSiglay = -1;
-	float closest = std::numeric_limits<float>::max();
+	double closest = std::numeric_limits<double>::max();
 
 	for(int i = 0; i < triangleSiglay[triangleIndex].size(); i++)
 	{
@@ -514,7 +514,7 @@ int FVCOMStructure::getClosestTriangleSiglay(Point testPoint)
 {
 	int triangleIndex = getContainingTriangle(testPoint);
 	int closestSiglay = -1;
-	float closest = std::numeric_limits<float>::max();
+	double closest = std::numeric_limits<double>::max();
 
 	for(int i = 0; i < triangleSiglay[triangleIndex].size(); i++)
 	{
@@ -529,12 +529,12 @@ int FVCOMStructure::getClosestTriangleSiglay(Point testPoint)
 
 }
 
-float FVCOMStructure::distance(Point p0, Point p1) const
+double FVCOMStructure::distance(Point p0, Point p1) const
 {
 	return std::sqrt( (p0.x - p1.x)*(p0.x - p1.x) + (p0.y - p1.y)*(p0.y - p1.y) );
 }
 
-float FVCOMStructure::distanceSquared(Point p0, Point p1) const
+double FVCOMStructure::distanceSquared(Point p0, Point p1) const
 {
 	return (p0.x - p1.x)*(p0.x - p1.x) + (p0.y - p1.y)*(p0.y - p1.y);
 }
@@ -558,8 +558,8 @@ FVCOMStructure::ChunkInfo FVCOMStructure::getChunkForNode(int node, int siglay, 
 	//Chunk ids based on this ordering (x,y,sigma,time)
 	FVCOMStructure::ChunkInfo chunk;
 
-	float nodeX = nodes[node].x;
-	float nodeY = nodes[node].y;
+	double nodeX = nodes[node].x;
+	double nodeY = nodes[node].y;
 
 	//calculate the chunks for each individual dimension
 	chunk.xChunk = (nodeX - minX) / xChunkSize;
@@ -610,8 +610,8 @@ FVCOMStructure::ChunkInfo FVCOMStructure::getChunkForTriangle(int triangle, int 
 
 	FVCOMStructure::ChunkInfo chunk;
 
-	float triangleX = triangles[triangle].x;
-	float triangleY = triangles[triangle].y;
+	double triangleX = triangles[triangle].x;
+	double triangleY = triangles[triangle].y;
 
 	//calculate the chunks for each individual dimension
 
@@ -657,10 +657,10 @@ FVCOMStructure::ChunkInfo FVCOMStructure::getChunkForTriangle(int triangle, int 
 	return chunk;
 }
 
-void FVCOMStructure::timeInterpolation(float time, int& time1Index, int& time2Index, double& time1Percent) const
+void FVCOMStructure::timeInterpolation(double time, int& time1Index, int& time2Index, double& time1Percent) const
 {
 	time1Index = getPreviousTimeIndex(time);
-	float previousTime = getTime(time1Index);
+	double previousTime = getTime(time1Index);
 
 	//Time is exactly on a time division, no interpolation needed.
 	if(previousTime == time)
@@ -671,7 +671,7 @@ void FVCOMStructure::timeInterpolation(float time, int& time1Index, int& time2In
 	else //time is spilt between divisions so it needs interpolation
 	{
 		time2Index = time1Index + 1;
-		float nextTime = getTime(time2Index);
+		double nextTime = getTime(time2Index);
 		time1Percent = (nextTime - time) / (nextTime - previousTime);
 	}
 }
@@ -732,7 +732,7 @@ void FVCOMStructure::siglayInterpolation(FVCOMStructure::Point& interpolatePoint
 	}
 
 
-	float upperH, lowerH;
+	double upperH, lowerH;
 
 	if(siglay1Index == siglay2Index) //The point is above the 0th siglay so and there is no data there
 	{
@@ -743,14 +743,14 @@ void FVCOMStructure::siglayInterpolation(FVCOMStructure::Point& interpolatePoint
 		FVCOMStructure::Plane upperPlane = getTriangleSiglayPlane(containingTriangle, siglay1Index);
 		FVCOMStructure::Plane lowerPlane = getTriangleSiglayPlane(containingTriangle, siglay2Index);
 
-		float upperH = (-upperPlane.d - upperPlane.a * interpolatePoint.x - upperPlane.b * interpolatePoint.y) / upperPlane.c;
-		float lowerH = (-lowerPlane.d - lowerPlane.a * interpolatePoint.x - lowerPlane.b * interpolatePoint.y) / lowerPlane.c;
+		double upperH = (-upperPlane.d - upperPlane.a * interpolatePoint.x - upperPlane.b * interpolatePoint.y) / upperPlane.c;
+		double lowerH = (-lowerPlane.d - lowerPlane.a * interpolatePoint.x - lowerPlane.b * interpolatePoint.y) / lowerPlane.c;
 
 		siglay1Percent = (lowerH - interpolatePoint.h) / (lowerH - upperH);
 	}
 }
 
-float FVCOMStructure::getDepthAtPoint(FVCOMStructure::Point& interpolatePoint, int containingTriangle)
+double FVCOMStructure::getDepthAtPoint(FVCOMStructure::Point& interpolatePoint, int containingTriangle)
 {
 	const std::vector<int>& surroundingNodes = getNodesInTriangle(containingTriangle);
 
@@ -763,7 +763,7 @@ float FVCOMStructure::getDepthAtPoint(FVCOMStructure::Point& interpolatePoint, i
 	return groundPlane.getHeight(interpolatePoint);
 }
 
-float FVCOMStructure::getDepthAtPoint(FVCOMStructure::Point& interpolatePoint)
+double FVCOMStructure::getDepthAtPoint(FVCOMStructure::Point& interpolatePoint)
 {
 	int containingTriangle = getContainingTriangle(interpolatePoint);
 
@@ -778,7 +778,7 @@ float FVCOMStructure::getDepthAtPoint(FVCOMStructure::Point& interpolatePoint)
 	return groundPlane.getHeight(interpolatePoint);
 }
 
-const bool FVCOMStructure::pointInModel(Point p, float time)
+const bool FVCOMStructure::pointInModel(Point p, double time)
 {
 	int containingTriangle = 0;
 	try
@@ -791,14 +791,14 @@ const bool FVCOMStructure::pointInModel(Point p, float time)
 	}
 
 	Plane plane = getTrianglePlane(containingTriangle);
-	float depth = plane.getHeight(p);
+	double depth = plane.getHeight(p);
 	return p.x >= minX && p.x <= maxX && 
 	       p.y >= minY && p.y <= maxY && 
 	       time >= times[0] && time <= times[times.size() - 1] &&
 	       p.h <= 0 && p.h >= -depth;
 }
 
-const bool FVCOMStructure::timeInModel(float time) const
+const bool FVCOMStructure::timeInModel(double time) const
 {
 	return time >= times[0] && time <= times[times.size() - 1];
 }
@@ -816,7 +816,7 @@ const bool FVCOMStructure::depthInModel(Point p)
 	}
 
 	Plane plane = getTrianglePlane(containingTriangle);
-	float depth = plane.getHeight(p);
+	double depth = plane.getHeight(p);
 
 	return p.h <= 0 && p.h >= -depth;
 }

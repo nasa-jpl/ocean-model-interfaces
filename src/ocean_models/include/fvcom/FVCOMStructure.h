@@ -41,30 +41,30 @@ public:
 		/**
 		 * x location in meters
 		 */
-		float x;
+		double x;
 
 		/**
 		 * y location in meters
 		 */
-		float y;
+		double y;
 
 		/**
 		 * water depth (bathymetry) in meters
 		 */
-		float h;
+		double h;
 	};
 
 	struct Plane
 	{
-		float a;
-		float b;
-		float c;
-		float d;
+		double a;
+		double b;
+		double c;
+		double d;
 
 		Plane();
 		Plane(FVCOMStructure::Point& p0, FVCOMStructure::Point& p1, FVCOMStructure::Point& p2);
 
-		float getHeight(Point& interpolatePoint);
+		double getHeight(Point& interpolatePoint);
 	};
 
 	
@@ -99,7 +99,7 @@ public:
 		/**
 		 * Start time for this file
 		 */
-		float startTime;
+		double startTime;
 
 		/**
 		 * Time index for the start time of this file
@@ -180,27 +180,27 @@ public:
 	 * @param time time to find the closest index for
 	 * @return index for the closest time
 	 */
-	 int getClosestTime(float time) const;
+	 int getClosestTime(double time) const;
 
 	 /**
 	 * Gets the time index that is previous to the given time
 	 * @param time time to find the previous index for
 	 * @return index for the previous time
 	 */
-	 int getPreviousTimeIndex(float time) const;
+	 int getPreviousTimeIndex(double time) const;
 
 	 /**
 	  *Gets time for a specific index
 	  */
-	 float getTime(int timeIndex) const;
+	 double getTime(int timeIndex) const;
 
 	/**
 	 * Gets the distance between two points
 	 * @param p0 Point 0 for which to get the distance
 	 * @param p1 Point 1 for which  to get the distance
 	 */
-	float distance(Point p0, Point p1) const;
-	float distanceSquared(Point p0, Point p1) const;
+	double distance(Point p0, Point p1) const;
+	double distanceSquared(Point p0, Point p1) const;
 	/**
 	 * Gets the chunk that contains the (node, sigma, time) tuple
 	 * @param node Node to find the chunk for
@@ -224,8 +224,8 @@ public:
 
 	const std::vector<ModelFile> getModelFiles() const;
 
-	const bool pointInModel(Point p, float time);
-	const bool timeInModel(float time) const;
+	const bool pointInModel(Point p, double time);
+	const bool timeInModel(double time) const;
 	const bool depthInModel(Point p);
 	const bool xyInModel(Point p) const;
 
@@ -238,7 +238,7 @@ public:
 	 * @param time2Index Output for the second time index for the interpolation
 	 * @param time1Percent Output for the percent for time1Index for interpolation
 	 */
-	void timeInterpolation(float time, int& time1Index, int& time2Index, double& time1Percent) const;
+	void timeInterpolation(double time, int& time1Index, int& time2Index, double& time1Percent) const;
 
 	/**
 	 * Gets the index and percentage for linear interpolation of time
@@ -257,14 +257,14 @@ public:
 	*@param containingTriangle Containing triangle for this point
 	*@param Depth at this point. Note this will be a positive number
 	**/
-	float getDepthAtPoint(FVCOMStructure::Point& interpolatePoint, int containingTriangle);
+	double getDepthAtPoint(FVCOMStructure::Point& interpolatePoint, int containingTriangle);
 
 	/**
 	* Gets the depth at a specific point.
 	* @param interpolatePoint Point to get depth at
 	* @param Depth at this point. Note this will be a positive number
 	**/
-	float getDepthAtPoint(FVCOMStructure::Point& interpolatePoint);
+	double getDepthAtPoint(FVCOMStructure::Point& interpolatePoint);
 
 private:
 
@@ -315,17 +315,17 @@ private:
 	/**
 	 * siglay for nodes
 	 */
-	std::vector<std::vector<float>> nodeSiglay;
+	std::vector<std::vector<double>> nodeSiglay;
 
 	/**
 	 * siglay for triangles
 	 */
-	std::vector<std::vector<float>> triangleSiglay;
+	std::vector<std::vector<double>> triangleSiglay;
 
 	/**
 	 * The times corresponding to each time index
 	 */
-	std::vector<float> times;
+	std::vector<double> times;
 
 	/**
 	 * List of nodes in each triangle
@@ -359,10 +359,10 @@ private:
 
 
 	// X,Y extent of the model
-	float minX = std::numeric_limits<float>::max();
-	float minY = std::numeric_limits<float>::max();;
-	float maxX = -std::numeric_limits<float>::max();;
-	float maxY = -std::numeric_limits<float>::max();;
+	double minX = std::numeric_limits<double>::max();
+	double minY = std::numeric_limits<double>::max();;
+	double maxX = -std::numeric_limits<double>::max();;
+	double maxY = -std::numeric_limits<double>::max();;
 
 	//Size of chunks in different dimensions
 	unsigned int xChunkSize; //in meters

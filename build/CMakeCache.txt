@@ -296,12 +296,6 @@ NetCDF_DIR:PATH=/usr/local/lib/cmake/netCDF
 PYTHON_EXECUTABLE:FILEPATH=/usr/local/bin/python
 
 //Value Computed by CMake
-UnderwaterPlanner_BINARY_DIR:STATIC=/Users/branch/projs/ocean_worlds/ocean_models/build
-
-//Value Computed by CMake
-UnderwaterPlanner_SOURCE_DIR:STATIC=/Users/branch/projs/ocean_worlds/ocean_models/src
-
-//Value Computed by CMake
 gmock_BINARY_DIR:STATIC=/Users/branch/projs/ocean_worlds/ocean_models/build/gtest/googletest-build/googlemock
 
 //Dependencies for the target
@@ -355,18 +349,6 @@ ocean_models_LIB_DEPENDS:STATIC=general;/usr/local/lib/libboost_system-mt.dylib;
 
 //Value Computed by CMake
 ocean_models_SOURCE_DIR:STATIC=/Users/branch/projs/ocean_worlds/ocean_models/src/ocean_models
-
-//Value Computed by CMake
-underwater_autonomy_BINARY_DIR:STATIC=/Users/branch/projs/ocean_worlds/ocean_models/build/ocean_models
-
-//Value Computed by CMake
-underwater_autonomy_SOURCE_DIR:STATIC=/Users/branch/projs/ocean_worlds/ocean_models/src/ocean_models
-
-//Value Computed by CMake
-vent_planner_BINARY_DIR:STATIC=/Users/branch/projs/ocean_worlds/ocean_models/build/ocean_models
-
-//Value Computed by CMake
-vent_planner_SOURCE_DIR:STATIC=/Users/branch/projs/ocean_worlds/ocean_models/src/ocean_models
 
 
 ########################
