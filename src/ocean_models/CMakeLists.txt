@@ -24,10 +24,12 @@ add_library(ocean_models SHARED
 )
 
 target_link_libraries(ocean_models
-    ${NETCDF_LIBRARIES} 
-    ${Boost_LIBRARIES} 
-    netcdf_c++4
+    PRIVATE
+        ${NETCDF_LIBRARIES} 
+        ${Boost_LIBRARIES} 
+        netcdf_c++4
 )
+
 set_target_properties(ocean_models PROPERTIES VERSION ${PROJECT_VERSION})
 
 target_include_directories(ocean_models PUBLIC
@@ -35,14 +37,14 @@ target_include_directories(ocean_models PUBLIC
     $<INSTALL_INTERFACE:include>)
 
 include(GNUInstallDirs)
-
 install(TARGETS ocean_models EXPORT OceanModelsConfig
     ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
     LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+install(EXPORT OceanModelsConfig FILE OceanModelsConfig.cmake DESTINATION share/OceanModelsConfig/cmake)
 
-install(EXPORT OceanModelsConfig DESTINATION share/OceanModelsConfig/cmake)
 export(TARGETS ocean_models FILE OceanModelsConfig.cmake)
+export(PACKAGE OceanModels)
 
 
 ###
