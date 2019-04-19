@@ -6,6 +6,8 @@
 
 #include <netcdf>
 
+using namespace ocean_models;
+
 FVCOMChunk::FVCOMChunk(const std::vector<FVCOMStructure::ModelFile> modelFiles, std::vector<unsigned int> nodesToLoad,
 											   std::vector<unsigned int> trianglesToLoad,
 											   FVCOMStructure::ChunkInfo chunkInfo) :

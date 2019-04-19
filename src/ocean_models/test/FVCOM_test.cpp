@@ -6,6 +6,7 @@
 
 #include <gtest/gtest.h>
 
+using namespace ocean_models;
 
 FVCOM fvcomMultiple("../../src/ocean_models/test_data/axial_data_test", 1000, 1000, 10, 3, 10);
 FVCOMStructure structure("../../src/ocean_models/test_data/axial_data_test", 1000, 1000, 10, 3);

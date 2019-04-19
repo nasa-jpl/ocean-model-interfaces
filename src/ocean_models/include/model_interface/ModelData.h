@@ -1,6 +1,9 @@
 #ifndef MODEL_DATA_H
 #define MODEL_DATA_H
 
+namespace ocean_models
+{
+
 struct ModelData
 {
 	//eastward current velocity
@@ -18,4 +21,5 @@ struct ModelData
     double depth;
 };
 
+}
 #endif

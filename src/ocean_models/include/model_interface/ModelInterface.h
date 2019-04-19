@@ -3,6 +3,9 @@
 
 #include "model_interface/ModelData.h"
 
+namespace ocean_models
+{
+
 class ModelInterface
 {
 public:
@@ -14,4 +17,5 @@ public:
     virtual const ModelData getDataOutOfRange(double x, double y, double height, double time)=0;
 };
 
+}
 #endif

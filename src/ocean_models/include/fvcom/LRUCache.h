@@ -7,6 +7,8 @@
 #include <stdexcept>
 
 
+namespace ocean_models
+{
 
 /**
  * Generic implementation of an LRUCache
@@ -104,4 +106,5 @@ private:
 
 };
 
+}
 #endif

@@ -11,6 +11,8 @@
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
+using namespace ocean_models;
+
 FVCOMStructure::FVCOMStructure() {}
 
 FVCOMStructure::FVCOMStructure(const std::string filename, int xChunkSize, int yChunkSize, int siglayChunkSize, int timeChunkSize) :

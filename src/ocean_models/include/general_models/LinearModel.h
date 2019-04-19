@@ -5,6 +5,10 @@
 
 #include "model_interface/ModelInterface.h"
 #include "model_interface/ModelData.h"
+
+namespace ocean_models
+{
+
 /**
  * Class used to load and query FVCOM data
  */
@@ -44,4 +48,5 @@ private:
 
 };
 
+}
 #endif

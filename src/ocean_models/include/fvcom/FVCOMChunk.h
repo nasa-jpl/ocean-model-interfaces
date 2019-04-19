@@ -7,6 +7,8 @@
 #include <netcdf>
 
 #include "fvcom/FVCOMStructure.h"
+namespace ocean_models
+{
 
 class FVCOMChunk
 {
@@ -62,4 +64,5 @@ private:
 	const FVCOMStructure::ChunkInfo chunkInfo;
 };
 
+}
 #endif

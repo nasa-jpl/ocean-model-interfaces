@@ -5,6 +5,8 @@
 #include <stdexcept>
 #include <math.h>
 
+using namespace ocean_models;
+
 LinearModel::LinearModel() :
     u(0),
     v(0),

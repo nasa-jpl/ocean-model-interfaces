@@ -2,6 +2,7 @@
 #include "fvcom/FVCOMChunk.h"
 #include <gtest/gtest.h>
 
+using namespace ocean_models;
 
 const FVCOMStructure structure("../../src/ocean_models/test_data/box_plume_split", 50, 50, 10, 10);
 

@@ -10,6 +10,8 @@
 
 #include <netcdf>
 
+namespace ocean_models
+{
 
 /**
  * Class used to load and query FVCOM structure data
@@ -380,4 +382,5 @@ private:
 	unsigned int lastContainingTriangle;
 };
 
+}
 #endif

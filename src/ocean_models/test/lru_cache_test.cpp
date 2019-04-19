@@ -1,6 +1,7 @@
 #include "fvcom/LRUCache.h"
 #include <gtest/gtest.h>
 
+using namespace ocean_models;
 
 const int NUM_OF_TEST2_RECORDS = 100;
 const int TEST2_CACHE_CAPACITY = 50;

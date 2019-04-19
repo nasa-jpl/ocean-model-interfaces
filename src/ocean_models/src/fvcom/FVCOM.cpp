@@ -5,6 +5,8 @@
 #include <math.h>
 #include  <limits>
 
+using namespace ocean_models;
+
 FVCOM::FVCOM() {}
 
 FVCOM::FVCOM(std::string filename) :

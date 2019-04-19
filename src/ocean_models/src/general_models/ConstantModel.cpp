@@ -4,6 +4,8 @@
 #include <stdexcept>
 #include <math.h>
 
+using namespace ocean_models;
+
 ConstantModel::ConstantModel() :
  	u(0),
  	v(0),
