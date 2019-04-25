@@ -7,6 +7,8 @@
 
 using namespace ocean_models;
 
+#define SECONDS_IN_DAY 86400
+
 FVCOM::FVCOM() {}
 
 FVCOM::FVCOM(std::string filename) :
@@ -186,12 +188,12 @@ const ModelData FVCOM::getData(double x, double y, double height, double time)
 	interpolatePoint.h = height;
 
 	//Throw an exception if the requested point is outside of the model extent
-	if(!structure.pointInModel(interpolatePoint, time))
+	if(!structure.pointInModel(interpolatePoint, time / SECONDS_IN_DAY))
 	{
 		throw std::out_of_range("FVCOM request outside of model extent");
 	}
 
-	return interpolate(interpolatePoint, time);
+	return interpolate(interpolatePoint, time / SECONDS_IN_DAY);
 }
 
 const ModelData FVCOM::getDataOutOfRange(double x, double y, double height, double time)
@@ -219,7 +221,7 @@ const ModelData FVCOM::getDataOutOfRange(double x, double y, double height, doub
 		data.temp = std::numeric_limits<double>::quiet_NaN();
 		data.dye = 0;
 	}
-	else if(!structure.timeInModel(time))
+	else if(!structure.timeInModel(time / SECONDS_IN_DAY))
 	{
 		data.depth = structure.getDepthAtPoint(interpolatePoint);
 		data.u = std::numeric_limits<double>::quiet_NaN();

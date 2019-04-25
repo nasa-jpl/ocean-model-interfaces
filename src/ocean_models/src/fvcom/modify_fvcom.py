@@ -103,7 +103,6 @@ def modifyFVCOM(inputFilename, outputFilename, siglayRange, depth):
 
         elif varname == "h":
             outVar[:] = np.full(outVar.shape, depth)
-
         else:
             outVar[:] = inVar[:]
 
@@ -115,7 +114,7 @@ def main():
     fvcomOutput = sys.argv[2]
 
     siglayRange = range(90, 127, 4)
-    depth = 20
+    depth = 25
 
 
     if isfile(fvcomInput) and isfile(fvcomOutput):

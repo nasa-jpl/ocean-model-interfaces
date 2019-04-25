@@ -8,6 +8,8 @@
 
 using namespace ocean_models;
 
+#define SECONDS_IN_DAY 86400
+
 FVCOM fvcomMultiple("../../src/ocean_models/test_data/axial_data_test", 1000, 1000, 10, 3, 10);
 FVCOMStructure structure("../../src/ocean_models/test_data/axial_data_test", 1000, 1000, 10, 3);
 
@@ -45,12 +47,12 @@ TEST(FVCOMTest, XYInterpolation)
     p1.y = -9648;
     p1.h = 0;
 
-    ModelData data1 = fvcomMultiple.getData(12314, -9648, 0, 0);
+    ModelData data1 = fvcomMultiple.getData(12314, -9648, 0, 0 * SECONDS_IN_DAY);
     FVCOMStructure::Plane plane1 = structure.getTriangleSiglayPlane(9152, 3);
     double height = (-plane1.d - plane1.a * p1.x - plane1.b * p1.y) / plane1.c;
 
-    ModelData data2 = fvcomMultiple.getData(12314, -9648, height, 0);
-    ModelData data3 = fvcomMultiple.getData(12314, -9648, height, 0.125);
+    ModelData data2 = fvcomMultiple.getData(12314, -9648, height, 0 * SECONDS_IN_DAY);
+    ModelData data3 = fvcomMultiple.getData(12314, -9648, height, 0.125 * SECONDS_IN_DAY);
 
     EXPECT_FLOAT_EQ(3.84160121445, data1.temp);
     EXPECT_FLOAT_EQ(34.312494441, data1.salt);
@@ -153,7 +155,7 @@ TEST(FVCOMTest, AllInterpolation)
     //siglay 6: -0.05118110217154026
 
 
-    ModelData data1 = fvcomMultiple.getData(12314, -9648, -89, 0.11);
+    ModelData data1 = fvcomMultiple.getData(12314, -9648, -89, 0.11 * SECONDS_IN_DAY);
     FVCOMStructure::Plane siglay5 = structure.getTriangleSiglayPlane(9152, 5);
     FVCOMStructure::Plane siglay6 = structure.getTriangleSiglayPlane(9152, 6);
 
@@ -209,7 +211,7 @@ TEST(FVCOMTest, GetDataMultipleFiles) {
 	//time: 4 in 0001_1
 	ModelData data1 = fvcomMultiple.getData(8545.73568, -132697.938, 0, 0);
 	ModelData data2 = fvcomMultiple.getData(8545.73568, -132697.938, -334.07498037, 0);
-	ModelData data3 = fvcomMultiple.getData(8545.73568, -132697.938, -334.07498037, 0.375);
+	ModelData data3 = fvcomMultiple.getData(8545.73568, -132697.938, -334.07498037, 0.375 * SECONDS_IN_DAY);
 
 	//Test triangle with times in two files
 	//Triangle: 1000
@@ -218,7 +220,7 @@ TEST(FVCOMTest, GetDataMultipleFiles) {
 	//time: 4 in 0001_1
 	ModelData data4 = fvcomMultiple.getData(-138453.56466666667, -25886.79643333335, 0, 0);
 	ModelData data5 = fvcomMultiple.getData(-138453.56466666667, -25886.79643333335, -381.232432006, 0);
-	ModelData data6 = fvcomMultiple.getData(-138453.56466666667, -25886.79643333335, -381.232432006, 0.375);
+	ModelData data6 = fvcomMultiple.getData(-138453.56466666667, -25886.79643333335, -381.232432006, 0.375 * SECONDS_IN_DAY);
 
 
 	EXPECT_FLOAT_EQ(3.8386462639531507, data1.temp);
@@ -296,7 +298,7 @@ TEST(FVCOMTest, OutOfModelBounds)
     }
 
     try {
-        ModelData data = fvcomMultiple.getData(0, 0, 0, -0.1);
+        ModelData data = fvcomMultiple.getData(0, 0, 0, -0.1 * SECONDS_IN_DAY);
         FAIL() << "Expected std::out_of_range";
     }
     catch(std::out_of_range const & err) {
@@ -304,7 +306,7 @@ TEST(FVCOMTest, OutOfModelBounds)
     }
 
     try {
-        ModelData data = fvcomMultiple.getData(0, 0, 0, 1.0);
+        ModelData data = fvcomMultiple.getData(0, 0, 0, 1.0 * SECONDS_IN_DAY);
         FAIL() << "Expected std::out_of_range";
     }
     catch(std::out_of_range const & err) {
