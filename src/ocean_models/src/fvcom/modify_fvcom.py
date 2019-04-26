@@ -6,7 +6,7 @@ from os import listdir
 from os.path import isfile, join, basename
 
 def modifyFVCOM(inputFilename, outputFilename, siglayRange, depth):
-
+    xyScale = 4
     fvcomIn = Dataset(inputFilename, "r")
     fvcomOut = Dataset(outputFilename, "w")
 
@@ -58,6 +58,18 @@ def modifyFVCOM(inputFilename, outputFilename, siglayRange, depth):
             siglevs = np.linspace(0, -1.0, len(siglayRange) + 1)
             siglevsVar = [[s] * inVar.shape[1] for s in siglevs]
             outVar[:] = siglevsVar
+
+        elif varname == "x":
+            outVar[:] = [x / xyScale for x in inVar[:]]
+
+        elif varname == "y":
+            outVar[:] = [x / xyScale for x in inVar[:]]
+
+        elif varname == "xc":
+            outVar[:] = [x / xyScale for x in inVar[:]]
+
+        elif varname == "yc":
+            outVar[:] = [x / xyScale for x in inVar[:]]
 
         elif varname == "u":
             siglayLoad = [False] * inVar.shape[1]
