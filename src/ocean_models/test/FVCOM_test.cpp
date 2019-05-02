@@ -189,18 +189,32 @@ TEST(FVCOMTest, AllInterpolation)
     EXPECT_FLOAT_EQ(3.7692957782, data1.temp);
     EXPECT_FLOAT_EQ(34.3233909259, data1.salt);
     EXPECT_FLOAT_EQ(0.0, data1.dye);
-
- FVCOMStructure::Point p1;
-    p1.x = 12314;
-    p1.y = -9648;
-    p1.h = -89;
-
-    unsigned int triangle = structure.getContainingTriangle(p1);
-    unsigned int siglayTriangleIndex = structure.getClosestTriangleSiglay(p1);
-    unsigned int closestTimeIndex = structure.getClosestTime(0.11);
 }
 
+TEST(FVCOMTest, AllInterpolationOffset)
+{
+    //Same ass AllInterpolation just with offsets
 
+    double offsetX = 100;
+    double offsetY = -150;
+    double offsetHeight = 15;
+    double offsetTime = 0.2;
+    fvcomMultiple.setOffsets(offsetX, offsetY, offsetHeight, offsetTime);
+
+    ModelData data1 = fvcomMultiple.getData(12314 - offsetX, 
+                                            -9648 - offsetY, 
+                                            -89 - offsetHeight, 
+                                            0.11 * SECONDS_IN_DAY - offsetTime);
+    FVCOMStructure::Plane siglay5 = structure.getTriangleSiglayPlane(9152, 5);
+    FVCOMStructure::Plane siglay6 = structure.getTriangleSiglayPlane(9152, 6);
+
+    EXPECT_FLOAT_EQ(3.7692957782, data1.temp);
+    EXPECT_FLOAT_EQ(34.3233909259, data1.salt);
+    EXPECT_FLOAT_EQ(0.0, data1.dye);
+
+    //Reset offsets to 0 for next tests
+    fvcomMultiple.setOffsets(0, 0, 0, 0);
+}
 
 TEST(FVCOMTest, GetDataMultipleFiles) {
 
