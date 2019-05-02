@@ -21,6 +21,7 @@ add_library(ocean_models SHARED
     src/fvcom/FVCOMStructure.cpp
     src/general_models/ConstantModel.cpp
     src/general_models/LinearModel.cpp
+    src/model_interface/ModelInterface.cpp
 )
 
 target_link_libraries(ocean_models

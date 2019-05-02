@@ -24,10 +24,8 @@ public:
      */
 	ConstantModel(double u, double v, double temp, double salt, double dye, double depth);
 
-
-
-	const ModelData getData(double x, double y, double height, double time);
-	const ModelData getDataOutOfRange(double x, double y, double height, double time);
+	const ModelData getDataHelper(double x, double y, double height, double time);
+	const ModelData getDataOutOfRangeHelper(double x, double y, double height, double time);
 
 private:
 	

@@ -35,7 +35,7 @@ LinearModel::LinearModel(float u, float v, float temp, float salt, float dye, fl
     type(type)
 {}
 
-const ModelData LinearModel::getData(double x, double y, double height, double time)
+const ModelData LinearModel::getDataHelper(double x, double y, double height, double time)
 {
     ModelData data;
     
@@ -59,7 +59,7 @@ const ModelData LinearModel::getData(double x, double y, double height, double t
     return data;
 }
 
-const ModelData LinearModel::getDataOutOfRange(double x, double y, double height, double time)
+const ModelData LinearModel::getDataOutOfRangeHelper(double x, double y, double height, double time)
 {
     ModelData data;
     

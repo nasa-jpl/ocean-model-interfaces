@@ -63,13 +63,13 @@ def modifyFVCOM(inputFilename, outputFilename, siglayRange, depth):
             outVar[:] = [x / xyScale for x in inVar[:]]
 
         elif varname == "y":
-            outVar[:] = [x / xyScale for x in inVar[:]]
+            outVar[:] = [y / xyScale for y in inVar[:]]
 
         elif varname == "xc":
             outVar[:] = [x / xyScale for x in inVar[:]]
 
         elif varname == "yc":
-            outVar[:] = [x / xyScale for x in inVar[:]]
+            outVar[:] = [y / xyScale for y in inVar[:]]
 
         elif varname == "u":
             siglayLoad = [False] * inVar.shape[1]

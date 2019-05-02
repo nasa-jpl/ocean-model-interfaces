@@ -23,7 +23,7 @@ ConstantModel::ConstantModel(double u, double v, double temp, double salt, doubl
     depth(depth)
 {}
 
-const ModelData ConstantModel::getData(double x, double y, double height, double time)
+const ModelData ConstantModel::getDataHelper(double x, double y, double height, double time)
 {
 	ModelData data;
 	
@@ -37,7 +37,7 @@ const ModelData ConstantModel::getData(double x, double y, double height, double
 	return data;
 }
 
-const ModelData ConstantModel::getDataOutOfRange(double x, double y, double height, double time)
+const ModelData ConstantModel::getDataOutOfRangeHelper(double x, double y, double height, double time)
 {
 	ModelData data;
 	
