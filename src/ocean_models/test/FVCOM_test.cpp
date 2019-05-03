@@ -201,10 +201,10 @@ TEST(FVCOMTest, AllInterpolationOffset)
     double offsetTime = 0.2;
     fvcomMultiple.setOffsets(offsetX, offsetY, offsetHeight, offsetTime);
 
-    ModelData data1 = fvcomMultiple.getData(12314 - offsetX, 
-                                            -9648 - offsetY, 
-                                            -89 - offsetHeight, 
-                                            0.11 * SECONDS_IN_DAY - offsetTime);
+    ModelData data1 = fvcomMultiple.getData(12314 + offsetX, 
+                                            -9648 + offsetY, 
+                                            -89 + offsetHeight, 
+                                            0.11 * SECONDS_IN_DAY + offsetTime);
     FVCOMStructure::Plane siglay5 = structure.getTriangleSiglayPlane(9152, 5);
     FVCOMStructure::Plane siglay6 = structure.getTriangleSiglayPlane(9152, 6);
 
