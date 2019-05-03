@@ -1,5 +1,5 @@
-#include "fvcom/FVCOM.h"
-#include "model_interface/ModelData.h"
+#include "ocean_models/fvcom/FVCOM.h"
+#include "ocean_models/model_interface/ModelData.h"
 
 #include <stdexcept>
 #include <math.h>

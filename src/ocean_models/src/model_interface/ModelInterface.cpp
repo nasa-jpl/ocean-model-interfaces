@@ -1,4 +1,4 @@
-#include "model_interface/ModelInterface.h"
+#include "ocean_models/model_interface/ModelInterface.h"
 
 #include <stdexcept>
 #include <math.h>

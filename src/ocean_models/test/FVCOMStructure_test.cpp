@@ -1,4 +1,4 @@
-#include "fvcom/FVCOMStructure.h"
+#include "ocean_models/fvcom/FVCOMStructure.h"
 #include <gtest/gtest.h>
 
 using namespace ocean_models;

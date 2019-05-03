@@ -35,17 +35,13 @@ set_target_properties(ocean_models PROPERTIES VERSION ${PROJECT_VERSION})
 
 target_include_directories(ocean_models PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include>)
+    $<INSTALL_INTERFACE:include/ocean_models>)
 
 include(GNUInstallDirs)
-install(TARGETS ocean_models EXPORT OceanModelsConfig
+install(TARGETS ocean_models
     ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
     LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR})
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
-install(EXPORT OceanModelsConfig FILE OceanModelsConfig.cmake DESTINATION share/OceanModelsConfig/cmake)
-
-export(TARGETS ocean_models FILE OceanModelsConfig.cmake)
-export(PACKAGE OceanModels)
 
 
 ###

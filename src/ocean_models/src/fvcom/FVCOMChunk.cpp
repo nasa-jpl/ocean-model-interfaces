@@ -1,5 +1,5 @@
-#include "fvcom/FVCOMChunk.h"
-#include "fvcom/FVCOMStructure.h"
+#include "ocean_models/fvcom/FVCOMChunk.h"
+#include "ocean_models/fvcom/FVCOMStructure.h"
 
 #include <unordered_map>
 #include <vector>

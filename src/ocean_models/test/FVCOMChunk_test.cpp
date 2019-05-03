@@ -1,5 +1,5 @@
-#include "fvcom/FVCOMStructure.h"
-#include "fvcom/FVCOMChunk.h"
+#include "ocean_models/fvcom/FVCOMStructure.h"
+#include "ocean_models/fvcom/FVCOMChunk.h"
 #include <gtest/gtest.h>
 
 using namespace ocean_models;

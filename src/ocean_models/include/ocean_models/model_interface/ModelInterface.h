@@ -1,7 +1,7 @@
 #ifndef MODEL_INTERFACE_H
 #define MODEL_INTERFACE_H
 
-#include "model_interface/ModelData.h"
+#include "ocean_models/model_interface/ModelData.h"
 
 namespace ocean_models
 {

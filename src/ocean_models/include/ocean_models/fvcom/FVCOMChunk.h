@@ -6,7 +6,7 @@
 
 #include <netcdf>
 
-#include "fvcom/FVCOMStructure.h"
+#include "ocean_models/fvcom/FVCOMStructure.h"
 namespace ocean_models
 {
 

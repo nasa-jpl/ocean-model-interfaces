@@ -9,12 +9,12 @@
 #include <netcdf>
 #include <exception>
 
-#include "fvcom/FVCOMStructure.h"
-#include "fvcom/FVCOMChunk.h"
-#include "fvcom/LRUCache.h"
+#include "ocean_models/fvcom/FVCOMStructure.h"
+#include "ocean_models/fvcom/FVCOMChunk.h"
+#include "ocean_models/fvcom/LRUCache.h"
 
-#include "model_interface/ModelInterface.h"
-#include "model_interface/ModelData.h"
+#include "ocean_models/model_interface/ModelInterface.h"
+#include "ocean_models/model_interface/ModelData.h"
 
 namespace ocean_models
 {

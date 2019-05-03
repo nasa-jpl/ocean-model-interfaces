@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "model_interface/ModelInterface.h"
-#include "model_interface/ModelData.h"
+#include "ocean_models/model_interface/ModelInterface.h"
+#include "ocean_models/model_interface/ModelData.h"
 
 namespace ocean_models
 {

@@ -1,5 +1,5 @@
-#include "fvcom/FVCOMStructure.h"
-#include "fvcom/FVCOM.h"
+#include "ocean_models/fvcom/FVCOMStructure.h"
+#include "ocean_models/fvcom/FVCOM.h"
 
 #include <netcdf>
 #include <memory>

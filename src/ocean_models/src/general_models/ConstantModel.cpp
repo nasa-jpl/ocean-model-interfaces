@@ -1,5 +1,5 @@
-#include "general_models/ConstantModel.h"
-#include "model_interface/ModelData.h"
+#include "ocean_models/general_models/ConstantModel.h"
+#include "ocean_models/model_interface/ModelData.h"
 
 #include <stdexcept>
 #include <math.h>

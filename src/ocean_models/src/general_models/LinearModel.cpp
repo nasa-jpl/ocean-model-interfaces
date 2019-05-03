@@ -1,5 +1,5 @@
-#include "general_models/LinearModel.h"
-#include "model_interface/ModelData.h"
+#include "ocean_models/general_models/LinearModel.h"
+#include "ocean_models/model_interface/ModelData.h"
 
 #include <string>
 #include <stdexcept>
