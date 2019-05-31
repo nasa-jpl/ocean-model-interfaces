@@ -6,7 +6,7 @@ from os import listdir
 from os.path import isfile, join, basename
 
 def modifyFVCOM(inputFilename, outputFilename, siglayRange, depth):
-    xyScale = 4
+    xyScale = 8
     fvcomIn = Dataset(inputFilename, "r")
     fvcomOut = Dataset(outputFilename, "w")
 

@@ -86,6 +86,7 @@ FVCOMChunk::FVCOMChunk(const std::vector<FVCOMStructure::ModelFile> modelFiles, 
 			//Update time and data indicies
 			timeIndex += timeCount;
 			dataIndex += timeCount * chunkInfo.siglaySize;
+			dataFile.close();
 		}
 
 		std::vector<FVCOMChunk::NodeData>& dataList = nodes[nodesToLoad[i]];
@@ -137,6 +138,7 @@ FVCOMChunk::FVCOMChunk(const std::vector<FVCOMStructure::ModelFile> modelFiles, 
 			//Update time and data indicies
 			timeIndex += timeCount;
 			dataIndex += timeCount * chunkInfo.siglaySize;
+			dataFile.close();
 		}
 
 		std::vector<FVCOMChunk::TriangleData>& dataList = triangles[trianglesToLoad[i]];
