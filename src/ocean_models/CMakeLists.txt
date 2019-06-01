@@ -4,8 +4,10 @@ project(ocean_models VERSION 0.1 DESCRIPTION "C++ library for accessing ocean mo
 set (CMAKE_CXX_STANDARD 11)
 set(CMAKE_BUILD_TYPE Debug)
 
-set (NETCDF_CXX "YES")
-find_package(NetCDF REQUIRED)
+#set (NETCDF_CXX "YES")
+#find_package(NetCDF REQUIRED)
+
+find_package(netCDF REQUIRED)
 
 set(boost_min_ver 1.50.0)
 set(boost_libs system filesystem)
