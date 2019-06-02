@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.9)
 
 project(ocean_models VERSION 0.1 DESCRIPTION "C++ library for accessing ocean models")
 set (CMAKE_CXX_STANDARD 11)
-set(CMAKE_BUILD_TYPE Debug)
 
 #set (NETCDF_CXX "YES")
 #find_package(NetCDF REQUIRED)

@@ -4,6 +4,7 @@ project(OceanModels VERSION 0.1 DESCRIPTION "C++ library for accessing ocean mod
 
 set (CMAKE_CXX_STANDARD 11)
 include(GNUInstallDirs)
+set(CMAKE_BUILD_TYPE Release)
 
 enable_testing()
 
