@@ -17,6 +17,14 @@ To install in specific location
 
 `make install`
 
+## Unit Tests
+`cd ocean_models/build`
+
+`make test`
+
+Use the following for verbose output of the tests
+`make test CTEST_OUTPUT_ON_FAILURE=TRUE`
+
 ## Dependencies
 ### cmake
 ### NetCDF4 C++
