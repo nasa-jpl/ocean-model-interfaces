@@ -3,9 +3,6 @@ cmake_minimum_required(VERSION 3.9)
 project(ocean_models VERSION 0.1 DESCRIPTION "C++ library for accessing ocean models")
 set (CMAKE_CXX_STANDARD 11)
 
-#set (NETCDF_CXX "YES")
-#find_package(NetCDF REQUIRED)
-
 find_package(netCDF REQUIRED)
 
 set(boost_min_ver 1.50.0)
@@ -25,9 +22,11 @@ add_library(ocean_models SHARED
     src/model_interface/ModelInterface.cpp
 )
 
+target_link_directories(ocean_models PRIVATE ${netCDF_LIB_DIR})
+
 target_link_libraries(ocean_models
     PRIVATE
-        ${NETCDF_LIBRARIES} 
+        ${netCDF_LIBRARIES} 
         ${Boost_LIBRARIES} 
         netcdf_c++4
 )
@@ -51,15 +50,18 @@ install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 ###
 
 add_executable(FVCOM_test test/FVCOM_test.cpp)
-target_link_libraries(FVCOM_test gtest ocean_models)
+target_link_directories(FVCOM_test PRIVATE ${netCDF_LIB_DIR})
+target_link_libraries(FVCOM_test gtest ocean_models ${netCDF_LIBRARIES} netcdf_c++4)
 add_test(NAME FVCOM_test COMMAND FVCOM_test)
 
 add_executable(FVCOMChunk_test test/FVCOMChunk_test.cpp)
-target_link_libraries(FVCOMChunk_test gtest ocean_models)
+target_link_directories(FVCOMChunk_test PRIVATE ${netCDF_LIB_DIR})
+target_link_libraries(FVCOMChunk_test gtest ocean_models ${netCDF_LIBRARIES} netcdf_c++4)
 add_test(NAME FVCOMChunk_test COMMAND FVCOMChunk_test)
 
 add_executable(FVCOMStructure_test test/FVCOMStructure_test.cpp)
-target_link_libraries(FVCOMStructure_test gtest ocean_models)
+target_link_directories(FVCOMStructure_test PRIVATE ${netCDF_LIB_DIR})
+target_link_libraries(FVCOMStructure_test gtest ocean_models ${netCDF_LIBRARIES} netcdf_c++4)
 add_test(NAME FVCOMStructure_test COMMAND FVCOMStructure_test)
 
 add_executable(lru_cache_test test/lru_cache_test.cpp)
