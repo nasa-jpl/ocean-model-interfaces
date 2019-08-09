@@ -60,20 +60,28 @@ install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 ###
 
 add_executable(FVCOM_test test/FVCOM_test.cpp)
+target_compile_options(FVCOM_test PRIVATE
+    $<BUILD_INTERFACE:-Wall>)
 target_link_directories(FVCOM_test PRIVATE ${netCDF_LIB_DIR})
 target_link_libraries(FVCOM_test gtest ocean_models ${netCDF_LIBRARIES} netcdf_c++4)
 add_test(NAME FVCOM_test COMMAND FVCOM_test)
 
 add_executable(FVCOMChunk_test test/FVCOMChunk_test.cpp)
+target_compile_options(FVCOMChunk_test PRIVATE
+    $<BUILD_INTERFACE:-Wall>)
 target_link_directories(FVCOMChunk_test PRIVATE ${netCDF_LIB_DIR})
 target_link_libraries(FVCOMChunk_test gtest ocean_models ${netCDF_LIBRARIES} netcdf_c++4)
 add_test(NAME FVCOMChunk_test COMMAND FVCOMChunk_test)
 
 add_executable(FVCOMStructure_test test/FVCOMStructure_test.cpp)
+target_compile_options(FVCOMStructure_test PRIVATE
+    $<BUILD_INTERFACE:-Wall>)
 target_link_directories(FVCOMStructure_test PRIVATE ${netCDF_LIB_DIR})
 target_link_libraries(FVCOMStructure_test gtest ocean_models ${netCDF_LIBRARIES} netcdf_c++4)
 add_test(NAME FVCOMStructure_test COMMAND FVCOMStructure_test)
 
 add_executable(lru_cache_test test/lru_cache_test.cpp)
+target_compile_options(lru_cache_test PRIVATE
+    $<BUILD_INTERFACE:-Wall>)
 target_link_libraries(lru_cache_test gtest ocean_models)
 add_test(NAME lru_cache_test COMMAND lru_cache_test)

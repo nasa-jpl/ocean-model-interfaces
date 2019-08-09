@@ -156,8 +156,6 @@ TEST(FVCOMTest, AllInterpolation)
 
 
     ModelData data1 = fvcomMultiple.getData(12314, -9648, -89, 0.11 * SECONDS_IN_DAY);
-    FVCOMStructure::Plane siglay5 = structure.getTriangleSiglayPlane(9152, 5);
-    FVCOMStructure::Plane siglay6 = structure.getTriangleSiglayPlane(9152, 6);
 
     //siglay: 5, time 2
     //temp: 3.7756120834702616
@@ -205,8 +203,6 @@ TEST(FVCOMTest, AllInterpolationOffset)
                                             -9648 + offsetY, 
                                             -89 + offsetHeight, 
                                             0.11 * SECONDS_IN_DAY + offsetTime);
-    FVCOMStructure::Plane siglay5 = structure.getTriangleSiglayPlane(9152, 5);
-    FVCOMStructure::Plane siglay6 = structure.getTriangleSiglayPlane(9152, 6);
 
     EXPECT_FLOAT_EQ(3.7692957782, data1.temp);
     EXPECT_FLOAT_EQ(34.3233909259, data1.salt);
@@ -264,7 +260,7 @@ TEST(FVCOMTest, GetDataMultipleFiles) {
 TEST(FVCOMTest, OutOfModelBounds)
 {
 	try {
-        ModelData data = fvcomMultiple.getData(300000, 0, 0, 0);
+        fvcomMultiple.getData(300000, 0, 0, 0);
         FAIL() << "Expected std::out_of_range";
     }
     catch(std::out_of_range const & err) {
@@ -272,7 +268,7 @@ TEST(FVCOMTest, OutOfModelBounds)
     }
 
     try {
-        ModelData data = fvcomMultiple.getData(-300000, 0, 0, 0);
+        fvcomMultiple.getData(-300000, 0, 0, 0);
         FAIL() << "Expected std::out_of_range";
     }
     catch(std::out_of_range const & err) {
@@ -280,7 +276,7 @@ TEST(FVCOMTest, OutOfModelBounds)
     }
 
     try {
-        ModelData data = fvcomMultiple.getData(0, 300000, 0, 0);
+        fvcomMultiple.getData(0, 300000, 0, 0);
         FAIL() << "Expected std::out_of_range";
     }
     catch(std::out_of_range const & err) {
@@ -288,7 +284,7 @@ TEST(FVCOMTest, OutOfModelBounds)
     }
 
     try {
-        ModelData data = fvcomMultiple.getData(0, -300000, 0, 0);
+        fvcomMultiple.getData(0, -300000, 0, 0);
         FAIL() << "Expected std::out_of_range";
     }
     catch(std::out_of_range const & err) {
@@ -296,7 +292,7 @@ TEST(FVCOMTest, OutOfModelBounds)
     }
 
     try {
-        ModelData data = fvcomMultiple.getData(0, 0, 1, 0);
+        fvcomMultiple.getData(0, 0, 1, 0);
         FAIL() << "Expected std::out_of_range";
     }
     catch(std::out_of_range const & err) {
@@ -304,7 +300,7 @@ TEST(FVCOMTest, OutOfModelBounds)
     }
 
     try {
-        ModelData data = fvcomMultiple.getData(0, 0, 10000, 0);
+        fvcomMultiple.getData(0, 0, 10000, 0);
         FAIL() << "Expected std::out_of_range";
     }
     catch(std::out_of_range const & err) {
@@ -312,7 +308,7 @@ TEST(FVCOMTest, OutOfModelBounds)
     }
 
     try {
-        ModelData data = fvcomMultiple.getData(0, 0, 0, -0.1 * SECONDS_IN_DAY);
+        fvcomMultiple.getData(0, 0, 0, -0.1 * SECONDS_IN_DAY);
         FAIL() << "Expected std::out_of_range";
     }
     catch(std::out_of_range const & err) {
@@ -320,7 +316,7 @@ TEST(FVCOMTest, OutOfModelBounds)
     }
 
     try {
-        ModelData data = fvcomMultiple.getData(0, 0, 0, 1.0 * SECONDS_IN_DAY);
+        fvcomMultiple.getData(0, 0, 0, 1.0 * SECONDS_IN_DAY);
         FAIL() << "Expected std::out_of_range";
     }
     catch(std::out_of_range const & err) {
