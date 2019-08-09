@@ -107,10 +107,8 @@ private:
 	const double areaOfTriangle(const FVCOMStructure::Point& p1, const FVCOMStructure::Point& p2, const FVCOMStructure::Point& p3) const;
 
 private:
-	
-	FVCOMStructure structure;
-
 	LRUCache<unsigned int, FVCOMChunk> chunkCache;
+	FVCOMStructure structure;
 
 	void (*startLoad)(void);
 	void (*endLoad)(void);

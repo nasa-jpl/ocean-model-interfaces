@@ -1,6 +1,11 @@
 cmake_minimum_required(VERSION 3.9)
 
 project(ocean_models VERSION 0.1 DESCRIPTION "C++ library for accessing ocean models")
+
+###
+###For Build
+###
+
 set (CMAKE_CXX_STANDARD 11)
 
 find_package(netCDF REQUIRED)
@@ -22,20 +27,25 @@ add_library(ocean_models SHARED
     src/model_interface/ModelInterface.cpp
 )
 
-target_link_directories(ocean_models PRIVATE ${netCDF_LIB_DIR})
-
-target_link_libraries(ocean_models
-    PRIVATE
-        ${netCDF_LIBRARIES} 
-        ${Boost_LIBRARIES} 
-        netcdf_c++4
-)
-
 set_target_properties(ocean_models PROPERTIES VERSION ${PROJECT_VERSION})
+
+target_compile_options(ocean_models PRIVATE
+    $<BUILD_INTERFACE:-Wall>)
 
 target_include_directories(ocean_models PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include/ocean_models>)
+
+target_link_directories(ocean_models PRIVATE ${netCDF_LIB_DIR})
+target_link_libraries(ocean_models PRIVATE
+    ${netCDF_LIBRARIES} 
+    ${Boost_LIBRARIES} 
+    netcdf_c++4
+)
+
+###
+###For Install
+###
 
 include(GNUInstallDirs)
 install(TARGETS ocean_models
