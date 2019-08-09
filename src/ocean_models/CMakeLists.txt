@@ -6,8 +6,6 @@ project(ocean_models VERSION 0.1 DESCRIPTION "C++ library for accessing ocean mo
 ###For Build
 ###
 
-add_compile_options($<BUILD_INTERFACE:-Wall>)
-
 set (CMAKE_CXX_STANDARD 11)
 
 find_package(netCDF REQUIRED)

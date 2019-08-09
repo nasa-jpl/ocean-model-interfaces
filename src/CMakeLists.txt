@@ -8,5 +8,7 @@ set(CMAKE_BUILD_TYPE Release)
 
 enable_testing()
 
+add_compile_options($<BUILD_INTERFACE:-Wall>)
+
 add_subdirectory(gtest)
 add_subdirectory(ocean_models)
