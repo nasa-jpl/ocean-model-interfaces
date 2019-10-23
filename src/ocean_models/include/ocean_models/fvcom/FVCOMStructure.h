@@ -231,7 +231,7 @@ public:
 	const bool depthInModel(Point p);
 	const bool xyInModel(Point p) const;
 
-	const int getNumSiglays() const;
+	const unsigned int getNumSiglays() const;
 
 	/**
 	 * Gets the index and percentage for linear interpolation of time
