@@ -3,8 +3,8 @@
 
 using namespace ocean_models;
 
-FVCOMStructure structure("../../src/ocean_models/test_data/box_plume_split", 10, 10, 10, 10);
-FVCOMStructure structureAxial("../../src/ocean_models/test_data/axial_data_test", 1000, 1000, 10, 10);
+FVCOMStructure structure("./ocean_models/test_data/box_plume_split", 10, 10, 10, 10);
+FVCOMStructure structureAxial("./ocean_models/test_data/axial_data_test", 1000, 1000, 10, 10);
 
 TEST(FVCOMStructureTest, InterpolateTime)
 {

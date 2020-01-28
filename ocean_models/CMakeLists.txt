@@ -60,26 +60,4 @@ install(TARGETS ocean_models
     RUNTIME  DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-
-###
-###For Unit Tests
-###
-
-add_executable(FVCOM_test test/FVCOM_test.cpp)
-target_include_directories(FVCOM_test PRIVATE ${NetCDFCxx_INCLUDE_DIR} ${netCDF_INCLUDE_DIR})
-target_link_libraries(FVCOM_test gtest ocean_models ${netCDF_LIBRARIES} ${NetCDFCxx_LIBRARIES})
-add_test(NAME FVCOM_test COMMAND FVCOM_test)
-
-add_executable(FVCOMChunk_test test/FVCOMChunk_test.cpp)
-target_include_directories(FVCOMChunk_test PRIVATE ${NetCDFCxx_INCLUDE_DIR} ${netCDF_INCLUDE_DIR})
-target_link_libraries(FVCOMChunk_test gtest ocean_models ${netCDF_LIBRARIES} ${NetCDFCxx_LIBRARIES})
-add_test(NAME FVCOMChunk_test COMMAND FVCOMChunk_test)
-
-add_executable(FVCOMStructure_test test/FVCOMStructure_test.cpp)
-target_include_directories(FVCOMStructure_test PRIVATE ${NetCDFCxx_INCLUDE_DIR} ${netCDF_INCLUDE_DIR})
-target_link_libraries(FVCOMStructure_test gtest ocean_models ${netCDF_LIBRARIES} ${NetCDFCxx_LIBRARIES})
-add_test(NAME FVCOMStructure_test COMMAND FVCOMStructure_test)
-
-add_executable(lru_cache_test test/lru_cache_test.cpp)
-target_link_libraries(lru_cache_test gtest ocean_models)
-add_test(NAME lru_cache_test COMMAND lru_cache_test)
+add_subdirectory(test)

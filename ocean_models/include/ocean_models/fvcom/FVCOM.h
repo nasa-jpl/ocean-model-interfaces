@@ -78,6 +78,7 @@ public:
 		  unsigned int timeChunkSize,
 		  unsigned int cacheSize);
 
+protected:
 	const ModelData getDataHelper(double x, double y, double height, double time);
 	const ModelData getDataOutOfRangeHelper(double x, double y, double height, double time);
 
