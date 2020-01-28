@@ -161,12 +161,12 @@ void FVCOMStructure::loadStructureData(const std::string directory)
 	nodeSiglay.resize(nodeDim);
 	triangleSiglay.resize(neleDim);
 
-	for(uint i = 0; i < nodeSiglay.size(); i++)
+	for(unsigned int i = 0; i < nodeSiglay.size(); i++)
 	{
 		nodeSiglay[i].resize(siglayDim);
 	}
 
-	for(uint i = 0; i < triangleSiglay.size(); i++)
+	for(unsigned int i = 0; i < triangleSiglay.size(); i++)
 	{
 		triangleSiglay[i].resize(siglayDim);
 	}
@@ -174,7 +174,7 @@ void FVCOMStructure::loadStructureData(const std::string directory)
 	//resize for multidimensional array
 	triangleToNodes.resize(neleDim);
 	
-	for(uint i = 0; i < neleDim; i++)
+	for(unsigned int i = 0; i < neleDim; i++)
 	{
 		triangleToNodes[i].resize(3);
 	}
@@ -214,14 +214,14 @@ void FVCOMStructure::loadStructureData(const std::string directory)
 	//Convert to use point struct
 	nodes.resize(nodeDim);
 	triangles.resize(neleDim);
-	for(uint i = 0; i < nodeDim; i++)
+	for(unsigned int i = 0; i < nodeDim; i++)
 	{
 		nodes[i].x = nodeX[i];
 		nodes[i].y = nodeY[i];
 		nodes[i].h = nodeH[i];
 	}
 
-	for(uint i = 0; i < neleDim; i++)
+	for(unsigned int i = 0; i < neleDim; i++)
 	{
 		triangles[i].x = triangleX[i];
 		triangles[i].y = triangleY[i];
@@ -348,7 +348,7 @@ int FVCOMStructure::getContainingTriangle(Point testPoint, int closestNode)
 	}
 
 	//Search all triangles that are connected to the closest node
-	for(uint i = 0; i < nodeToTriangles[closestNode].size(); i++)
+	for(unsigned int i = 0; i < nodeToTriangles[closestNode].size(); i++)
 	{
 		//return the triangle for which the point is inside
 		if(pointInTriangle(testPoint, nodeToTriangles[closestNode][i]))
@@ -359,7 +359,7 @@ int FVCOMStructure::getContainingTriangle(Point testPoint, int closestNode)
 	}
 
 	//if the point is not inside any of those triangles search all the triangles
-	for(uint i = 0; i < triangles.size(); i++)
+	for(unsigned int i = 0; i < triangles.size(); i++)
 	{
 		if(pointInTriangle(testPoint, i))
 		{
@@ -400,7 +400,7 @@ int FVCOMStructure::getClosestNode(Point testPoint) const
 	//Checks distance between testPoint and every node, this is slow and will probably need to be improved
 	double closestDistance = std::numeric_limits<double>::max();
 	int node = -1;
-	for(uint i = 0; i < nodes.size(); i++)
+	for(unsigned int i = 0; i < nodes.size(); i++)
 	{
 
 		if(distanceSquared(testPoint, nodes[i]) < closestDistance)
@@ -458,7 +458,7 @@ int FVCOMStructure::getClosestNodeSiglay(Point testPoint) const
 	int closestSiglay = -1;
 	double closest = std::numeric_limits<double>::max();
 
-	for(uint i = 0; i < nodeSiglay[nodeIndex].size(); i++)
+	for(unsigned int i = 0; i < nodeSiglay[nodeIndex].size(); i++)
 	{
 		if(std::abs((nodeSiglay[nodeIndex][i] * nodes[nodeIndex].h) - testPoint.h) < closest)
 		{
@@ -501,7 +501,7 @@ int FVCOMStructure::getClosestTriangleSiglay(Point testPoint, int triangleIndex)
 	int closestSiglay = -1;
 	double closest = std::numeric_limits<double>::max();
 
-	for(uint i = 0; i < triangleSiglay[triangleIndex].size(); i++)
+	for(unsigned int i = 0; i < triangleSiglay[triangleIndex].size(); i++)
 	{
 		if(std::abs((triangleSiglay[triangleIndex][i] * (double)triangles[triangleIndex].h) - testPoint.h) < closest)
 		{
@@ -520,7 +520,7 @@ int FVCOMStructure::getClosestTriangleSiglay(Point testPoint)
 	int closestSiglay = -1;
 	double closest = std::numeric_limits<double>::max();
 
-	for(uint i = 0; i < triangleSiglay[triangleIndex].size(); i++)
+	for(unsigned int i = 0; i < triangleSiglay[triangleIndex].size(); i++)
 	{
 		if(std::abs((triangleSiglay[triangleIndex][i] * (double)triangles[triangleIndex].h) - testPoint.h) < closest)
 		{
@@ -692,7 +692,7 @@ void FVCOMStructure::siglayInterpolation(FVCOMStructure::Point& interpolatePoint
 	siglay1Index = siglay2Index = -1;
 
 	double prevDot = 0;
-	for(int i = 0; i < getNumSiglays(); i++)
+	for(uint i = 0; i < getNumSiglays(); i++)
 	{
 		FVCOMStructure::Plane plane = getTriangleSiglayPlane(containingTriangle, i);
 
@@ -843,7 +843,7 @@ const std::vector<unsigned int>& FVCOMStructure::getTrianglesInChunk(FVCOMStruct
 	return trianglesInChunk[chunkId];
 }
 
-const int FVCOMStructure::getNumSiglays() const
+const unsigned int FVCOMStructure::getNumSiglays() const
 {
 	return siglayDim;
 }

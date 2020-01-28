@@ -7,6 +7,8 @@ C++ Interfaces for various ocean models
 
 `mkdir build`
 
+`cd build`
+
 To install in default libary directory
 `cmake ../src`
 
@@ -28,36 +30,53 @@ Use the following for verbose output of the tests
 ## Dependencies
 ### cmake
 ### NetCDF4 C++
-download stable release of c library and c++ interface from https://www.unidata.ucar.edu/downloads/netcdf/index.jsp
 
+`sudo apt-get install libhdf5-dev libcurl4-gnutls-dev`
 
 For C library
 
-`sudo apt-get install libcurl4-gnutls-dev`
-or
-`sudo apt-get install libcurl-ssl-dev`
+`wget https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-c-4.7.1.tar.gz`
 
-`sudo apt-get install libhdf5-dev`
+`tar -zxvf netcdf-c-4.7.1.tar.gz`
+
+`cd ./netcdf-c-4.7.1/`
 
 `mkdir build`
 
-`cmake ../`
+`cd ./build`
 
-`make`
+`cmake ../ -DCMAKE_BUILD_TYPE=RELEASE`
 
 `sudo make install`
 
+`cd ../..`
+
+`rm -rf ./netcdf-c-4.7.1/`
+
+`rm netcdf-c-4.7.1.tar.gz`
 
 For C++ interface
 
-`./configure`
+`wget https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-cxx4-4.3.1.tar.gz`
 
-`make`
+`tar -zxvf netcdf-cxx4-4.3.1.tar.gz`
+
+`cd ./netcdf-cxx4-4.3.1/`
+
+`mkdir build`
+
+`cd ./build`
+
+`cmake ../ -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_FLAGS=-I/usr/include/hdf5/serial/`
 
 `sudo make install`
 
+`cd ../..`
+
+`rm -rf ./netcdf-cxx4-4.3.1`
+
+`rm netcdf-cxx4-4.3.1.tar.gz`
+
 
 ### Boost
-`sudo apt-get install libboost-system-dev`
-
-`sudo apt-get install libboost-filesystem-dev`
+`sudo apt-get install libboost-system-dev libboost-filesystem-dev`
