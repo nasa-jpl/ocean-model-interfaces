@@ -18,3 +18,7 @@ add_test(NAME FVCOMStructure_test COMMAND FVCOMStructure_test WORKING_DIRECTORY 
 add_executable(lru_cache_test lru_cache_test.cpp)
 target_link_libraries(lru_cache_test gtest ocean_models)
 add_test(NAME lru_cache_test COMMAND lru_cache_test WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+add_executable(OceanFrontModel_test OceanFrontModel_test.cpp)
+target_link_libraries(OceanFrontModel_test gtest ocean_models)
+add_test(NAME OceanFrontModel_test COMMAND OceanFrontModel_test WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
