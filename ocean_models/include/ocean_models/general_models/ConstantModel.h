@@ -14,27 +14,27 @@ class ConstantModel : public ModelInterface
 {
 public:
 
-	/**
-	 * Initalize ConstantModel class with zeros
+    /**
+     * Initalize ConstantModel class with zeros
      */
-	ConstantModel();
+    ConstantModel();
 
-	/**
-	 * Initalize ConstantModel class with provided values
+    /**
+     * Initalize ConstantModel class with provided values
      */
-	ConstantModel(double u, double v, double temp, double salt, double dye, double depth);
+    ConstantModel(double u, double v, double temp, double salt, double dye, double depth);
 
-	const ModelData getDataHelper(double x, double y, double height, double time);
-	const ModelData getDataOutOfRangeHelper(double x, double y, double height, double time);
+    const ModelData getDataHelper(double x, double y, double height, double time);
+    const ModelData getDataOutOfRangeHelper(double x, double y, double height, double time);
 
 private:
-	
-	double u;
-	double v;
-	double temp;
-	double salt;
-	double dye;
-	double depth;
+    
+    double u;
+    double v;
+    double temp;
+    double salt;
+    double dye;
+    double depth;
 
 };
 

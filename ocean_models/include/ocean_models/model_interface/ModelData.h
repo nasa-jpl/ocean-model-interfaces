@@ -6,18 +6,18 @@ namespace ocean_models
 
 struct ModelData
 {
-	//eastward current velocity
-	double u;
+    //eastward current velocity
+    double u;
 
-	//northward current velocity
-	double v;
+    //northward current velocity
+    double v;
 
-	//upward current velocity
-	double w;
-	
-	double temp;
-	double salt;
-	double dye;
+    //upward current velocity
+    double w;
+    
+    double temp;
+    double salt;
+    double dye;
     double depth;
 };
 
