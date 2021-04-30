@@ -214,52 +214,52 @@ TEST(FVCOMTest, AllInterpolationOffset)
 
 TEST(FVCOMTest, GetDataMultipleFiles) {
 
-	//Test node with times in two files
-	//Node: 1000
-	//h: 2737.259485
-	//siglay: 15
-	//time: 4 in 0001_1
-	ModelData data1 = fvcomMultiple.getData(8545.73568, -132697.938, 0, 0);
-	ModelData data2 = fvcomMultiple.getData(8545.73568, -132697.938, -334.07498037, 0);
-	ModelData data3 = fvcomMultiple.getData(8545.73568, -132697.938, -334.07498037, 0.375 * SECONDS_IN_DAY);
+    //Test node with times in two files
+    //Node: 1000
+    //h: 2737.259485
+    //siglay: 15
+    //time: 4 in 0001_1
+    ModelData data1 = fvcomMultiple.getData(8545.73568, -132697.938, 0, 0);
+    ModelData data2 = fvcomMultiple.getData(8545.73568, -132697.938, -334.07498037, 0);
+    ModelData data3 = fvcomMultiple.getData(8545.73568, -132697.938, -334.07498037, 0.375 * SECONDS_IN_DAY);
 
-	//Test triangle with times in two files
-	//Triangle: 1000
-	//h: 3123.6463423333335
-	//siglay: 15
-	//time: 4 in 0001_1
-	ModelData data4 = fvcomMultiple.getData(-138453.56466666667, -25886.79643333335, 0, 0);
-	ModelData data5 = fvcomMultiple.getData(-138453.56466666667, -25886.79643333335, -381.232432006, 0);
-	ModelData data6 = fvcomMultiple.getData(-138453.56466666667, -25886.79643333335, -381.232432006, 0.375 * SECONDS_IN_DAY);
+    //Test triangle with times in two files
+    //Triangle: 1000
+    //h: 3123.6463423333335
+    //siglay: 15
+    //time: 4 in 0001_1
+    ModelData data4 = fvcomMultiple.getData(-138453.56466666667, -25886.79643333335, 0, 0);
+    ModelData data5 = fvcomMultiple.getData(-138453.56466666667, -25886.79643333335, -381.232432006, 0);
+    ModelData data6 = fvcomMultiple.getData(-138453.56466666667, -25886.79643333335, -381.232432006, 0.375 * SECONDS_IN_DAY);
 
 
-	EXPECT_FLOAT_EQ(3.8386462639531507, data1.temp);
-	EXPECT_FLOAT_EQ(34.3129397553773, data1.salt);
-	EXPECT_FLOAT_EQ(0.0, data1.dye);
+    EXPECT_FLOAT_EQ(3.8386462639531507, data1.temp);
+    EXPECT_FLOAT_EQ(34.3129397553773, data1.salt);
+    EXPECT_FLOAT_EQ(0.0, data1.dye);
 
-	EXPECT_FLOAT_EQ(3.552034178027694, data2.temp);
-	EXPECT_FLOAT_EQ(34.3561324173774, data2.salt);
-	EXPECT_FLOAT_EQ(0.0, data2.dye);
+    EXPECT_FLOAT_EQ(3.552034178027694, data2.temp);
+    EXPECT_FLOAT_EQ(34.3561324173774, data2.salt);
+    EXPECT_FLOAT_EQ(0.0, data2.dye);
 
-	EXPECT_FLOAT_EQ(3.5520324460792474, data3.temp);
-	EXPECT_FLOAT_EQ(34.35613267838961, data3.salt);
-	EXPECT_FLOAT_EQ(0.0, data3.dye);
+    EXPECT_FLOAT_EQ(3.5520324460792474, data3.temp);
+    EXPECT_FLOAT_EQ(34.35613267838961, data3.salt);
+    EXPECT_FLOAT_EQ(0.0, data3.dye);
 
-	EXPECT_FLOAT_EQ(0.0, data4.u);
-	EXPECT_FLOAT_EQ(0.0, data4.v);
+    EXPECT_FLOAT_EQ(0.0, data4.u);
+    EXPECT_FLOAT_EQ(0.0, data4.v);
 
-	EXPECT_FLOAT_EQ(0.0, data5.u);
-	EXPECT_FLOAT_EQ(0.0, data5.v);
+    EXPECT_FLOAT_EQ(0.0, data5.u);
+    EXPECT_FLOAT_EQ(0.0, data5.v);
 
-	EXPECT_FLOAT_EQ(0.00038683573810392144, data6.u);
-	EXPECT_FLOAT_EQ(-0.0019926347599095754, data6.v);
+    EXPECT_FLOAT_EQ(0.00038683573810392144, data6.u);
+    EXPECT_FLOAT_EQ(-0.0019926347599095754, data6.v);
 
 
 }
 
 TEST(FVCOMTest, OutOfModelBounds)
 {
-	try {
+    try {
         fvcomMultiple.getData(300000, 0, 0, 0);
         FAIL() << "Expected std::out_of_range";
     }
@@ -325,12 +325,12 @@ TEST(FVCOMTest, OutOfModelBounds)
 }
 
 TEST(FVCOMTest, ModelEdge) {
-	//Test node at edge of model
-	//Node: 180
-	ModelData data = fvcomMultiple.getData(150000, 150000, 0, 0);
-	EXPECT_FLOAT_EQ(3.8387627679688694, data.temp);
-	EXPECT_FLOAT_EQ(34.31292219813244, data.salt);
-	EXPECT_FLOAT_EQ(0.0, data.dye);
+    //Test node at edge of model
+    //Node: 180
+    ModelData data = fvcomMultiple.getData(150000, 150000, 0, 0);
+    EXPECT_FLOAT_EQ(3.8387627679688694, data.temp);
+    EXPECT_FLOAT_EQ(34.31292219813244, data.salt);
+    EXPECT_FLOAT_EQ(0.0, data.dye);
 }
 
 int main(int argc, char **argv)

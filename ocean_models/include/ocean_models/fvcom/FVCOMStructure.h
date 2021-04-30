@@ -147,13 +147,6 @@ public:
     FVCOMStructure::Plane getTrianglePlane(int triange) const;
 
     /**
-     * Gets the siglay that is closest to the given location
-     * @param testPoint location to find the closest siglay for
-     * @return index for the closest siglay
-     */
-    int getClosestTriangleSiglay(Point testPoint);
-    int getClosestTriangleSiglay(Point testPoint, int triangleIndex);
-    /**
      * Finds the closest node to a point
      * @param testPoint Point to get the closest node for
      */
@@ -318,11 +311,6 @@ private:
      * siglay for nodes
      */
     std::vector<std::vector<float>> nodeSiglay;
-
-    /**
-     * siglay for triangles
-     */
-    std::vector<std::vector<float>> triangleSiglay;
 
     /**
      * The times corresponding to each time index

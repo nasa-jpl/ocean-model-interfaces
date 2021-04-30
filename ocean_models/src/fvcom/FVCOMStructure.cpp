@@ -136,7 +136,6 @@ void FVCOMStructure::loadStructureData(const std::string directory)
     netCDF::NcVar ycVar = dataFile.getVar("yc");
     netCDF::NcVar nvVar = dataFile.getVar("nv");
     netCDF::NcVar hVar = dataFile.getVar("h");
-    netCDF::NcVar centerHVar = dataFile.getVar("h_center");
     netCDF::NcVar siglayVar = dataFile.getVar("siglay");
     netCDF::NcVar centerSiglayVar = dataFile.getVar("siglay_center");
 
@@ -148,27 +147,19 @@ void FVCOMStructure::loadStructureData(const std::string directory)
 
     std::vector<float> triangleX;
     std::vector<float> triangleY;
-    std::vector<float> triangleH;
 
     nodeX.resize(nodeDim);
     nodeY.resize(nodeDim);
     triangleX.resize(neleDim);
     triangleY.resize(neleDim);
     nodeH.resize(nodeDim);
-    triangleH.resize(neleDim);
 
     //Resize siglay 2d vectors
     nodeSiglay.resize(nodeDim);
-    triangleSiglay.resize(neleDim);
 
     for(unsigned int i = 0; i < nodeSiglay.size(); i++)
     {
         nodeSiglay[i].resize(siglayDim);
-    }
-
-    for(unsigned int i = 0; i < triangleSiglay.size(); i++)
-    {
-        triangleSiglay[i].resize(siglayDim);
     }
 
     //resize for multidimensional array
@@ -185,7 +176,6 @@ void FVCOMStructure::loadStructureData(const std::string directory)
     xcVar.getVar(triangleX.data());
     ycVar.getVar(triangleY.data());
     hVar.getVar(nodeH.data());
-    centerHVar.getVar(triangleH.data());
 
     //load nvVar into a multidimensional vector
     for(unsigned int i = 0; i < neleDim; i++)
@@ -203,14 +193,6 @@ void FVCOMStructure::loadStructureData(const std::string directory)
         siglayVar.getVar(start, count, nodeSiglay[i].data());
     }
 
-    //load node siglay into a multidimensional vector
-    for(unsigned int i = 0; i < triangleSiglay.size(); i++)
-    {
-        std::vector<size_t> start = {0, i};
-        std::vector<size_t> count = {siglayDim, 1};
-        centerSiglayVar.getVar(start, count, triangleSiglay[i].data());
-    }
-
     //Convert to use point struct
     nodes.resize(nodeDim);
     triangles.resize(neleDim);
@@ -225,7 +207,6 @@ void FVCOMStructure::loadStructureData(const std::string directory)
     {
         triangles[i].x = triangleX[i];
         triangles[i].y = triangleY[i];
-        triangles[i].h = triangleH[i];
     }
 
 
@@ -494,43 +475,6 @@ FVCOMStructure::Plane FVCOMStructure::getTriangleSiglayPlane(int triangle, unsig
     FVCOMStructure::Plane plane(p0, p1, p2);
 
     return plane;
-}
-
-int FVCOMStructure::getClosestTriangleSiglay(Point testPoint, int triangleIndex)
-{
-    int closestSiglay = -1;
-    double closest = std::numeric_limits<double>::max();
-
-    for(unsigned int i = 0; i < triangleSiglay[triangleIndex].size(); i++)
-    {
-        if(std::abs((triangleSiglay[triangleIndex][i] * (double)triangles[triangleIndex].h) - testPoint.h) < closest)
-        {
-            closest = std::abs((triangleSiglay[triangleIndex][i] * (double)triangles[triangleIndex].h) - testPoint.h);
-            closestSiglay = i;
-        }
-    }
-
-    return closestSiglay;
-
-}
-
-int FVCOMStructure::getClosestTriangleSiglay(Point testPoint)
-{
-    int triangleIndex = getContainingTriangle(testPoint);
-    int closestSiglay = -1;
-    double closest = std::numeric_limits<double>::max();
-
-    for(unsigned int i = 0; i < triangleSiglay[triangleIndex].size(); i++)
-    {
-        if(std::abs((triangleSiglay[triangleIndex][i] * (double)triangles[triangleIndex].h) - testPoint.h) < closest)
-        {
-            closest = std::abs((triangleSiglay[triangleIndex][i] * (double)triangles[triangleIndex].h) - testPoint.h);
-            closestSiglay = i;
-        }
-    }
-
-    return closestSiglay;
-
 }
 
 double FVCOMStructure::distance(Point p0, Point p1) const
