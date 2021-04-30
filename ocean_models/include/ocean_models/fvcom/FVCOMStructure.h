@@ -298,12 +298,13 @@ private:
     unsigned int siglayDim;
 
     /**
-     * x,y for each node
+     * x,y,h for each node
      */
     std::vector<Point> nodes;
 
     /**
-     * x,y for each triangle
+     * x,y for each triangle. 
+	 Height (bathymetry) data is not loaded for triangles. The h variable for each point is set to NaN.
      */
     std::vector<Point> triangles;
 

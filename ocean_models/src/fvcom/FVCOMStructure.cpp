@@ -207,6 +207,8 @@ void FVCOMStructure::loadStructureData(const std::string directory)
     {
         triangles[i].x = triangleX[i];
         triangles[i].y = triangleY[i];
+        triangles[i].h = std::numeric_limits<double>::quiet_NaN();
+        //Height data is not loaded for triangles so we set it to NaN.
     }
 
 
