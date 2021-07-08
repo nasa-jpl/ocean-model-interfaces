@@ -4,6 +4,9 @@
 namespace ocean_models
 {
 
+/**
+ * Data from a model at one specific location (x,y,z) and time.
+ */
 struct ModelData
 {
     //eastward current velocity

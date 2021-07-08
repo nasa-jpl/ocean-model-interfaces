@@ -156,7 +156,7 @@ FVCOMChunk::FVCOMChunk(const std::vector<FVCOMStructure::ModelFile> modelFiles, 
     
 }
 
-const unsigned int FVCOMChunk::getFileIndexForTimeIndex(const std::vector<FVCOMStructure::ModelFile> modelFiles, const unsigned int timeIndex) const
+const unsigned int FVCOMChunk::getFileIndexForTimeIndex(const std::vector<FVCOMStructure::ModelFile>& modelFiles, const unsigned int timeIndex) const
 {
     for(int i = modelFiles.size() - 1; i >= 0; i--)
     {

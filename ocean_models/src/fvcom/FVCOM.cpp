@@ -212,7 +212,7 @@ const ModelData FVCOM::getDataOutOfRangeHelper(double x, double y, double height
 
         data.salt = std::numeric_limits<double>::quiet_NaN();
         data.temp = std::numeric_limits<double>::quiet_NaN();
-        data.dye = 0;
+        data.dye = std::numeric_limits<double>::quiet_NaN();
     }
     else if(!structure.timeInModel(time / SECONDS_IN_DAY))
     {
@@ -223,7 +223,7 @@ const ModelData FVCOM::getDataOutOfRangeHelper(double x, double y, double height
 
         data.salt = std::numeric_limits<double>::quiet_NaN();
         data.temp = std::numeric_limits<double>::quiet_NaN();
-        data.dye = 0;
+        data.dye = std::numeric_limits<double>::quiet_NaN();
     }
     else if(!structure.depthInModel(interpolatePoint))
     {

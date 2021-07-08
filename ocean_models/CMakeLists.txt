@@ -21,9 +21,6 @@ if(Boost_FOUND)
     find_package(Boost ${boost_min_ver} COMPONENTS ${boost_libs})
 endif()
 
-find_library(UNDERWATER_AUTONOMY_LIB underwater_autonomy)
-find_path(UNDERWATER_AUTONOMY_INCLUDE underwater_autonomy)
-
 #Add all .cpp files to the library
 add_library(ocean_models SHARED
     src/fvcom/FVCOM.cpp
@@ -40,7 +37,7 @@ set_target_properties(ocean_models PROPERTIES VERSION ${PROJECT_VERSION})
 
 #Include all required directories
 #Some library includes are only here incase they are installed in unconventional locations
-target_include_directories(ocean_models PRIVATE ${UNDERWATER_AUTONOMY_INCLUDE} ${NetCDFCxx_INCLUDE_DIR} ${netCDF_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
+target_include_directories(ocean_models PRIVATE ${NetCDFCxx_INCLUDE_DIR} ${netCDF_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 target_include_directories(ocean_models PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include/ocean_models>)
@@ -49,7 +46,6 @@ target_include_directories(ocean_models PUBLIC
 #is installed in an unconventional location
 link_directories(${netCDF_LIB_DIR}) 
 target_link_libraries(ocean_models PRIVATE
-    ${UNDERWATER_AUTONOMY_LIB}
     ${netCDF_LIBRARIES} 
     ${Boost_LIBRARIES} 
     ${NetCDFCxx_LIBRARIES}

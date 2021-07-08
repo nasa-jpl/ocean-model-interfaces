@@ -8,33 +8,39 @@ namespace ocean_models
 {
 
 /**
- * Class used to load and query FVCOM data
+ * A model used for testing that provides constant data independent of time and location.
  */
 class ConstantModel : public ModelInterface
 {
 public:
+    struct Parameters; //Forward declare Parameters so we can use it in the constructor
 
     /**
-     * Initalize ConstantModel class with zeros
+     * Initalize ConstantModel class with all zero values
      */
     ConstantModel();
 
     /**
      * Initalize ConstantModel class with provided values
      */
-    ConstantModel(double u, double v, double temp, double salt, double dye, double depth);
+    ConstantModel(Parameters parameters);
 
     const ModelData getDataHelper(double x, double y, double height, double time);
     const ModelData getDataOutOfRangeHelper(double x, double y, double height, double time);
 
+    struct Parameters
+    {
+        Parameters() {};
+
+        double u = 0;
+        double v = 0;
+        double temp = 0;
+        double salt = 0;
+        double dye = 0;
+        double depth = 10;
+    };
 private:
-    
-    double u;
-    double v;
-    double temp;
-    double salt;
-    double dye;
-    double depth;
+    Parameters parameters;
 
 };
 

@@ -7,32 +7,10 @@
 
 using namespace ocean_models;
 
-LinearModel::LinearModel() :
-    u(0),
-    v(0),
-    temp(0),
-    salt(0),
-    dye(0),
-    zeroDistance(100),
-    centerX(0),
-    centerY(0),
-    centerZ(0),
-    type("circle")
-{}
+LinearModel::LinearModel() {}
 
-LinearModel::LinearModel(float u, float v, float temp, float salt, float dye, float depth,
-                            float zeroDistance, float centerX, float centerY, float centerZ, std::string type) :
-    u(u),
-    v(v),
-    temp(temp),
-    salt(salt),
-    dye(dye),
-    depth(depth),
-    zeroDistance(zeroDistance),
-    centerX(centerX),
-    centerY(centerY),
-    centerZ(centerZ),
-    type(type)
+LinearModel::LinearModel(Parameters parameters) :
+    parameters(parameters)
 {}
 
 const ModelData LinearModel::getDataHelper(double x, double y, double height, double time)
@@ -41,20 +19,20 @@ const ModelData LinearModel::getDataHelper(double x, double y, double height, do
     
     double distance = 0;
 
-    if(type == "circle")
+    if(parameters.type == LinearModel::DistanceFunction::EUCLIDEAN)
     {
-        distance = sqrt((x - centerX) * (x - centerX) + (y - centerY) * (y - centerY) + (height - centerZ) * (height - centerZ));
+        distance = sqrt((x - parameters.centerX) * (x - parameters.centerX) + (y - parameters.centerY) * (y - parameters.centerY) + (height - parameters.centerZ) * (height - parameters.centerZ));
     }
-    else if(type == "square")
+    else if(parameters.type == LinearModel::DistanceFunction::MANHATTAN)
     {
-        distance = std::max(fabs(x - centerX), fabs(y - centerY));
+        distance = std::max(fabs(x - parameters.centerX), fabs(y - parameters.centerY));
     }
-    data.u = std::max(0.0,u * (zeroDistance - distance) / zeroDistance);
-    data.v = std::max(0.0,v * (zeroDistance - distance) / zeroDistance);
-    data.temp = std::max(0.0,temp * (zeroDistance - distance) / zeroDistance);
-    data.salt = std::max(0.0,salt * (zeroDistance - distance) / zeroDistance);
-    data.dye = std::max(0.0,dye * (zeroDistance - distance) / zeroDistance);
-    data.depth = depth; 
+    data.u = std::max(0.0,parameters.u * (parameters.zeroDistance - distance) / parameters.zeroDistance);
+    data.v = std::max(0.0,parameters.v * (parameters.zeroDistance - distance) / parameters.zeroDistance);
+    data.temp = std::max(0.0,parameters.temp * (parameters.zeroDistance - distance) / parameters.zeroDistance);
+    data.salt = std::max(0.0,parameters.salt * (parameters.zeroDistance - distance) / parameters.zeroDistance);
+    data.dye = std::max(0.0,parameters.dye * (parameters.zeroDistance - distance) / parameters.zeroDistance);
+    data.depth = parameters.depth; 
 
     return data;
 }
@@ -65,21 +43,21 @@ const ModelData LinearModel::getDataOutOfRangeHelper(double x, double y, double 
     
     double distance = 0;
 
-    if(type == "circle")
+    if(parameters.type == LinearModel::DistanceFunction::EUCLIDEAN)
     {
-        distance = sqrt((x - centerX) * (x - centerX) + (y - centerY) * (y - centerY) + (height - centerZ) * (height - centerZ));
+        distance = sqrt((x - parameters.centerX) * (x - parameters.centerX) + (y - parameters.centerY) * (y - parameters.centerY) + (height - parameters.centerZ) * (height - parameters.centerZ));
     }
-    else if(type == "square")
+    else if(parameters.type == LinearModel::DistanceFunction::MANHATTAN)
     {
-        distance = std::max(fabs(x - centerX), fabs(y - centerY));
+        distance = std::max(fabs(x - parameters.centerX), fabs(y - parameters.centerY));
     }
 
-    data.u = std::max(0.0,u * (zeroDistance - distance) / zeroDistance);
-    data.v = std::max(0.0,v * (zeroDistance - distance) / zeroDistance);
-    data.temp = std::max(0.0,temp * (zeroDistance - distance) / zeroDistance);
-    data.salt = std::max(0.0,salt * (zeroDistance - distance) / zeroDistance);
-    data.dye = std::max(0.0,dye * (zeroDistance - distance) / zeroDistance);
-    data.depth = depth; 
+    data.u = std::max(0.0,parameters.u * (parameters.zeroDistance - distance) / parameters.zeroDistance);
+    data.v = std::max(0.0,parameters.v * (parameters.zeroDistance - distance) / parameters.zeroDistance);
+    data.temp = std::max(0.0,parameters.temp * (parameters.zeroDistance - distance) / parameters.zeroDistance);
+    data.salt = std::max(0.0,parameters.salt * (parameters.zeroDistance - distance) / parameters.zeroDistance);
+    data.dye = std::max(0.0,parameters.dye * (parameters.zeroDistance - distance) / parameters.zeroDistance);
+    data.depth = parameters.depth; 
 
     return data;
 }

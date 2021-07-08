@@ -87,22 +87,3 @@ double OceanFrontModel::sign(double x) {
     if (x < 0) return -1;
     return 0;
 }
-
-OceanFrontModel::Parameters::Parameters() {}
-
-OceanFrontModel::Parameters::Parameters(underwater_autonomy::ConfigurationFile& config) {
-    frontX = config.readSimpleEntry<double>("front_x", frontX);
-    frontY = config.readSimpleEntry<double>("front_y", frontY);
-    frontOrientation = config.readSimpleEntry<double>("front_orientation", frontOrientation);
-    frontWidth = config.readSimpleEntry<double>("front_width", frontWidth);
-
-    depths = config.readArrayEntry<double>("depths", depths);
-    side1Temps = config.readArrayEntry<double>("side1_temp", side1Temps);
-    side2Temps = config.readArrayEntry<double>("side2_temp", side2Temps);
-    side1Salts = config.readArrayEntry<double>("side1_salt", side1Salts);
-    side2Salts = config.readArrayEntry<double>("side2_salt", side2Salts);
-
-    currentU = config.readSimpleEntry<double>("current_u", currentU);
-    currentV = config.readSimpleEntry<double>("current_v", currentV);
-    dye = config.readSimpleEntry<double>("dye", dye);
-}

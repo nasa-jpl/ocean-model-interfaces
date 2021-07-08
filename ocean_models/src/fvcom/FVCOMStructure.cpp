@@ -673,7 +673,7 @@ void FVCOMStructure::siglayInterpolation(FVCOMStructure::Point& interpolatePoint
     }
 
 
-    //The dot product was always decreasings however it never changed sign.
+    //The dot product was always decreasing however it never changed sign.
     //Therefore the point is below the final siglay, so use the final siglay.
     if(siglay1Index == siglay2Index && siglay2Index == -1)
     {

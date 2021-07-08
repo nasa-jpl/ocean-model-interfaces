@@ -14,15 +14,18 @@ namespace ocean_models
 {
 
 /**
- * Class used to load and query FVCOM structure data
+ * Class used to load and query FVCOM structure data. This data is always stored in memory
+ * and is used to determine what chunks need to be loaded to retrieve specific parts of the model.
  */
 class FVCOMStructure
 {
 public:
 
     /**
-     * Initalize FVCOMStructure class with data from file and specify the size of the FVCOMChunks
-     * @param filename File to load
+     * Initalize FVCOMStructure class with data from file and specify the size an FVCOMChunk.
+     * If a directory is provided then it will load all netCDF files in that directory.
+     * It is assumed that each netCDF file will include one complete timeslice of the model.
+     * @param filename Single file or directory to load
      * @param xChunkSize Size of a chunk in the x direction
      * @param yChunkSize Size of a chunk in the y direction
      * @param siglayChunkSize Size of a chunk in the siglay direction
@@ -56,6 +59,10 @@ public:
         double h;
     };
 
+    /**
+     * Stores a 3d plane. USed to determine the direction of a point relative to a
+     * specific siglay.
+     */
     struct Plane
     {
         double a;
@@ -71,7 +78,9 @@ public:
 
     
     
-
+    /**
+     * Stores information about where a chunk fits in the larger model
+     */
     struct ChunkInfo
     {
         unsigned int id;
@@ -91,6 +100,9 @@ public:
         unsigned int timeSize;
     };
 
+    /**
+     * Contains information about each netCDF file that makes up the model.
+     */
     struct ModelFile
     {
         /**
@@ -117,56 +129,79 @@ public:
     };
 
     /**
-     * Determines if a point is in the specified triangle
+     * Determines if a point is in the specified triangle.
      * @param testPoint Point to test with
      * @param triangle Triangle to test with
      */
     bool pointInTriangle(Point testPoint, int triangle) const;
 
     /**
-     * Finds the triangle which contains the specified point
+     * Finds the triangle which contains the specified point. This requires searching through all
+     * triangles.
      * @param testPoint Point to get containing triangle for
      */
     int getContainingTriangle(Point testPoint);
-    int getContainingTriangle(Point testPoint, int closestNode);
+
     /**
-     * Gets the nodes that form the specified triangle
+     * Finds the triangle which contains the specified point. Prioritizes checking of triangles
+     * that are adjacent to closestNode to avoid searching the entire model.
+     * @param testPoint Point to get containing triangle for
+     */
+    int getContainingTriangle(Point testPoint, int closestNode);
+
+    /**
+     * Gets the nodes that form the specified triangle.
      * @param triangle Triangle to get the nodes for
      * @return Vector of the nodes
      */
     const std::vector<int>& getNodesInTriangle(int triangle) const;
 
     /**
-     * Gets the equation for the plane defined by a siglay heights of the three nodes of a triangle
-     * @param triangle triangle to get the siglay for
-     * @param siglay to get the plane for
+     * Gets the equation for the plane defined by a siglay heights of the three nodes of a triangle.
+     * @param triangle triangle to get the plane for.
+     * @param siglay The siglay to get the plane at.
      * @return parameters defining the plane
      */
     FVCOMStructure::Plane getTriangleSiglayPlane(int triange, unsigned int siglay) const;
 
+    /**
+     * Gets the equation for the plane defined by the points of a given triangle.
+     * The plane will be located at the seafloor of the model.
+     * @param triangle triangle to get the plane for.
+     * 
+     * @return parameters defining the plane
+     */
     FVCOMStructure::Plane getTrianglePlane(int triange) const;
 
     /**
-     * Finds the closest node to a point
+     * Finds the closest node to a point.
      * @param testPoint Point to get the closest node for
+     * 
+     * @return The index of the node closest to testPoint
      */
     int getClosestNode(Point testPoint) const;
     
-
     /**
-     * Gets the siglay that is closest to the given location
-     * @param testPoint location to find the closest siglay for
+     * Gets the siglay that is closest to the given location.
+     * @param testPoint location to find the closest siglay for.
+     *
      * @return index for the closest siglay
      */
     int getClosestNodeSiglay(Point testPoint) const;
 
     /**
-     *Gets the point of a node with seafloor depth as height. Note: The z component is depth so it will be positive
+     * Gets the point of a node with seafloor depth as height. The sign of the z component will be determined
+     * by the H values specified in the netCDF files.
+     * 
+     * @return Point of the provided node index.
      */
     const FVCOMStructure::Point getNodePoint(int node) const;
 
     /**
-     *Gets the point of a node at a specific siglay.  Note: The z component is height so it will be negative; this is due to the siglay values being negative.
+     * Gets the point of a node at a specific siglay. The sign of the z component will be determined by
+     * H multiplied by siglay, as specified in the netCDF file.
+     * 
+     * @return Point of the provided node index.
      */
     const FVCOMStructure::Point getNodePoint(int node, int siglay) const;
 
@@ -185,7 +220,8 @@ public:
      int getPreviousTimeIndex(double time) const;
 
      /**
-      *Gets time for a specific index
+      * Gets time for a specific index
+      * @return Time in units specified by the netCDF files.
       */
      float getTime(int timeIndex) const;
 
@@ -193,9 +229,20 @@ public:
      * Gets the distance between two points
      * @param p0 Point 0 for which to get the distance
      * @param p1 Point 1 for which  to get the distance
+     * 
+     * @return Distance with units as specifed in the netCDF files.
      */
     double distance(Point p0, Point p1) const;
+
+    /**
+     * Gets the squared distance between two points
+     * @param p0 Point 0 for which to get the distance
+     * @param p1 Point 1 for which  to get the distance
+     * 
+     * @return Distance with units squared as specifed in the netCDF files.
+     */
     double distanceSquared(Point p0, Point p1) const;
+
     /**
      * Gets the chunk that contains the (node, sigma, time) tuple
      * @param node Node to find the chunk for
@@ -214,16 +261,48 @@ public:
      */
     FVCOMStructure::ChunkInfo getChunkForTriangle(int triangle, int siglay, int time) const;
 
+    /**
+     * Gets a vector of all node indicies that are contained in a chunk
+     * @param chunk The chunk to get the vector of nodes indicies for.
+     * @return vector of nodes indicies.
+     */
     const std::vector<unsigned int>& getNodesInChunk(FVCOMStructure::ChunkInfo chunk) const;
+
+    /**
+     * Gets a vector of all triangle indicies that are contained in a chunk
+     * @param chunk The chunk to get the vector of triangle indicies for.
+     * @return vector of triangle indicies.
+     */
     const std::vector<unsigned int>& getTrianglesInChunk(FVCOMStructure::ChunkInfo chunk) const;
 
+    /**
+     * Get information on all files that make up the model
+     */
     const std::vector<ModelFile> getModelFiles() const;
 
+    /**
+     * Determines if a point is in the model.
+     */
     const bool pointInModel(Point p, double time);
+
+    /**
+     * Determines if a specific time is in the model.
+     */
     const bool timeInModel(double time) const;
+
+    /**
+     * Determines if the depth value of a point is in the model.
+     */
     const bool depthInModel(Point p);
+
+    /**
+     * Determines if the xy value of a point is in the model.
+     */
     const bool xyInModel(Point p) const;
 
+    /**
+     * @return The number of siglays in a the model.
+     */
     const unsigned int getNumSiglays() const;
 
     /**

@@ -10,42 +10,51 @@ namespace ocean_models
 {
 
 /**
- * Class used to load and query FVCOM data
+ * A model used for testing that provides a linear drop off from the given values to 0.
+ * Centered on an origin.
  */
 class LinearModel : public ModelInterface
 {
 public:
+    struct Parameters; //Forward declare Parameters so we can use it in the constructor
 
     /**
-     * Initalize ConstantModel class with zeros
+     * Determines the distance function to use when calculating the dropoff.
+     */ 
+    enum DistanceFunction {EUCLIDEAN, MANHATTAN};
+
+    /**
+     * Initalize LinearModel class with zeros
      */
     LinearModel();
 
     /**
-     * Initalize ConstantModel class with provided values
+     * Initalize LinearModel class with provided parameters
      */
-    LinearModel(float u, float v, float temp, float salt, float dye, float depth,
-                  float zeroDistance, float centerX, float centerY, float centerZ, std::string type);
-
-
+    LinearModel(Parameters parameters);
 
     const ModelData getDataHelper(double x, double y, double height, double time);
     const ModelData getDataOutOfRangeHelper(double x, double y, double height, double time);
 
-private:
-    
-    double u;
-    double v;
-    double temp;
-    double salt;
-    double dye;
-    double depth;
-    double zeroDistance;
-    double centerX;
-    double centerY;
-    double centerZ;
-    std::string type;
+    struct Parameters
+    {
+        Parameters() {};
 
+        double u = 0;
+        double v = 0;
+        double temp = 0;
+        double salt = 0;
+        double dye = 0;
+        double depth = 10;
+        double zeroDistance = 1;
+        double centerX = 0;
+        double centerY = 0;
+        double centerZ = 0;
+        DistanceFunction type = DistanceFunction::EUCLIDEAN;
+    };
+
+private:
+    Parameters parameters;
 };
 
 }
