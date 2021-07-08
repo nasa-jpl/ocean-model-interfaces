@@ -38,12 +38,25 @@ To install in specific location
 `make install`
 
 ## Unit Tests
+Enable the `BUILD_TESTING` cmake option
+
 `cd ocean_models/build`
+
+`make`
 
 `make test`
 
 Use the following for verbose output of the tests
 `make test CTEST_OUTPUT_ON_FAILURE=TRUE`
+
+## Build Documentation
+Enable the `BUILD_DOCS` cmake option
+
+`cd ocean_models/build`
+
+`make`
+
+Documentation is output to `build/ocean_models/doc`
 
 ## Dependencies
 ### Boost
