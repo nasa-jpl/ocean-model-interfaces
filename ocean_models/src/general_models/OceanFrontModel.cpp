@@ -11,9 +11,9 @@ OceanFrontModel::OceanFrontModel(Parameters parameters) :
     parameters(parameters)
 {}
 
-const ModelData OceanFrontModel::getDataHelper(double x, double y, double height, double time)
+const ModelData OceanFrontModel::getDataHelper(double x, double y, double z, double time)
 {
-    double depth = std::abs(height); //Unsure if height is positive or negative...
+    double depth = std::abs(z);
 
     ModelData data;
 
@@ -77,9 +77,9 @@ const ModelData OceanFrontModel::getDataHelper(double x, double y, double height
     return data;
 }
 
-const ModelData OceanFrontModel::getDataOutOfRangeHelper(double x, double y, double height, double time)
+const ModelData OceanFrontModel::getDataOutOfRangeHelper(double x, double y, double z, double time)
 {
-    return getDataHelper(x, y, height, time);
+    return getDataHelper(x, y, z, time);
 }
 
 double OceanFrontModel::sign(double x) {

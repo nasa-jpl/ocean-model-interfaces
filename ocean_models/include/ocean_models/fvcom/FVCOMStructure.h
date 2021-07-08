@@ -56,7 +56,7 @@ public:
         /**
          * water depth (bathymetry) in meters
          */
-        double h;
+        double z;
     };
 
     /**
@@ -180,14 +180,6 @@ public:
      * @return The index of the node closest to testPoint
      */
     int getClosestNode(Point testPoint) const;
-    
-    /**
-     * Gets the siglay that is closest to the given location.
-     * @param testPoint location to find the closest siglay for.
-     *
-     * @return index for the closest siglay
-     */
-    int getClosestNodeSiglay(Point testPoint) const;
 
     /**
      * Gets the point of a node with seafloor depth as height. The sign of the z component will be determined

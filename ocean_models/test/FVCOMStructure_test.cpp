@@ -62,13 +62,13 @@ TEST(FVCOMStructureTest, CreatePlane)
 
     p0.x = 10;
     p0.y = 10;
-    p0.h = -10;
+    p0.z = -10;
     p1.x = -5;
     p1.y = -3;
-    p1.h = -5;
+    p1.z = -5;
     p2.x = -1;
     p2.y = -7;
-    p2.h = -2;
+    p2.z = -2;
 
     //v1: 15,13,-5
     //v2: 11,17,-8
@@ -90,7 +90,7 @@ TEST(FVCOMStructureTest, InterpolateSiglay)
     FVCOMStructure::Point p0;
     p0.x = 0;
     p0.y = 0;
-    p0.h = -5;
+    p0.z = -5;
 
     int siglay1IndexP0 = 1;
     int siglay2IndexP0 = 1;
@@ -102,7 +102,7 @@ TEST(FVCOMStructureTest, InterpolateSiglay)
     FVCOMStructure::Point p1;
     p1.x = 50000.0;
     p1.y = -150000.0;
-    p1.h = -2798;
+    p1.z = -2798;
 
     int siglay1IndexP1 = 0;
     int siglay2IndexP1 = 0;
@@ -120,7 +120,7 @@ TEST(FVCOMStructureTest, InterpolateSiglay)
     FVCOMStructure::Point p2;
     p2.x = 0;
     p2.y = 0;
-    p2.h = 0;
+    p2.z = 0;
 
     int siglay1IndexP2 = 0;
     int siglay2IndexP2 = 0;
@@ -129,7 +129,7 @@ TEST(FVCOMStructureTest, InterpolateSiglay)
     
     int triangle2 = structureAxial.getContainingTriangle(p2);
     FVCOMStructure::Plane plane2 = structureAxial.getTriangleSiglayPlane(triangle2, 18);
-    p2.h = (-plane2.d - plane2.a * p2.x - plane2.b * p2.y) / plane2.c;
+    p2.z = (-plane2.d - plane2.a * p2.x - plane2.b * p2.y) / plane2.c;
 
     structureAxial.siglayInterpolation(p2, siglay1IndexP2, siglay2IndexP2, siglay1PercentP2);
 
@@ -145,7 +145,7 @@ TEST(FVCOMStructureTest, InterpolateSiglay)
     FVCOMStructure::Point p3;
     p3.x = 0;
     p3.y = 0;
-    p3.h = -100;
+    p3.z = -100;
 
     int siglay1IndexP3 = 0;
     int siglay2IndexP3 = 0;
@@ -163,7 +163,7 @@ TEST(FVCOMStructureTest, InterpolateSiglay)
 
     ASSERT_EQ(7, siglay1IndexP3);
     ASSERT_EQ(8, siglay2IndexP3);
-    ASSERT_DOUBLE_EQ((lowerH - p3.h) / (lowerH - upperH), siglay1PercentP3);
+    ASSERT_DOUBLE_EQ((lowerH - p3.z) / (lowerH - upperH), siglay1PercentP3);
 }
 
 
@@ -186,44 +186,6 @@ TEST(FVCOMStructureTest, GetClosestTime) {
 
     ASSERT_EQ(0, timeSmallerThanZero);
     ASSERT_EQ(80, timeGreaterThanMax);
-}
-
-
-TEST(FCVOMStructureTest, GetClosestNodeSiglay) {
-    FVCOMStructure::Point p1;
-    FVCOMStructure::Point p2;
-    FVCOMStructure::Point p3;
-
-    //Node 51
-    //h = 300
-    //siglay = 0
-    p1.x = 70;
-    p1.y = -100;
-    p1.h = 0;
-
-    //Node 51
-    //h = 300
-    //siglay = 69
-    p2.x = 70;
-    p2.y = -100;
-    p2.h = -210.606051;
-
-    //Node 51
-    //h = 300
-    //siglay = 70
-    p3.x = 70;
-    p3.y = -100;
-    p3.h = -212.1212905;
-
-
-    int surfaceExact = structure.getClosestNodeSiglay(p1);
-    int depthExact = structure.getClosestNodeSiglay(p2);
-
-    int depthNotExact = structure.getClosestNodeSiglay(p3);
-
-    ASSERT_EQ(0, surfaceExact);
-    ASSERT_EQ(69, depthExact);
-    ASSERT_EQ(70, depthNotExact);
 }
 
 TEST(FVCOMStructureTest, PointInTriangle) {
@@ -461,23 +423,23 @@ TEST(FVCOMStructureTest, PointInModel) {
 
     inside.x = 0;
     inside.y = 0;
-    inside.h = 0;
+    inside.z = 0;
 
     positionOutside1.x = 101;
     positionOutside1.y = 0;
-    positionOutside1.h = 0;
+    positionOutside1.z = 0;
 
     positionOutside2.x = -101;
     positionOutside2.y = 0;
-    positionOutside2.h = 0;
+    positionOutside2.z = 0;
 
     depthOutside1.x = 0;
     depthOutside1.y = 0;
-    depthOutside1.h = -301;
+    depthOutside1.z = -301;
 
     depthOutside2.x = 0;
     depthOutside2.y = 0;
-    depthOutside2.h = 1;
+    depthOutside2.z = 1;
 
     ASSERT_TRUE(structure.pointInModel(inside, 0));
 

@@ -45,7 +45,7 @@ TEST(FVCOMTest, XYInterpolation)
     FVCOMStructure::Point p1;
     p1.x = 12314;
     p1.y = -9648;
-    p1.h = 0;
+    p1.z = 0;
 
     ModelData data1 = fvcomMultiple.getData(12314, -9648, 0, 0 * SECONDS_IN_DAY);
     FVCOMStructure::Plane plane1 = structure.getTriangleSiglayPlane(9152, 3);
@@ -92,7 +92,7 @@ TEST(FVCOMTest, TimeInterpolation)
     FVCOMStructure::Point p1;
     p1.x = -96.5869768;
     p1.y = 50.2484645;
-    p1.h = 0;
+    p1.z = 0;
     
     FVCOMStructure::Plane plane1 = structure.getTriangleSiglayPlane(13325, 3);
     double height = (-plane1.d - plane1.a * p1.x - plane1.b * p1.y) / plane1.c;
@@ -195,13 +195,13 @@ TEST(FVCOMTest, AllInterpolationOffset)
 
     double offsetX = 100;
     double offsetY = -150;
-    double offsetHeight = 15;
+    double offsetZ = 15;
     double offsetTime = 0.2;
-    fvcomMultiple.setOffsets(offsetX, offsetY, offsetHeight, offsetTime);
+    fvcomMultiple.setOffsets(offsetX, offsetY, offsetZ, offsetTime);
 
     ModelData data1 = fvcomMultiple.getData(12314 + offsetX, 
                                             -9648 + offsetY, 
-                                            -89 + offsetHeight, 
+                                            -89 + offsetZ, 
                                             0.11 * SECONDS_IN_DAY + offsetTime);
 
     EXPECT_FLOAT_EQ(3.7692957782, data1.temp);

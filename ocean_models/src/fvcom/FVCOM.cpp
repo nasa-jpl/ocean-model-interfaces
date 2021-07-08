@@ -173,12 +173,12 @@ const double FVCOM::areaOfTriangle(const FVCOMStructure::Point& p1, const FVCOMS
     return sqrt(s * (s - a) * (s - b) * (s - c));
 }
 
-const ModelData FVCOM::getDataHelper(double x, double y, double height, double time)
+const ModelData FVCOM::getDataHelper(double x, double y, double z, double time)
 {
     FVCOMStructure::Point interpolatePoint;
     interpolatePoint.x = x;
     interpolatePoint.y = y;
-    interpolatePoint.h = height;
+    interpolatePoint.z = z;
 
     //Throw an exception if the requested point is outside of the model extent
     if(!structure.pointInModel(interpolatePoint, time / SECONDS_IN_DAY))
@@ -189,7 +189,7 @@ const ModelData FVCOM::getDataHelper(double x, double y, double height, double t
     return interpolate(interpolatePoint, time / SECONDS_IN_DAY);
 }
 
-const ModelData FVCOM::getDataOutOfRangeHelper(double x, double y, double height, double time)
+const ModelData FVCOM::getDataOutOfRangeHelper(double x, double y, double z, double time)
 {
     //if out of range XY then get closest node
     //if out of range time then get closest time
@@ -197,7 +197,7 @@ const ModelData FVCOM::getDataOutOfRangeHelper(double x, double y, double height
     FVCOMStructure::Point interpolatePoint;
     interpolatePoint.x = x;
     interpolatePoint.y = y;
-    interpolatePoint.h = height;
+    interpolatePoint.z = z;
 
     ModelData data;
     if(!structure.xyInModel(interpolatePoint))
@@ -205,7 +205,7 @@ const ModelData FVCOM::getDataOutOfRangeHelper(double x, double y, double height
         int node = structure.getClosestNode(interpolatePoint);
         FVCOMStructure::Point nodePoint = structure.getNodePointWithH(node);
 
-        data.depth = nodePoint.h;
+        data.depth = nodePoint.z;
         data.u = std::numeric_limits<double>::quiet_NaN();
         data.v = std::numeric_limits<double>::quiet_NaN();
         data.w = std::numeric_limits<double>::quiet_NaN();

@@ -25,8 +25,8 @@ public:
      */
     ConstantModel(Parameters parameters);
 
-    const ModelData getDataHelper(double x, double y, double height, double time);
-    const ModelData getDataOutOfRangeHelper(double x, double y, double height, double time);
+    const ModelData getDataHelper(double x, double y, double z, double time);
+    const ModelData getDataOutOfRangeHelper(double x, double y, double z, double time);
 
     struct Parameters
     {
@@ -37,7 +37,7 @@ public:
         double temp = 0;
         double salt = 0;
         double dye = 0;
-        double depth = 10;
+        double depth = 100;
     };
 private:
     Parameters parameters;

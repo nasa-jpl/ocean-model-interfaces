@@ -105,12 +105,12 @@ protected:
      * 
      * @param x The x value to retrieve data at.
      * @param y The y value to retrieve data at.
-     * @param h The h or z value to retrieve data at.
+     * @param z The z value to retrieve data at.
      * @param time The time value to retrieve data at. Time is specified based on the loaded model data.
      * 
      * @return The model data for the specified location and time.
      */
-    const ModelData getDataHelper(double x, double y, double height, double time) override;
+    const ModelData getDataHelper(double x, double y, double z, double time) override;
 
     /**
      * Helper function implementation from the ModelInterface class. Handles requests that are outside
@@ -120,12 +120,12 @@ protected:
      * 
      * @param x The x value to retrieve data at.
      * @param y The y value to retrieve data at.
-     * @param h The h or z value to retrieve data at.
+     * @param z The z value to retrieve data at.
      * @param time The time value to retrieve data at. Time is specified based on the loaded model data.
      * 
      * @return The model data for the specified location and time.
      */
-    const ModelData getDataOutOfRangeHelper(double x, double y, double height, double time) override;
+    const ModelData getDataOutOfRangeHelper(double x, double y, double z, double time) override;
 
 private:
 

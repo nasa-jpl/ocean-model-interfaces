@@ -36,11 +36,11 @@ FVCOMStructure::Plane::Plane(FVCOMStructure::Point& p0, FVCOMStructure::Point& p
 
     ab[0] = p1.x - p0.x;
     ab[1] = p1.y - p0.y;
-    ab[2] = p1.h - p0.h;
+    ab[2] = p1.z - p0.z;
 
     ac[0] = p2.x - p0.x;
     ac[1] = p2.y - p0.y;
-    ac[2] = p2.h - p0.h;
+    ac[2] = p2.z - p0.z;
 
     a = (ab[1] * ac[2]) - (ab[2] * ac[1]);
     b = (ab[2] * ac[0]) - (ab[0] * ac[2]);
@@ -51,7 +51,7 @@ FVCOMStructure::Plane::Plane(FVCOMStructure::Point& p0, FVCOMStructure::Point& p
     b /= magnitude;
     c /= magnitude;
 
-    d = -(p0.x * a + p0.y * b + p0.h * c);
+    d = -(p0.x * a + p0.y * b + p0.z * c);
 }
 
 double FVCOMStructure::Plane::getHeight(Point& interpolatePoint)
@@ -200,14 +200,14 @@ void FVCOMStructure::loadStructureData(const std::string directory)
     {
         nodes[i].x = nodeX[i];
         nodes[i].y = nodeY[i];
-        nodes[i].h = nodeH[i];
+        nodes[i].z = nodeH[i];
     }
 
     for(unsigned int i = 0; i < neleDim; i++)
     {
         triangles[i].x = triangleX[i];
         triangles[i].y = triangleY[i];
-        triangles[i].h = std::numeric_limits<double>::quiet_NaN();
+        triangles[i].z = std::numeric_limits<double>::quiet_NaN();
         //Height data is not loaded for triangles so we set it to NaN.
     }
 
@@ -434,25 +434,6 @@ float FVCOMStructure::getTime(int timeIndex) const
     return times[timeIndex];
 }
 
-
-int FVCOMStructure::getClosestNodeSiglay(Point testPoint) const
-{
-    int nodeIndex = getClosestNode(testPoint);
-    int closestSiglay = -1;
-    double closest = std::numeric_limits<double>::max();
-
-    for(unsigned int i = 0; i < nodeSiglay[nodeIndex].size(); i++)
-    {
-        if(std::abs((nodeSiglay[nodeIndex][i] * nodes[nodeIndex].h) - testPoint.h) < closest)
-        {
-            closest = std::abs((nodeSiglay[nodeIndex][i] * nodes[nodeIndex].h) - testPoint.h);
-            closestSiglay = i;
-        }
-    }
-
-    return closestSiglay;
-}
-
 FVCOMStructure::Plane FVCOMStructure::getTrianglePlane(int triangle) const
 {
     const std::vector<int>& surroundingNodes = triangleToNodes[triangle];
@@ -497,7 +478,7 @@ const FVCOMStructure::Point FVCOMStructure::getNodePointWithH(int node) const
 const FVCOMStructure::Point FVCOMStructure::getNodePointAtSiglay(int node, int siglay) const
 {
     FVCOMStructure::Point returnPoint = nodes[node];
-    returnPoint.h = returnPoint.h * nodeSiglay[node][siglay];
+    returnPoint.z = returnPoint.z * nodeSiglay[node][siglay];
 
     return returnPoint;
 }
@@ -643,7 +624,7 @@ void FVCOMStructure::siglayInterpolation(FVCOMStructure::Point& interpolatePoint
         FVCOMStructure::Plane plane = getTriangleSiglayPlane(containingTriangle, i);
 
         //calculate the dot product with the plane and the point to determine which side of the plane it is on
-        double dot = plane.a * interpolatePoint.x + plane.b * interpolatePoint.y + plane.c * interpolatePoint.h + plane.d;
+        double dot = plane.a * interpolatePoint.x + plane.b * interpolatePoint.y + plane.c * interpolatePoint.z + plane.d;
 
         if(i != 0)
         {
@@ -693,7 +674,7 @@ void FVCOMStructure::siglayInterpolation(FVCOMStructure::Point& interpolatePoint
         double upperH = (-upperPlane.d - upperPlane.a * interpolatePoint.x - upperPlane.b * interpolatePoint.y) / upperPlane.c;
         double lowerH = (-lowerPlane.d - lowerPlane.a * interpolatePoint.x - lowerPlane.b * interpolatePoint.y) / lowerPlane.c;
 
-        siglay1Percent = (lowerH - interpolatePoint.h) / (lowerH - upperH);
+        siglay1Percent = (lowerH - interpolatePoint.z) / (lowerH - upperH);
     }
 }
 
@@ -742,7 +723,7 @@ const bool FVCOMStructure::pointInModel(Point p, double time)
     return p.x >= minX && p.x <= maxX && 
            p.y >= minY && p.y <= maxY && 
            time >= times[0] && time <= times[times.size() - 1] &&
-           p.h <= 0 && p.h >= -depth;
+           p.z <= 0 && p.z >= -depth;
 }
 
 const bool FVCOMStructure::timeInModel(double time) const
@@ -765,7 +746,7 @@ const bool FVCOMStructure::depthInModel(Point p)
     Plane plane = getTrianglePlane(containingTriangle);
     double depth = plane.getHeight(p);
 
-    return p.h <= 0 && p.h >= -depth;
+    return p.z <= 0 && p.z >= -depth;
 }
 
 const bool FVCOMStructure::xyInModel(Point p) const

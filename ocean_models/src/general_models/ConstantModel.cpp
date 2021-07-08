@@ -12,7 +12,7 @@ ConstantModel::ConstantModel(Parameters parameters) :
     parameters(parameters)
 {}
 
-const ModelData ConstantModel::getDataHelper(double x, double y, double height, double time)
+const ModelData ConstantModel::getDataHelper(double x, double y, double z, double time)
 {
     ModelData data;
     
@@ -26,7 +26,7 @@ const ModelData ConstantModel::getDataHelper(double x, double y, double height, 
     return data;
 }
 
-const ModelData ConstantModel::getDataOutOfRangeHelper(double x, double y, double height, double time)
+const ModelData ConstantModel::getDataOutOfRangeHelper(double x, double y, double z, double time)
 {
     ModelData data;
     

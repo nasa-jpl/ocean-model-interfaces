@@ -28,8 +28,8 @@ public:
      */
     OceanFrontModel(Parameters parameters);
 
-    const ModelData getDataHelper(double x, double y, double height, double time);
-    const ModelData getDataOutOfRangeHelper(double x, double y, double height, double time);
+    const ModelData getDataHelper(double x, double y, double z, double time);
+    const ModelData getDataOutOfRangeHelper(double x, double y, double z, double time);
 
     struct Parameters
     {

@@ -13,7 +13,7 @@ LinearModel::LinearModel(Parameters parameters) :
     parameters(parameters)
 {}
 
-const ModelData LinearModel::getDataHelper(double x, double y, double height, double time)
+const ModelData LinearModel::getDataHelper(double x, double y, double z, double time)
 {
     ModelData data;
     
@@ -21,7 +21,7 @@ const ModelData LinearModel::getDataHelper(double x, double y, double height, do
 
     if(parameters.type == LinearModel::DistanceFunction::EUCLIDEAN)
     {
-        distance = sqrt((x - parameters.centerX) * (x - parameters.centerX) + (y - parameters.centerY) * (y - parameters.centerY) + (height - parameters.centerZ) * (height - parameters.centerZ));
+        distance = sqrt((x - parameters.centerX) * (x - parameters.centerX) + (y - parameters.centerY) * (y - parameters.centerY) + (z - parameters.centerZ) * (z - parameters.centerZ));
     }
     else if(parameters.type == LinearModel::DistanceFunction::MANHATTAN)
     {
@@ -37,7 +37,7 @@ const ModelData LinearModel::getDataHelper(double x, double y, double height, do
     return data;
 }
 
-const ModelData LinearModel::getDataOutOfRangeHelper(double x, double y, double height, double time)
+const ModelData LinearModel::getDataOutOfRangeHelper(double x, double y, double z, double time)
 {
     ModelData data;
     
@@ -45,7 +45,7 @@ const ModelData LinearModel::getDataOutOfRangeHelper(double x, double y, double 
 
     if(parameters.type == LinearModel::DistanceFunction::EUCLIDEAN)
     {
-        distance = sqrt((x - parameters.centerX) * (x - parameters.centerX) + (y - parameters.centerY) * (y - parameters.centerY) + (height - parameters.centerZ) * (height - parameters.centerZ));
+        distance = sqrt((x - parameters.centerX) * (x - parameters.centerX) + (y - parameters.centerY) * (y - parameters.centerY) + (z - parameters.centerZ) * (z - parameters.centerZ));
     }
     else if(parameters.type == LinearModel::DistanceFunction::MANHATTAN)
     {
