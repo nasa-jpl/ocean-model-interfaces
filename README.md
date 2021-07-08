@@ -81,6 +81,7 @@ Documentation is output to `build/ocean_models/doc/doc_doxygen`
 
 ### NetCDF4 C++
 
+#### NetCDF4 Dependencies
 `sudo apt-get install libhdf5-dev libcurl4-gnutls-dev`
 
 #### From Package
