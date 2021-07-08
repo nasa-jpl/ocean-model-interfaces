@@ -25,9 +25,14 @@ Generally, only the FVCOM class needs to be used directly. Although, in unique c
 
 ## Miscellaneous Primitive Models
 
-These models (ConstantModel, LinearModel, OceanFrontModel) provide a primitive, non-realistic models that are useful for simple testing, debugging, and sanity checking.
+These models provide a primitive, non-realistic models that are useful for simple testing, debugging, and sanity checking.
 
-Exmaples for the OceanFrontModel can be found in the unit tests at `ocean_models/test/OceanFrontModel_test.cpp`
+Current Primitive Models:
+- ConstantModel
+- LinearModel
+- OceanFrontModel
+
+Examples for the OceanFrontModel can be found in the unit tests at `ocean_models/test/OceanFrontModel_test.cpp`. The others are fairly self-explainatory.
 
 ## Build
 
