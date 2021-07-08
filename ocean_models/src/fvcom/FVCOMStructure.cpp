@@ -457,9 +457,9 @@ FVCOMStructure::Plane FVCOMStructure::getTrianglePlane(int triangle) const
 {
     const std::vector<int>& surroundingNodes = triangleToNodes[triangle];
 
-    FVCOMStructure::Point p0 = getNodePoint(surroundingNodes[0]);
-    FVCOMStructure::Point p1 = getNodePoint(surroundingNodes[1]);
-    FVCOMStructure::Point p2 = getNodePoint(surroundingNodes[2]);
+    FVCOMStructure::Point p0 = getNodePointWithH(surroundingNodes[0]);
+    FVCOMStructure::Point p1 = getNodePointWithH(surroundingNodes[1]);
+    FVCOMStructure::Point p2 = getNodePointWithH(surroundingNodes[2]);
     
     FVCOMStructure::Plane plane(p0, p1, p2);
 
@@ -470,9 +470,9 @@ FVCOMStructure::Plane FVCOMStructure::getTriangleSiglayPlane(int triangle, unsig
 {
     const std::vector<int>& surroundingNodes = triangleToNodes[triangle];
 
-    FVCOMStructure::Point p0 = getNodePoint(surroundingNodes[0], siglay);
-    FVCOMStructure::Point p1 = getNodePoint(surroundingNodes[1], siglay);
-    FVCOMStructure::Point p2 = getNodePoint(surroundingNodes[2], siglay);
+    FVCOMStructure::Point p0 = getNodePointAtSiglay(surroundingNodes[0], siglay);
+    FVCOMStructure::Point p1 = getNodePointAtSiglay(surroundingNodes[1], siglay);
+    FVCOMStructure::Point p2 = getNodePointAtSiglay(surroundingNodes[2], siglay);
     
     FVCOMStructure::Plane plane(p0, p1, p2);
 
@@ -489,12 +489,12 @@ double FVCOMStructure::distanceSquared(Point p0, Point p1) const
     return (p0.x - p1.x)*(p0.x - p1.x) + (p0.y - p1.y)*(p0.y - p1.y);
 }
 
-const FVCOMStructure::Point FVCOMStructure::getNodePoint(int node) const
+const FVCOMStructure::Point FVCOMStructure::getNodePointWithH(int node) const
 {
     return nodes[node];
 }
 
-const FVCOMStructure::Point FVCOMStructure::getNodePoint(int node, int siglay) const
+const FVCOMStructure::Point FVCOMStructure::getNodePointAtSiglay(int node, int siglay) const
 {
     FVCOMStructure::Point returnPoint = nodes[node];
     returnPoint.h = returnPoint.h * nodeSiglay[node][siglay];
@@ -701,9 +701,9 @@ double FVCOMStructure::getDepthAtPoint(FVCOMStructure::Point& interpolatePoint, 
 {
     const std::vector<int>& surroundingNodes = getNodesInTriangle(containingTriangle);
 
-    FVCOMStructure::Point p1 = getNodePoint(surroundingNodes[0]);
-    FVCOMStructure::Point p2 = getNodePoint(surroundingNodes[1]);
-    FVCOMStructure::Point p3 = getNodePoint(surroundingNodes[2]);
+    FVCOMStructure::Point p1 = getNodePointWithH(surroundingNodes[0]);
+    FVCOMStructure::Point p2 = getNodePointWithH(surroundingNodes[1]);
+    FVCOMStructure::Point p3 = getNodePointWithH(surroundingNodes[2]);
 
     FVCOMStructure::Plane groundPlane(p1,p2,p3);
 
@@ -716,9 +716,9 @@ double FVCOMStructure::getDepthAtPoint(FVCOMStructure::Point& interpolatePoint)
 
     const std::vector<int>& surroundingNodes = getNodesInTriangle(containingTriangle);
 
-    FVCOMStructure::Point p1 = getNodePoint(surroundingNodes[0]);
-    FVCOMStructure::Point p2 = getNodePoint(surroundingNodes[1]);
-    FVCOMStructure::Point p3 = getNodePoint(surroundingNodes[2]);
+    FVCOMStructure::Point p1 = getNodePointWithH(surroundingNodes[0]);
+    FVCOMStructure::Point p2 = getNodePointWithH(surroundingNodes[1]);
+    FVCOMStructure::Point p3 = getNodePointWithH(surroundingNodes[2]);
 
     FVCOMStructure::Plane groundPlane(p1,p2,p3);
 

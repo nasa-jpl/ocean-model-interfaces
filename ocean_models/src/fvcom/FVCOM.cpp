@@ -129,9 +129,9 @@ FVCOMChunk::NodeDataInterp FVCOM::nodeInterpolation(const FVCOMStructure::Point&
     FVCOMChunk::NodeDataInterp interpolatedData;
     const std::vector<int>& surroundingNodes = structure.getNodesInTriangle(containingTriangle);
 
-    FVCOMStructure::Point p1 = structure.getNodePoint(surroundingNodes[0]);
-    FVCOMStructure::Point p2 = structure.getNodePoint(surroundingNodes[1]);
-    FVCOMStructure::Point p3 = structure.getNodePoint(surroundingNodes[2]);
+    FVCOMStructure::Point p1 = structure.getNodePointWithH(surroundingNodes[0]);
+    FVCOMStructure::Point p2 = structure.getNodePointWithH(surroundingNodes[1]);
+    FVCOMStructure::Point p3 = structure.getNodePointWithH(surroundingNodes[2]);
 
     const FVCOMChunk::NodeData& p1Data = getNodeData(surroundingNodes[0], siglayIndex, timeIndex);
     const FVCOMChunk::NodeData& p2Data = getNodeData(surroundingNodes[1], siglayIndex, timeIndex);
@@ -203,7 +203,7 @@ const ModelData FVCOM::getDataOutOfRangeHelper(double x, double y, double height
     if(!structure.xyInModel(interpolatePoint))
     {
         int node = structure.getClosestNode(interpolatePoint);
-        FVCOMStructure::Point nodePoint = structure.getNodePoint(node);
+        FVCOMStructure::Point nodePoint = structure.getNodePointWithH(node);
 
         data.depth = nodePoint.h;
         data.u = std::numeric_limits<double>::quiet_NaN();

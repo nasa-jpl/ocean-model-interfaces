@@ -195,7 +195,7 @@ public:
      * 
      * @return Point of the provided node index.
      */
-    const FVCOMStructure::Point getNodePoint(int node) const;
+    const FVCOMStructure::Point getNodePointWithH(int node) const;
 
     /**
      * Gets the point of a node at a specific siglay. The sign of the z component will be determined by
@@ -203,7 +203,7 @@ public:
      * 
      * @return Point of the provided node index.
      */
-    const FVCOMStructure::Point getNodePoint(int node, int siglay) const;
+    const FVCOMStructure::Point getNodePointAtSiglay(int node, int siglay) const;
 
     /**
      * Gets the time index that is closest to the given time

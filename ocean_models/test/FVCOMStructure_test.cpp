@@ -237,7 +237,7 @@ TEST(FVCOMStructureTest, PointInTriangle) {
     //////X,Y 385: -48.038475, 10
     //////X,Y 329: -56.69873, 5
     //////X,Y 342: -56.69873, 15.0
-    FVCOMStructure::Point node385 = structure.getNodePoint(385); //Get the exact x and y for edge point
+    FVCOMStructure::Point node385 = structure.getNodePointWithH(385); //Get the exact x and y for edge point
     pEdge.x = node385.x;
     pEdge.y = node385.y;
     pOut.x = 0;
@@ -267,7 +267,7 @@ TEST(FVCOMStructureTest, GetContainingTriangle) {
     //////X,Y 385: -48.038475, 10
     //////X,Y 329: -56.69873, 5
     //////X,Y 342: -56.69873, 15.0
-    FVCOMStructure::Point node385 = structure.getNodePoint(385); //Get the exact x and y for edge point
+    FVCOMStructure::Point node385 = structure.getNodePointWithH(385); //Get the exact x and y for edge point
     pEdge.x = node385.x;
     pEdge.y = node385.y;
     pOut.x = 0;
