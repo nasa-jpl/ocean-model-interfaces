@@ -6,9 +6,14 @@ set (CMAKE_CXX_STANDARD 11)
 include(GNUInstallDirs)
 set(CMAKE_BUILD_TYPE Release)
 
-enable_testing()
-
 add_compile_options($<BUILD_INTERFACE:-Wall>)
 
-add_subdirectory(gtest)
+option(BUILD_TESTING "Build unit tests" OFF)
+option(BUILD_DOCS "Build documentation" OFF)
+
+if(BUILD_TESTING) 
+    enable_testing()
+    add_subdirectory(gtest)
+endif()
+
 add_subdirectory(ocean_models)

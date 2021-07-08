@@ -61,4 +61,10 @@ install(TARGETS ocean_models
     RUNTIME  DESTINATION ${CMAKE_INSTALL_BINDIR})
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
-add_subdirectory(test)
+if(BUILD_TESTING) 
+    add_subdirectory(test)
+endif()
+
+if(BUILD_DOCS) 
+    add_subdirectory(doc)
+endif()

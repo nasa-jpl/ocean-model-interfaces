@@ -8,6 +8,7 @@
 #include <memory>
 #include <netcdf>
 #include <exception>
+#include <functional>
 
 #include "ocean_models/fvcom/FVCOMStructure.h"
 #include "ocean_models/fvcom/FVCOMChunk.h"

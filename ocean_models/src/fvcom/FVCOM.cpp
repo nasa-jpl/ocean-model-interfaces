@@ -18,7 +18,7 @@ FVCOM::FVCOM(std::string filename) :
     endLoad(nullptr)
 {}
 
-FVCOM::FVCOM(std::string filename, void (*startLoad)(void), void (*endLoad)(void)) :
+FVCOM::FVCOM(std::string filename, std::function<void(void)> startLoad, std::function<void(void)> endLoad) :
     chunkCache(LRUCache<unsigned int, FVCOMChunk>(100)),
     structure(FVCOMStructure(filename, 2000, 2000, 100, 10)),
     startLoad(startLoad),
@@ -35,8 +35,8 @@ FVCOM::FVCOM(std::string filename, unsigned int xChunkSize, unsigned int yChunkS
 {}
 
 FVCOM::FVCOM(std::string filename,
-             void (*startLoad)(void),
-             void (*endLoad)(void),
+             std::function<void(void)> startLoad, 
+             std::function<void(void)> endLoad,
              unsigned int xChunkSize,
              unsigned int yChunkSize,
              unsigned int siglayChunkSize,
