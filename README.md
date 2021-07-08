@@ -104,11 +104,6 @@ Install C library
 
 `sudo make install`
 
-`cd ../..`
-
-`rm -rf ./netcdf-c-4.7.1/`
-
-`rm netcdf-c-4.7.1.tar.gz`
 
 Install C++ interface
 
@@ -125,9 +120,3 @@ Install C++ interface
 `cmake ../ -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_FLAGS=-I/usr/include/hdf5/serial/`
 
 `sudo make install`
-
-`cd ../..`
-
-`rm -rf ./netcdf-cxx4-4.3.1`
-
-`rm netcdf-cxx4-4.3.1.tar.gz`
