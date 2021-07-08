@@ -56,7 +56,7 @@ Enable the `BUILD_DOCS` cmake option
 
 `make`
 
-Documentation is output to `build/ocean_models/doc`
+Documentation is output to `build/ocean_models/doc/doc_doxygen`
 
 ## Dependencies
 ### Boost
