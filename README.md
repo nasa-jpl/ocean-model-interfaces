@@ -17,7 +17,17 @@ This limitation in the x and y dimension for variables located at triangle cente
 
 ### Assumptions and Limitations
 - To simplify depth calculations and interpolation, the `center_h` and `center_siglay` variables are ignored. `center_h` and `center_siglay` correspond to the water column height and percent depth for each siglay at the center of each triangle. Instead we use barycentric interpolation of the nodes that form each triangle to determine the depth of a specific siglay for points inside of that triangle. 
- 
+
+### Examples
+See unit tests at `ocean_models/test/FVCOM_test.cpp`
+
+Generally, only the FVCOM class needs to be used directly. Although, in unique cases or debugging purposes the FVCOMStructure class could be useful.
+
+## Miscellaneous Primitive Models
+
+These models (ConstantModel, LinearModel, OceanFrontModel) provide a primitive, non-realistic models that are useful for simple testing, debugging, and sanity checking.
+
+Exmaples for the OceanFrontModel can be found in the unit tests at `ocean_models/test/OceanFrontModel_test.cpp`
 
 ## Build
 
