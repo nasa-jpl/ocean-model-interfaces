@@ -62,11 +62,19 @@ public:
 
 
     /**
+     * Retrieve data that is stored at nodes.
+     * @param node The node index to retrieve data for
+     * @param siglay The siglay index to retrieve data at
+     * @param time The time index to retrieve data at
      * @return Data at a specific node, siglay, and time index. All indcies are assumed to be valid for this chunk.
      */
     const FVCOMChunk::NodeData& getNodeData(const unsigned int node, const unsigned int siglay, const unsigned int time);
 
     /**
+     * Retrieve data that is stored at triangles.
+     * @param triangle The triangle index to retrieve data for
+     * @param siglay The siglay index to retrieve data at
+     * @param time The time index to retrieve data at
      * @return Data at a specific triangle, siglay, and time index. All indcies are assumed to be valid for this chunk.
      */
     const FVCOMChunk::TriangleData& getTriangleData(const unsigned int triangle, const unsigned int siglay, const unsigned int time);

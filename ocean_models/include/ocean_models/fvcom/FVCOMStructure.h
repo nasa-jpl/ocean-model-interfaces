@@ -129,9 +129,11 @@ public:
     };
 
     /**
-     * Determines if a point is in the specified triangle.
+     * Determines if a point is in the specified 2d XY triangle.
      * @param testPoint Point to test with
      * @param triangle Triangle to test with
+     * 
+     * @return True if the point is in the triangle, false otherwise
      */
     bool pointInTriangle(Point testPoint, int triangle) const;
 
@@ -139,13 +141,19 @@ public:
      * Finds the triangle which contains the specified point. This requires searching through all
      * triangles.
      * @param testPoint Point to get containing triangle for
+     * 
+     * @return The index of the containing triangle
      */
     int getContainingTriangle(Point testPoint);
 
     /**
      * Finds the triangle which contains the specified point. Prioritizes checking of triangles
-     * that are adjacent to closestNode to avoid searching the entire model.
+     * that are adjacent to closestNode to avoid searching the entire model. If not contained in those
+     * adjacent triangles then the entire model will be searched.
      * @param testPoint Point to get containing triangle for
+     * @param closestNode The index of the node that is expected to be adjacent to the containing triangle
+     * 
+     * @return The index of the containing triangle
      */
     int getContainingTriangle(Point testPoint, int closestNode);
 
@@ -185,6 +193,7 @@ public:
      * Gets the point of a node with seafloor depth as height. The sign of the z component will be determined
      * by the H values specified in the netCDF files.
      * 
+     * @param node The node index to get the point for.
      * @return Point of the provided node index.
      */
     const FVCOMStructure::Point getNodePointWithH(int node) const;
@@ -193,6 +202,8 @@ public:
      * Gets the point of a node at a specific siglay. The sign of the z component will be determined by
      * H multiplied by siglay, as specified in the netCDF file.
      * 
+     * @param node The node index to get the point for
+     * @param siglay The siglay index to use for calculating the points z value.
      * @return Point of the provided node index.
      */
     const FVCOMStructure::Point getNodePointAtSiglay(int node, int siglay) const;
@@ -268,12 +279,15 @@ public:
     const std::vector<unsigned int>& getTrianglesInChunk(FVCOMStructure::ChunkInfo chunk) const;
 
     /**
-     * Get information on all files that make up the model
+     * Get information on all files that make up the model.
+     * @return List of all files that make up the model.
      */
     const std::vector<ModelFile> getModelFiles() const;
 
     /**
      * Determines if a point is in the model.
+     * @param p The point to check
+     * @param time The time to check at.
      */
     const bool pointInModel(Point p, double time);
 
@@ -314,6 +328,15 @@ public:
      * @param siglay1Percent Output for the percent for siglay1Index for interpolation
      */
     void siglayInterpolation(FVCOMStructure::Point& interpolatePoint, int& siglay1Index, int& siglay2Index, double& siglay1Percent);
+
+    /**
+     * Gets the index and percentage for linear interpolation of time. Use the provided containing triangle to avoid re-searching.
+     * @param interpolatePoint Point to interpolate with
+     * @param siglay1Index Output for the first siglay index for interpolation
+     * @param siglay2Index Output for the second siglay index for the interpolation
+     * @param siglay1Percent Output for the percent for siglay1Index for interpolation
+     * @param containingTriangle The triangle that the interpolatePoint is inside.
+     */
     void siglayInterpolation(FVCOMStructure::Point& interpolatePoint, int& siglay1Index, int& siglay2Index, double& siglay1Percent, int containingTriangle);
 
 
@@ -321,14 +344,14 @@ public:
     * Gets the depth at a specific point.  Takes in a containingTriangle if avalible to reduce computation time.
     *@param interpolatePoint Point to get depth at
     *@param containingTriangle Containing triangle for this point
-    *@param Depth at this point. Note this will be a positive number
+    *@return Depth at this point. Note this will be a positive number
     **/
     double getDepthAtPoint(FVCOMStructure::Point& interpolatePoint, int containingTriangle);
 
     /**
     * Gets the depth at a specific point.
     * @param interpolatePoint Point to get depth at
-    * @param Depth at this point. Note this will be a positive number
+    * @return Depth at this point. Note this will be a positive number
     **/
     double getDepthAtPoint(FVCOMStructure::Point& interpolatePoint);
 

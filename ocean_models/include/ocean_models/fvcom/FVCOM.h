@@ -49,8 +49,8 @@ public:
      * It is assumed that each netCDF file will include one complete timeslice of the model.
      * Additionally allows specifies function to be called when data is loaded from permenant storage.
      * @param filename File or directory to load
-     * @param start_load function to call before new data is loaded
-     * @param end_load function to call after new data is loaded
+     * @param startLoad function to call before new data is loaded
+     * @param endLoad function to call after new data is loaded
      */
     FVCOM(std::string filename, std::function<void(void)> startLoad, std::function<void(void)> endLoad);
 
@@ -84,8 +84,8 @@ public:
      * @param yChunkSize Size of a chunk in the y direction
      * @param siglayChunkSize Size of a chunk in the siglay direction
      * @param timeChunkSize Size of a chunk in the time direction
-     * @param start_load function to call before new data is loaded
-     * @param end_load function to call after new data is loaded
+     * @param startLoad function to call before new data is loaded
+     * @param endLoad function to call after new data is loaded
      */
     FVCOM(std::string filename,
           std::function<void(void)> startLoad,
@@ -155,12 +155,22 @@ private:
 
     /**
      * Retreives the interpolated model data at a specified model point and time
+     * @param interpolatedPoint The point to interpolate at
+     * @param time The time to interpolate at
+     * 
+     * @return The interpolated data.
      */
     ModelData interpolate(FVCOMStructure::Point p, double time);
 
     /**
      * Performs XY barycentric linear interpolation of the model variables stored at the 
      * nodes for a specific location using a fixed index siglay and time.
+     * @param interpolatedPoint The point to interpolate at
+     * @param containingTriange The triangle that contains the interpolated point
+     * @param siglayIndex The siglay index we want to interpolate at
+     * @param timeIndex The time index we want to interpolate at
+     * 
+     * @return Data interpolated at the given point.
      */
     FVCOMChunk::NodeDataInterp nodeInterpolation(const FVCOMStructure::Point& interpolatedPoint, int containingTriangle, int siglayIndex, int timeIndex);
     
@@ -168,10 +178,20 @@ private:
      * Performs interpolations of the model variables stored at the triangles
      * for a specific location using a fixed index siglay and time. Interpolation
      * currently just used the data from the containing triangle.
+     *  @param interpolatedPoint The point to interpolate at
+     * @param containingTriange The triangle that contains the interpolated point
+     * @param siglayIndex The siglay index we want to interpolate at
+     * @param timeIndex The time index we want to interpolate at
+     * 
+     * @return Data interpolated at the given point.
      */
     FVCOMChunk::TriangleDataInterp triangleInterpolation(const FVCOMStructure::Point& interpolatedPoint, int containingTriangle, int siglayIndex, int timeIndex);
     
     /**
+     * Finds the area of a given triangle
+     * @param p1 Point 1 of the triangle
+     * @param p2 Point 2 of the triangle
+     * @param p3 Point 3 of the triangle
      * @return The area of the triangle as specified by the provided 3 points.
      */
     const double areaOfTriangle(const FVCOMStructure::Point& p1, const FVCOMStructure::Point& p2, const FVCOMStructure::Point& p3) const;
