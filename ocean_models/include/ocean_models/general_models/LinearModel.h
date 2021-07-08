@@ -45,8 +45,8 @@ public:
         double temp = 0;
         double salt = 0;
         double dye = 0;
-        double depth = 10;
-        double zeroDistance = 1;
+        double depth = 100;
+        double zeroDistance = 100;
         double centerX = 0;
         double centerY = 0;
         double centerZ = 0;
