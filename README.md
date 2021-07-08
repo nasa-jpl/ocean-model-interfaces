@@ -17,6 +17,8 @@ This limitation in the x and y dimension for variables located at triangle cente
 
 ### Assumptions and Limitations
 - To simplify depth calculations and interpolation, the `center_h` and `center_siglay` variables are ignored. `center_h` and `center_siglay` correspond to the water column height and percent depth for each siglay at the center of each triangle. Instead we use barycentric interpolation of the nodes that form each triangle to determine the depth of a specific siglay for points inside of that triangle. 
+- We currently assume the values of the `h` FVCOM variable are positive and the values of the `siglay` FVCOM variable are negative.
+-Currently the data retrieved for a given location is the standard u,v,w,temp,salt,depth as well as an additional optional dye variable. It is not currently possible to load other arbitrary data variables.
 
 ### Examples
 See unit tests at `ocean_models/test/FVCOM_test.cpp`
