@@ -114,7 +114,8 @@ protected:
 
     /**
      * Helper function implementation from the ModelInterface class. Handles requests that are outside
-     * the model bounds. The reference frame is dependent on the data stored
+     * the model bounds. All returned model data is NaN with depths taken from the nearest node, if outside
+     * the XY bounds of the model. The reference frame is dependent on the data stored
      * in the FVCOM model. With the standard FVCOM setup of postive H variables and negative siglay 
      * variables, z is expected to be negative here.
      * 
