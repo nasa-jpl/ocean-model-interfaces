@@ -101,7 +101,7 @@ protected:
      * Helper function implementation from the ModelInterface class. Retrieves data
      * that is inside the model bounds. The reference frame is dependent on the data stored
      * in the FVCOM model. With the standard FVCOM setup of postive H variables and negative siglay 
-     * variables, h is expected to be negative here.
+     * variables, z is expected to be negative here.
      * 
      * @param x The x value to retrieve data at.
      * @param y The y value to retrieve data at.
@@ -116,7 +116,7 @@ protected:
      * Helper function implementation from the ModelInterface class. Handles requests that are outside
      * the model bounds. The reference frame is dependent on the data stored
      * in the FVCOM model. With the standard FVCOM setup of postive H variables and negative siglay 
-     * variables, h is expected to be negative here.
+     * variables, z is expected to be negative here.
      * 
      * @param x The x value to retrieve data at.
      * @param y The y value to retrieve data at.

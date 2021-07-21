@@ -37,11 +37,11 @@ TEST(OceanFrontModelTest, Outside) {
 
     OceanFrontModel model90Deg(parameters90Deg);
 
-    ModelData deg0Data1 = model0Deg.getData(-10000, 1500, 20, 0);
-    ModelData deg0Data2 = model0Deg.getData(10000, 1500, 22, 0);
+    ModelData deg0Data1 = model0Deg.getData(-10000, 1500, -20, 0);
+    ModelData deg0Data2 = model0Deg.getData(10000, 1500, -22, 0);
 
-    ModelData deg0Data3 = model0Deg.getData(-20000, -1500, 20, 0);
-    ModelData deg0Data4 = model0Deg.getData(20000, -1500, 22, 0);
+    ModelData deg0Data3 = model0Deg.getData(-20000, -1500, -20, 0);
+    ModelData deg0Data4 = model0Deg.getData(20000, -1500, -22, 0);
 
     EXPECT_FLOAT_EQ(14.0, deg0Data1.temp);
     EXPECT_FLOAT_EQ(13.6, deg0Data2.temp);
@@ -70,11 +70,11 @@ TEST(OceanFrontModelTest, Outside) {
 
 
 
-    ModelData deg90Data1 = model90Deg.getData(4500, -5000, 20, 0);
-    ModelData deg90Data2 = model90Deg.getData(4500, -10000, 22, 0);
+    ModelData deg90Data1 = model90Deg.getData(4500, -5000, -20, 0);
+    ModelData deg90Data2 = model90Deg.getData(4500, -10000, -22, 0);
 
-    ModelData deg90Data3 = model90Deg.getData(-500, 5000, 20, 0);
-    ModelData deg90Data4 = model90Deg.getData(-500, 10000, 22, 0);
+    ModelData deg90Data3 = model90Deg.getData(-500, 5000, -20, 0);
+    ModelData deg90Data4 = model90Deg.getData(-500, 10000, -22, 0);
 
     EXPECT_FLOAT_EQ(14.0, deg90Data1.temp);
     EXPECT_FLOAT_EQ(13.6, deg90Data2.temp);
@@ -120,10 +120,10 @@ TEST(OceanFrontModelTest, Inside) {
 
     OceanFrontModel model90Deg(parameters90Deg);
 
-    ModelData deg0Data1 = model0Deg.getData(0, 250, 20, 0);
-    ModelData deg0Data2 = model0Deg.getData(-5000, 250, 22, 0);
-    ModelData deg0Data3 = model0Deg.getData(5000, -250, 20, 0);
-    ModelData deg0Data4 = model0Deg.getData(10000, -250, 22, 0);
+    ModelData deg0Data1 = model0Deg.getData(0, 250, -20, 0);
+    ModelData deg0Data2 = model0Deg.getData(-5000, 250, -22, 0);
+    ModelData deg0Data3 = model0Deg.getData(5000, -250, -20, 0);
+    ModelData deg0Data4 = model0Deg.getData(10000, -250, -22, 0);
 
     EXPECT_FLOAT_EQ(14.75, deg0Data1.temp);
     EXPECT_FLOAT_EQ(14.4, deg0Data2.temp);
@@ -135,10 +135,10 @@ TEST(OceanFrontModelTest, Inside) {
     EXPECT_FLOAT_EQ(26.25, deg0Data3.salt);
     EXPECT_FLOAT_EQ(26, deg0Data4.salt);
 
-    ModelData deg90Data1 = model90Deg.getData(2500, 0, 20, 0);
-    ModelData deg90Data2 = model90Deg.getData(2500, -5000, 22, 0);
-    ModelData deg90Data3 = model90Deg.getData(1500, 5000, 20, 0);
-    ModelData deg90Data4 = model90Deg.getData(1500, 10000, 22, 0);
+    ModelData deg90Data1 = model90Deg.getData(2500, 0, -20, 0);
+    ModelData deg90Data2 = model90Deg.getData(2500, -5000, -22, 0);
+    ModelData deg90Data3 = model90Deg.getData(1500, 5000, -20, 0);
+    ModelData deg90Data4 = model90Deg.getData(1500, 10000, -22, 0);
 
     EXPECT_FLOAT_EQ(14.75, deg90Data1.temp);
     EXPECT_FLOAT_EQ(14.4, deg90Data2.temp);

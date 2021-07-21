@@ -13,7 +13,8 @@ OceanFrontModel::OceanFrontModel(Parameters parameters) :
 
 const ModelData OceanFrontModel::getDataHelper(double x, double y, double z, double time)
 {
-    double depth = std::abs(z);
+    //Flip z to be positive since input depths are positive.
+    double depth = -z;
 
     ModelData data;
 

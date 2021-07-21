@@ -25,7 +25,7 @@ const ModelData LinearModel::getDataHelper(double x, double y, double z, double 
     }
     else if(parameters.type == LinearModel::DistanceFunction::MANHATTAN)
     {
-        distance = std::max(fabs(x - parameters.centerX), fabs(y - parameters.centerY));
+        distance = fabs(x - parameters.centerX) + fabs(y - parameters.centerY) + fabs(z - parameters.centerZ);
     }
     data.u = std::max(0.0,parameters.u * (parameters.zeroDistance - distance) / parameters.zeroDistance);
     data.v = std::max(0.0,parameters.v * (parameters.zeroDistance - distance) / parameters.zeroDistance);
@@ -49,7 +49,7 @@ const ModelData LinearModel::getDataOutOfRangeHelper(double x, double y, double 
     }
     else if(parameters.type == LinearModel::DistanceFunction::MANHATTAN)
     {
-        distance = std::max(fabs(x - parameters.centerX), fabs(y - parameters.centerY));
+        distance = fabs(x - parameters.centerX) + fabs(y - parameters.centerY) + fabs(z - parameters.centerZ);
     }
 
     data.u = std::max(0.0,parameters.u * (parameters.zeroDistance - distance) / parameters.zeroDistance);

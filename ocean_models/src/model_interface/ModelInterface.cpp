@@ -17,14 +17,14 @@ ModelInterface::ModelInterface() :
 
 ModelInterface::~ModelInterface() {}
 
-const ModelData ModelInterface::getData(double x, double y, double height, double time)
+const ModelData ModelInterface::getData(double x, double y, double z, double time)
 {
-    return this->getDataHelper(x - offsetX, y - offsetY, height - offsetZ, time - offsetTime);
+    return this->getDataHelper(x - offsetX, y - offsetY, z - offsetZ, time - offsetTime);
 }
 
-const ModelData ModelInterface::getDataOutOfRange(double x, double y, double height, double time)
+const ModelData ModelInterface::getDataOutOfRange(double x, double y, double z, double time)
 {
-    return this->getDataOutOfRangeHelper(x - offsetX, y - offsetY, height - offsetZ, time - offsetTime);
+    return this->getDataOutOfRangeHelper(x - offsetX, y - offsetY, z - offsetZ, time - offsetTime);
 }
 
 void ModelInterface::setOffsets(double offsetX, double offsetY, double offsetZ, double offsetTime)
