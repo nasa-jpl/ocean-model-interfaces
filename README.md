@@ -130,5 +130,5 @@ When using cmake:
 
 `target_link_libraries(<target_name> PRIVATE|PUBLIC|INTERFACE OceanModels::ocean_models)`
 
-When not using cmake link to ocean_models in the standard method.
+When not using cmake link to the `ocean_models` library in the standard way.
 
