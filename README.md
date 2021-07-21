@@ -88,11 +88,9 @@ Documentation is output to `build/ocean_models/doc/doc_doxygen`
 
 Install C library
 
-`wget https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-c-4.7.1.tar.gz`
+Get latest version of NetCDF-C from `https://www.unidata.ucar.edu/downloads/netcdf`
 
-`tar -zxvf netcdf-c-4.7.1.tar.gz`
-
-`cd ./netcdf-c-4.7.1/`
+Untar and cd into directory
 
 `mkdir build`
 
@@ -105,11 +103,9 @@ Install C library
 
 Install C++ interface
 
-`wget https://www.unidata.ucar.edu/downloads/netcdf/ftp/netcdf-cxx4-4.3.1.tar.gz`
+Get latest version of NetCDF-4 C++ from `https://www.unidata.ucar.edu/downloads/netcdf`
 
-`tar -zxvf netcdf-cxx4-4.3.1.tar.gz`
-
-`cd ./netcdf-cxx4-4.3.1/`
+Untar and cd into directory
 
 `mkdir build`
 
