@@ -121,3 +121,14 @@ Install C++ interface
 `cmake ../ -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_FLAGS=-I/usr/include/hdf5/serial/`
 
 `sudo make install`
+
+## Linking Instructions
+
+When using cmake:
+
+`find_package(OceanModels)`
+
+`target_link_libraries(<target_name> PRIVATE|PUBLIC|INTERFACE OceanModels::ocean_models)`
+
+When not using cmake link to ocean_models in the standard method.
+
