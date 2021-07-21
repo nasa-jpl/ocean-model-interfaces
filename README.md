@@ -16,7 +16,7 @@ Linear interpolation in the temporal and z dimensions are performed for all data
 This limitation in the x and y dimension for variables located at triangle centers at is due to the unstructured nature of FVCOM. Triangulation at these points would be required to do baricentric linear interpolation. This is not too difficult of a task, but has yet to be implemented. This limitation does not exist with variables at nodes as the FVCOM structure already provides a triangulation.
 
 ### Assumptions and Limitations
-- To simplify depth calculations and interpolation, the `center_h` and `center_siglay` variables are ignored. `center_h` and `center_siglay` correspond to the water column height and percent depth for each siglay at the center of each triangle. Instead we use barycentric interpolation of the nodes that form each triangle to determine the depth of a specific siglay for points inside of that triangle. 
+- To simplify depth calculations and interpolation, the `center_h` and `center_siglay` FVCOM variables are ignored. `center_h` and `center_siglay` correspond to the water column height and percent depth for each siglay at the center of each triangle. Instead we use barycentric interpolation of the nodes that form each triangle to determine the depth of a specific siglay for points inside of that triangle. This can lead to the case where a queried location is below the true model bathemetry (i.e. below `center_h`), but above the interpolated bathemetry that we actually use to determine depth. In this case the data from the lowest depth siglay is used. In practice this would require a significant difference between the interpolated depth at a triangle center and the depth stored in `center_h`.
 - We currently assume the values of the `h` FVCOM variable are positive and the values of the `siglay` FVCOM variable are negative.
 - Currently the data retrieved for a given location is the standard u,v,w,temp,salt,depth as well as an additional optional dye variable. It is not currently possible to load other arbitrary data variables.
 
@@ -121,3 +121,14 @@ Install C++ interface
 `cmake ../ -DCMAKE_BUILD_TYPE=RELEASE -DCMAKE_C_FLAGS=-I/usr/include/hdf5/serial/`
 
 `sudo make install`
+
+## Linking Instructions
+
+When using cmake:
+
+`find_package(OceanModels)`
+
+`target_link_libraries(<target_name> PRIVATE|PUBLIC|INTERFACE OceanModels::ocean_models)`
+
+When not using cmake link to the `ocean_models` library in the standard way.
+
