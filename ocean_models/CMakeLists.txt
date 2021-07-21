@@ -9,7 +9,7 @@ project(ocean_models VERSION 0.1 DESCRIPTION "C++ library for accessing ocean mo
 set (CMAKE_CXX_STANDARD 11)
 
 #Load all the required packages
-set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake/modules)
+set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/modules)
 find_package(netCDF REQUIRED)
 find_package(NetCDFCxx REQUIRED)
 
@@ -40,26 +40,54 @@ set_target_properties(ocean_models PROPERTIES VERSION ${PROJECT_VERSION})
 target_include_directories(ocean_models PRIVATE ${NetCDFCxx_INCLUDE_DIR} ${netCDF_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 target_include_directories(ocean_models PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-    $<INSTALL_INTERFACE:include/ocean_models>)
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/ocean_models>)
 
 #netCDF_LIBRARIES Does not contain the full path so we add this for if it
 #is installed in an unconventional location
-link_directories(${netCDF_LIB_DIR}) 
+link_directories(${netCDF_LIB_DIR})
 target_link_libraries(ocean_models PRIVATE
     ${netCDF_LIBRARIES} 
     ${Boost_LIBRARIES} 
     ${NetCDFCxx_LIBRARIES}
 )
 
+install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
 ###
 ###For Install
 ###
 include(GNUInstallDirs)
 install(TARGETS ocean_models
-    ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    RUNTIME  DESTINATION ${CMAKE_INSTALL_BINDIR})
-install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+        EXPORT OceanModelsTargets
+        ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME  DESTINATION ${CMAKE_INSTALL_BINDIR}
+        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+
+install(EXPORT OceanModelsTargets
+        FILE OceanModelsTargets.cmake
+        NAMESPACE OceanModels::
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/OceanModels
+)
+
+include(CMakePackageConfigHelpers)
+
+configure_package_config_file(${CMAKE_CURRENT_SOURCE_DIR}/Config.cmake.in
+  "${CMAKE_CURRENT_BINARY_DIR}/OceanModelsConfig.cmake"
+  INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/OceanModels
+)
+
+write_basic_package_version_file(
+  ${CMAKE_CURRENT_BINARY_DIR}/OceanModelsConfigVersion.cmake
+  VERSION ${version}
+  COMPATIBILITY AnyNewerVersion
+  )
+
+install(FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/OceanModelsConfig.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/OceanModelsConfigVersion.cmake"
+        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/OceanModels
+)
 
 if(BUILD_TESTING) 
     add_subdirectory(test)
