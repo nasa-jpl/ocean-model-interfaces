@@ -1,5 +1,3 @@
-Copyright 2021, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology.
-
 # Ocean Models Library
 C++ library to provide random access to ocean model data. Primarily intended for use with autonomous underwater vehicle simulations.
 
@@ -124,4 +122,8 @@ When using cmake:
 `target_link_libraries(<target_name> PRIVATE|PUBLIC|INTERFACE OceanModels::ocean_models)`
 
 When not using cmake link to the `ocean_models` library in the standard way.
+
+## Copyright
+
+Copyright 2021, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology.
 
