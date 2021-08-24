@@ -1,5 +1,5 @@
 @PACKAGE_INIT@
 
-include("${CMAKE_CURRENT_LIST_DIR}/OceanModelsTargets.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/OceanModelInterfacesTargets.cmake")
 
 check_required_components(OceanModelInterfaces)

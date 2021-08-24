@@ -1,4 +1,4 @@
-# Ocean Models Library
+# Ocean Model Interfaces Library
 C++ library to provide random access to ocean model data. Primarily intended for use with autonomous underwater vehicle simulations.
 
 ## Currently included model interfaces
@@ -21,7 +21,7 @@ This limitation in the x and y dimension for variables located at triangle cente
 - Currently the data retrieved for a given location is the standard u,v,w,temp,salt,depth as well as an additional optional dye variable. It is not currently possible to load other arbitrary data variables.
 
 ### Examples
-See unit tests at `ocean_models/test/FVCOM_test.cpp`
+See unit tests at `ocean_model_interfaces/test/FVCOM_test.cpp`
 
 Generally, only the FVCOM class needs to be used directly. Although, in unique cases or debugging purposes the FVCOMStructure class could be useful.
 
@@ -34,11 +34,11 @@ Current Primitive Models:
 - LinearModel
 - OceanFrontModel
 
-Examples for the OceanFrontModel can be found in the unit tests at `ocean_models/test/OceanFrontModel_test.cpp`. The others are fairly self-explainatory.
+Examples for the OceanFrontModel can be found in the unit tests at `ocean_model_interfaces/test/OceanFrontModel_test.cpp`. The others are fairly self-explainatory.
 
 ## Build
 
-`cd ocean_models`
+`cd ocean_model_interfaces`
 
 `mkdir build`
 
@@ -57,7 +57,7 @@ To install in specific location
 ## Unit Tests
 Enable the `BUILD_TESTING` cmake option
 
-`cd ocean_models/build`
+`cd ocean_model_interfaces/build`
 
 `make`
 
@@ -69,11 +69,11 @@ Use the following for verbose output of the tests
 ## Build Documentation
 Enable the `BUILD_DOCS` cmake option
 
-`cd ocean_models/build`
+`cd ocean_model_interfaces/build`
 
 `make`
 
-Documentation is output to `build/ocean_models/doc/doc_doxygen`
+Documentation is output to `build/ocean_model_interfaces/doc/doc_doxygen`
 
 ## Dependencies
 ### Boost
@@ -119,9 +119,9 @@ When using cmake:
 
 `find_package(OceanModels)`
 
-`target_link_libraries(<target_name> PRIVATE|PUBLIC|INTERFACE OceanModels::ocean_models)`
+`target_link_libraries(<target_name> PRIVATE|PUBLIC|INTERFACE OceanModelInterfaces::ocean_model_interfaces)`
 
-When not using cmake link to the `ocean_models` library in the standard way.
+When not using cmake link to the `ocean_model_interfaces` library in the standard way.
 
 ## Copyright
 
