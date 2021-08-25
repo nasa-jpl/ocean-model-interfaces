@@ -2,7 +2,7 @@
 
 ## Examples
 
-For examples see unit tests in `ocean_models/test`
+For examples see unit tests in `ocean_model_interfaces/test`
 
 ### FVCOM 
 Provides access to FVCOM models
