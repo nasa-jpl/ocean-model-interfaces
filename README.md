@@ -117,7 +117,7 @@ Untar and cd into directory
 
 When using cmake:
 
-`find_package(OceanModels)`
+`find_package(OceanModelInterfaces)`
 
 `target_link_libraries(<target_name> PRIVATE|PUBLIC|INTERFACE OceanModelInterfaces::ocean_model_interfaces)`
 
