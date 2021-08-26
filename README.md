@@ -1,3 +1,10 @@
+# Contact Information
+
+Andrew Branch
+
+andrew.branch@jpl.nasa.gov
+
+
 # Ocean Model Interfaces Library
 C++ library to provide random access to large ocean model data sets. Primarily intended for use with autonomous underwater vehicle simulations.
 
