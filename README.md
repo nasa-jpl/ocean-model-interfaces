@@ -3,7 +3,7 @@ C++ library to provide random access to large ocean model data sets. Primarily i
 
 ## Currently included model interfaces
 - FVCOM
-- Miscellaneous primitive models for simple testing
+- Miscellaneous primitive "models"
 
 ## FVCOM
 See the [FVCOM Website](http://fvcom.smast.umassd.edu/fvcom/) for more information on the model itself. Below is a summary of our implementation to provide quick random access to the FVCOM model.
@@ -25,7 +25,7 @@ See unit tests at `ocean_model_interfaces/test/FVCOM_test.cpp`
 
 Generally, only the FVCOM class needs to be used directly. Although, in unique cases or debugging purposes the FVCOMStructure class could be useful.
 
-## Miscellaneous Primitive Models
+## Miscellaneous Primitive "Models"
 
 These models provide a primitive, non-realistic models that are useful for simple testing, debugging, and sanity checking.
 
