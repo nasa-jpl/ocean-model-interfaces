@@ -1,10 +1,3 @@
-# Contact Information
-
-Andrew Branch
-
-andrew.branch@jpl.nasa.gov
-
-
 # Ocean Model Interfaces Library
 C++ library to provide random access to large ocean model data sets. Primarily intended for use with autonomous underwater vehicle simulations.
 
@@ -130,7 +123,12 @@ When using cmake:
 
 When not using cmake link to the `ocean_model_interfaces` library in the standard way.
 
-## Copyright
+# Copyright
 
 Copyright 2021, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology.
 
+# Point of Contact
+
+Andrew Branch
+
+andrew.branch@jpl.nasa.gov
