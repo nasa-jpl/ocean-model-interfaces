@@ -42,7 +42,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <stdexcept>
 
 
-namespace ocean_models
+namespace ocean_model_interfaces
 {
 
 /**

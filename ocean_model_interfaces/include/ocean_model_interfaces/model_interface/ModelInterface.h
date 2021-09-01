@@ -3,7 +3,7 @@
 
 #include "ocean_model_interfaces/model_interface/ModelData.h"
 
-namespace ocean_models
+namespace ocean_model_interfaces
 {
 
 /**

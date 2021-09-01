@@ -10,7 +10,7 @@
 
 #include <netcdf>
 
-namespace ocean_models
+namespace ocean_model_interfaces
 {
 
 /**

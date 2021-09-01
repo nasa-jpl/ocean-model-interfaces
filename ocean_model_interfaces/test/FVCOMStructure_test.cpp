@@ -1,7 +1,7 @@
 #include "ocean_model_interfaces/fvcom/FVCOMStructure.h"
 #include <gtest/gtest.h>
 
-using namespace ocean_models;
+using namespace ocean_model_interfaces;
 
 FVCOMStructure structure("./ocean_model_interfaces/test_data/box_plume_split", 10, 10, 10, 10);
 FVCOMStructure structureAxial("./ocean_model_interfaces/test_data/axial_data_test", 1000, 1000, 10, 10);

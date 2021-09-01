@@ -11,7 +11,7 @@
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
-using namespace ocean_models;
+using namespace ocean_model_interfaces;
 
 FVCOMStructure::FVCOMStructure() {}
 

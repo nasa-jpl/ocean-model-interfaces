@@ -7,7 +7,7 @@
 #include <netcdf>
 
 #include "ocean_model_interfaces/fvcom/FVCOMStructure.h"
-namespace ocean_models
+namespace ocean_model_interfaces
 {
 
 /**

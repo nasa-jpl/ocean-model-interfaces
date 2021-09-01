@@ -5,7 +5,7 @@
 #include <math.h>
 #include  <limits>
 
-using namespace ocean_models;
+using namespace ocean_model_interfaces;
 
 #define SECONDS_IN_DAY 86400
 

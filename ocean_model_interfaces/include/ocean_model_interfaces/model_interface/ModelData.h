@@ -1,7 +1,7 @@
 #ifndef MODEL_DATA_H
 #define MODEL_DATA_H
 
-namespace ocean_models
+namespace ocean_model_interfaces
 {
 
 /**

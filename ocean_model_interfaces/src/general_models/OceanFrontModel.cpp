@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <math.h>
 
-using namespace ocean_models;
+using namespace ocean_model_interfaces;
 
 OceanFrontModel::OceanFrontModel() {}
 OceanFrontModel::OceanFrontModel(Parameters parameters) :

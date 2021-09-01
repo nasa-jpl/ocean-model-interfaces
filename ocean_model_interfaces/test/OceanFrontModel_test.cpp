@@ -4,7 +4,7 @@
 
 #include <gtest/gtest.h>
 
-using namespace ocean_models;
+using namespace ocean_model_interfaces;
 
 TEST(OceanFrontModelTest, Outside) {
 

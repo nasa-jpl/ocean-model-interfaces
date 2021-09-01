@@ -36,7 +36,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "ocean_model_interfaces/fvcom/LRUCache.h"
 #include <gtest/gtest.h>
 
-using namespace ocean_models;
+using namespace ocean_model_interfaces;
 
 const int NUM_OF_TEST2_RECORDS = 100;
 const int TEST2_CACHE_CAPACITY = 50;

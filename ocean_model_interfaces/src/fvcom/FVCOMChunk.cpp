@@ -6,7 +6,7 @@
 
 #include <netcdf>
 
-using namespace ocean_models;
+using namespace ocean_model_interfaces;
 
 FVCOMChunk::FVCOMChunk(const std::vector<FVCOMStructure::ModelFile> modelFiles, std::vector<unsigned int> nodesToLoad,
                                                std::vector<unsigned int> trianglesToLoad,
