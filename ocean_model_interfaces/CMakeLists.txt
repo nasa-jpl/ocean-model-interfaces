@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.9)
 
+option(BUILD_PYTHON "Build C bindings required for python interface" ON)
+
 ###
 ###For Build
 ###
@@ -93,4 +95,8 @@ endif()
 
 if(BUILD_DOCS) 
     add_subdirectory(doc)
+endif()
+
+if(BUILD_PYTHON) 
+    add_subdirectory(python_bindings)
 endif()
