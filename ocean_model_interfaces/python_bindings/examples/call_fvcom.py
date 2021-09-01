@@ -1,6 +1,6 @@
 
-import py_ocean_model_interfaces
+import ocean_model_interfaces
 
-fvcom = py_ocean_model_interfaces.FVCOM("../../test_data/axial_data_test")
+fvcom = ocean_model_interfaces.FVCOM("../../test_data/axial_data_test")
 
 print(fvcom.get_data(-96.5869768, 50.2484645, -70, 0))
