@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.9)
 
-set(version 1.0.0)
+set(version 1.0.1)
 project(OceanModelInterfaces VERSION ${version} DESCRIPTION "C++ library for accessing ocean models")
 
 set (CMAKE_CXX_STANDARD 11)
