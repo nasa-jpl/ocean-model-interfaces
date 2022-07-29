@@ -9,18 +9,20 @@ namespace ocean_model_interfaces
  */
 struct ModelData
 {
-    //eastward current velocity
+    /** Eastward Current Velocity */
     double u;
 
-    //northward current velocity
+    /** Northward Current Velocity */
     double v;
 
-    //upward current velocity
+    /**Upward Current Velocity */
     double w;
     
     double temp;
     double salt;
     double dye;
+
+    /** Bathymetry depth at the specific (x,y) location. This should be positive for locations that have water. */
     double depth;
 };
 

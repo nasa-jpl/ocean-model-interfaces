@@ -46,8 +46,8 @@ target_include_directories(ocean_model_interfaces PUBLIC
 #is installed in an unconventional location
 link_directories(${netCDF_LIB_DIR})
 target_link_libraries(ocean_model_interfaces PRIVATE
-    ${netCDF_LIBRARIES} 
     ${Boost_LIBRARIES} 
+    ${netCDF_LIBRARIES} 
     ${NetCDFCxx_LIBRARIES}
 )
 
