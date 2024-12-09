@@ -5,6 +5,11 @@ C++ library to provide random access to large ocean model data sets. Primarily i
 - FVCOM
 - Miscellaneous primitive "models"
 
+## Coordinate Reference System
+Each model is queried in X,Y,Z. X and Y should be queried in the same coordiante reference system used by the loaded model (e.g. UTM, Polar Stereographic, WGS-84, etc.). The same model type could potentially have different coordainte reference systems. Z+ should always be positive, with 0 at the sea surface. If a loaded model is different from this, then the model implementation should handle to accept the correct Z axis direction.
+
+Future work is to create a general method of allowing a model to be queried in an arbitrary CRS and have that converted to the correct CRS for the specific loaded model.
+
 ## FVCOM
 See the [FVCOM Website](http://fvcom.smast.umassd.edu/fvcom/) for more information on the model itself. Below is a summary of our implementation to provide quick random access to the FVCOM model.
 
