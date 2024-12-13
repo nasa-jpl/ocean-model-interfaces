@@ -30,6 +30,8 @@ add_library(ocean_model_interfaces SHARED
     src/general_models/LinearModel.cpp
     src/general_models/OceanFrontModel.cpp
     src/model_interface/ModelInterface.cpp
+    src/util/UtilityFunctions.cpp
+
 )
 
 #Set the version of the target

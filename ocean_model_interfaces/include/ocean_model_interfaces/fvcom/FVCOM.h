@@ -12,7 +12,7 @@
 
 #include "ocean_model_interfaces/fvcom/FVCOMStructure.h"
 #include "ocean_model_interfaces/fvcom/FVCOMChunk.h"
-#include "ocean_model_interfaces/fvcom/LRUCache.h"
+#include "ocean_model_interfaces/util/LRUCache.h"
 
 #include "ocean_model_interfaces/model_interface/ModelInterface.h"
 #include "ocean_model_interfaces/model_interface/ModelData.h"

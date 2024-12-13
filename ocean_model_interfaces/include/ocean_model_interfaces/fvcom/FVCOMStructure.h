@@ -358,13 +358,6 @@ public:
 private:
 
     /**
-     * Loads all the data files
-     * @param filename Directory to load the files for
-     * @return List of filenames containing the model
-     */
-    std::vector<std::string> traverseDataFiles(std::string filename);
-
-    /**
      * Helper function which loads all the model structure data from the model file
      */
     void loadStructureData(const std::string directory);

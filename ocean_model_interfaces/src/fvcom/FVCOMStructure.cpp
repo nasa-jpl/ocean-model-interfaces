@@ -1,6 +1,8 @@
 #include "ocean_model_interfaces/fvcom/FVCOMStructure.h"
 #include "ocean_model_interfaces/fvcom/FVCOM.h"
 
+#include "ocean_model_interfaces/util/UtilityFunctions.h"
+
 #include <netcdf>
 #include <memory>
 #include <cmath>
@@ -8,7 +10,6 @@
 #include <algorithm>
 #include <iterator>
 
-#include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
 using namespace ocean_model_interfaces;
@@ -57,27 +58,6 @@ FVCOMStructure::Plane::Plane(FVCOMStructure::Point& p0, FVCOMStructure::Point& p
 double FVCOMStructure::Plane::getHeight(Point& interpolatePoint)
 {
     return (-d - a * interpolatePoint.x - b * interpolatePoint.y) / c;
-}
-
-std::vector<std::string> FVCOMStructure::traverseDataFiles(const std::string filename)
-{
-    std::vector<std::string> filenames;
-    fs::path p1 = filename;
-    if(fs::is_directory(p1))
-    {
-        for(auto& p: fs::directory_iterator(p1))
-        {
-            if(!fs::is_directory(p))
-            {
-                filenames.push_back(p.path().string());
-            }
-        }
-    }
-    else
-    {
-        filenames.push_back(filename);
-    }
-    return filenames;
 }
 
 void FVCOMStructure::loadStructureData(const std::string directory)

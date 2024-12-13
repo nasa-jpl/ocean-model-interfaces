@@ -236,7 +236,7 @@ const ModelData FVCOM::getDataOutOfRangeHelper(double x, double y, double z, dou
         data.temp = std::numeric_limits<double>::quiet_NaN();
         data.dye = std::numeric_limits<double>::quiet_NaN();
     }
-    
+
     return data;
 }
 
