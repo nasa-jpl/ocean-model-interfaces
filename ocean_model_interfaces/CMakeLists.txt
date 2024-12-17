@@ -12,6 +12,7 @@ set (CMAKE_CXX_STANDARD 11)
 set (CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/cmake/modules)
 find_package(netCDF REQUIRED)
 find_package(netCDFCxx REQUIRED)
+find_package(HDF5 REQUIRED)
 
 set(boost_min_ver 1.50.0)
 set(boost_libs system filesystem)
@@ -26,12 +27,14 @@ add_library(ocean_model_interfaces SHARED
     src/fvcom/FVCOM.cpp
     src/fvcom/FVCOMChunk.cpp
     src/fvcom/FVCOMStructure.cpp
+    src/geodetic_grid/GeodeticGrid.cpp
+    src/geodetic_grid/GeodeticGridChunk.cpp
+    src/geodetic_grid/GeodeticGridStructure.cpp
     src/general_models/ConstantModel.cpp
     src/general_models/LinearModel.cpp
     src/general_models/OceanFrontModel.cpp
     src/model_interface/ModelInterface.cpp
     src/util/UtilityFunctions.cpp
-
 )
 
 #Set the version of the target

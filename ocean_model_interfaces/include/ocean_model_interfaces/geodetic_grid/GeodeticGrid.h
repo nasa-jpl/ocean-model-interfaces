@@ -11,6 +11,7 @@
 #include <functional>
 
 #include "ocean_model_interfaces/geodetic_grid/GeodeticGridStructure.h"
+#include "ocean_model_interfaces/geodetic_grid/GeodeticGridParameters.h"
 #include "ocean_model_interfaces/geodetic_grid/GeodeticGridChunk.h"
 #include "ocean_model_interfaces/util/LRUCache.h"
 
@@ -19,17 +20,6 @@
 
 namespace ocean_model_interfaces
 {
-
-struct GeodeticGridParameters {
-    //The directory that the model is contained in.
-    std::string modelDirectory;
-
-    //The size of the chunks to load in number of indicies
-    int timeChunkSize = 1;
-    int depthChunkSize = 40;
-    int latChunkSize = 10;
-    int lonChunkSize = 10;
-}
 
 /**
  * Provides random access to FVCOM ocean model data. To handle the large data volumes,
@@ -55,11 +45,11 @@ public:
 
 private:
 
-    ModelData indexModelData(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex);
+    const ModelData indexModelData(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex);
 
 private:
     LRUCache<unsigned int, GeodeticGridChunk> chunkCache;
-    GeodeticGridStructure structure
+    GeodeticGridStructure structure;
     GeodeticGridParameters parameters;
     std::function<void(void)> startLoad;
     std::function<void(void)> endLoad;

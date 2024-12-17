@@ -15,6 +15,11 @@ target_include_directories(FVCOMStructure_test PRIVATE ${NetCDFCxx_INCLUDE_DIR} 
 target_link_libraries(FVCOMStructure_test gtest ocean_model_interfaces ${netCDF_LIBRARIES} ${NetCDFCxx_LIBRARIES})
 add_test(NAME FVCOMStructure_test COMMAND FVCOMStructure_test WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
+add_executable(GeodeticGridStructure_test GeodeticGridStructure_test.cpp)
+target_include_directories(GeodeticGridStructure_test PRIVATE ${NetCDFCxx_INCLUDE_DIR} ${netCDF_INCLUDE_DIR})
+target_link_libraries(GeodeticGridStructure_test gtest ocean_model_interfaces ${netCDF_LIBRARIES} ${NetCDFCxx_LIBRARIES})
+add_test(NAME GeodeticGridStructure_test COMMAND GeodeticGridStructure_test WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
 add_executable(lru_cache_test lru_cache_test.cpp)
 target_link_libraries(lru_cache_test gtest ocean_model_interfaces)
 add_test(NAME lru_cache_test COMMAND lru_cache_test WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

@@ -3,8 +3,11 @@
 
 #include <vector>
 
-static std::vector<std::string> traverseDataFiles(const std::string filename);
+namespace ocean_model_interfaces
+{
 
-static void load3DData(std::vector<std::vector<std::vector<float>>> targetVector, std::vector<size_t> start, std::vector<size_t> count);
+std::vector<std::string> traverseDataFiles(const std::string filename);
+
+}
 
 #endif

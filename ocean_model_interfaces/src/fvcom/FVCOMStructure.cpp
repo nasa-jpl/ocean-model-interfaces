@@ -1,6 +1,5 @@
 #include "ocean_model_interfaces/fvcom/FVCOMStructure.h"
 #include "ocean_model_interfaces/fvcom/FVCOM.h"
-
 #include "ocean_model_interfaces/util/UtilityFunctions.h"
 
 #include <netcdf>
@@ -9,8 +8,6 @@
 #include <limits>
 #include <algorithm>
 #include <iterator>
-
-namespace fs = boost::filesystem;
 
 using namespace ocean_model_interfaces;
 

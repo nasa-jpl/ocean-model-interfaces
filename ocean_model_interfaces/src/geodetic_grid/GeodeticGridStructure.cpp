@@ -1,9 +1,11 @@
-#include "ocean_model_interfaces/geodetic_grid/GeodeticGrid.h"
+#include "ocean_model_interfaces/geodetic_grid/GeodeticGridStructure.h"
 #include "ocean_model_interfaces/model_interface/ModelData.h"
+#include "ocean_model_interfaces/util/UtilityFunctions.h"
 
 #include <stdexcept>
 #include <math.h>
 #include  <limits>
+#include <iostream>
 
 using namespace ocean_model_interfaces;
 
@@ -18,14 +20,14 @@ void GeodeticGridStructure::loadStructureData() {
 
     netCDF::NcFile singleDataFile(modelFiles[0].filename, netCDF::NcFile::read);
     //Get dimensions of structure elements
-    unsigned int latDim = dataFile.getDim("eta_rho").getSize();
-    unsigned int lonDim = dataFile.getDim("xi_rho").getSize();
-    unsigned int depthDim = dataFile.getDim("s_rho").getSize();
+    unsigned int latDim = singleDataFile.getDim("eta_rho").getSize();
+    unsigned int lonDim = singleDataFile.getDim("xi_rho").getSize();
+    unsigned int depthDim = singleDataFile.getDim("s_rho").getSize();
 
-    netCDF::NcVar latVar = dataFile.getVar("lat_rho");
-    netCDF::NcVar lonVar = dataFile.getVar("lon_rho");
-    netCDF::NcVar depthVar = dataFile.getVar("z_rho0");
-    netCDF::NcVar waterColumnDepthVar = dataFile.getVar("h");
+    netCDF::NcVar latVar = singleDataFile.getVar("lat_rho");
+    netCDF::NcVar lonVar = singleDataFile.getVar("lon_rho");
+    netCDF::NcVar depthVar = singleDataFile.getVar("z_rho0");
+    netCDF::NcVar waterColumnDepthVar = singleDataFile.getVar("h");
 
     latitudes.resize(latDim);
     longitudes.resize(lonDim);
@@ -44,13 +46,13 @@ void GeodeticGridStructure::loadStructureData() {
     latVar.getVar(latGridCheckStart, latGridCheckCount, latGridCheck.data());
     lonVar.getVar(lonGridCheckStart, lonGridCheckCount, lonGridCheck.data());
 
-    for(int i = 0; i < latGridCheck.size() i++) {
+    for(int i = 0; i < latGridCheck.size(); i++) {
         if(latGridCheck[i] != latGridCheck[0]) {
              throw std::runtime_error("Provided latitude grid is not north aligned");
         }
     }
 
-    for(int i = 0; i < lonGridCheck.size() i++) {
+    for(int i = 0; i < lonGridCheck.size(); i++) {
         if(lonGridCheck[i] != lonGridCheck[0]) {
              throw std::runtime_error("Provided longitude grid is not north aligned");
         }
@@ -63,7 +65,7 @@ void GeodeticGridStructure::loadStructureData() {
 
     std::vector<size_t> lonStart = {0, 0};
     std::vector<size_t> lonCount = {1, lonDim};
-    lonVar.getVar(lonStart. lonCount, longitudes.data());
+    lonVar.getVar(lonStart, lonCount, longitudes.data());
 
     depths = MultiDimensionalVector<double>({depthDim, latDim, lonDim});
     depthVar.getVar(depths.getDataArray());
@@ -74,7 +76,7 @@ void GeodeticGridStructure::loadStructureData() {
 
 void GeodeticGridStructure::loadTime() {
     unsigned int timeDim = 0;
-    std::vector<std::string> filenames = traverseDataFiles(directory);
+    std::vector<std::string> filenames = traverseDataFiles(parameters.modelDirectory);
 
     //Set start times and time dimensions from files
     for(auto &filename : filenames)
@@ -91,6 +93,12 @@ void GeodeticGridStructure::loadTime() {
         modelFile.startTime = tempTimes[0];
         modelFile.timeDim = dataFile.getDim("ocean_time").getSize();
         modelFiles.push_back(modelFile);
+
+        if(modelFile.timeDim > 1) {
+            std::cerr << "The GeodeticGrid model interface has only been tested with model files which each hold a single time step. "
+                      << "The provided model files have " << modelFile.timeDim << "timesteps in a single file which is untested."
+                      << "The interface was implement to support this, but it is recommended that this functionality is tested before using." << std::endl;
+        }
     }
 
     //sort filenames based on start ties
@@ -116,10 +124,10 @@ void GeodeticGridStructure::loadTime() {
 }
 
 void GeodeticGridStructure::determineChunksPerDimension() {
-    timeDimChunks = std::ceil((times.size() / parameters.timeChunkSize))
-    depthDimChunks = std::ceil((depths.size()[0] / parameters.depthChunkSize))
-    latDimChunks = std::ceil((latitudes.size() / parameters.latChunkSize))
-    lonDimChunks = std::ceil((longitudes.size() / parameters.lonChunkSize))
+    timeDimChunks = std::ceil((times.size() / parameters.timeChunkSize));
+    depthDimChunks = std::ceil((depths.size()[0] / parameters.depthChunkSize));
+    latDimChunks = std::ceil((latitudes.size() / parameters.latChunkSize));
+    lonDimChunks = std::ceil((longitudes.size() / parameters.lonChunkSize));
 }
 
 GeodeticGridStructure::ChunkInfo GeodeticGridStructure::getGridChunkInfo(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex) {
@@ -135,10 +143,10 @@ GeodeticGridStructure::ChunkInfo GeodeticGridStructure::getGridChunkInfo(unsigne
     info.latStart = info.latChunk * parameters.latChunkSize;
     info.lonStart = info.lonChunk * parameters.lonChunkSize;
 
-    chunk.timeSize = std::min(parameters.timeChunkSize, times.size() - chunk.timeStart);
-    chunk.depthSize = std::min(parameters.depthChunkSize, depths.size()[0] - chunk.depthStart);
-    chunk.latSize = std::min(parameters.latChunkSize, latitudes.size() - chunk.latStart);
-    chunk.lonSize = std::min(parameters.lonChunkSize, longitudes.size() - chunk.lonStart);
+    info.timeSize = std::min<unsigned int>(parameters.timeChunkSize, times.size() - info.timeStart);
+    info.depthSize = std::min<unsigned int>(parameters.depthChunkSize, depths.size()[0] - info.depthStart);
+    info.latSize = std::min<unsigned int>(parameters.latChunkSize, latitudes.size() - info.latStart);
+    info.lonSize = std::min<unsigned int>(parameters.lonChunkSize, longitudes.size() - info.lonStart);
 
     return info;
 }
@@ -154,8 +162,8 @@ unsigned int GeodeticGridStructure::getChunkIdFromIndicies(unsigned int timeInde
 
 bool GeodeticGridStructure::isInRange(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex) {
     if(timeIndex >= times.size() ||
-       depthIndex >= depths.size()[0].size()
-       latIndex >= latitudes.size()
+       depthIndex >= depths.size()[0] ||
+       latIndex >= latitudes.size() ||
        lonIndex >= longitudes.size()) {
         return false;
     }
@@ -163,5 +171,9 @@ bool GeodeticGridStructure::isInRange(unsigned int timeIndex, unsigned int depth
 }
 
 double GeodeticGridStructure::getWaterColumnDepth(unsigned int latIndex, unsigned int lonIndex) {
-    return waterColumnDepth.index(latIndex, lonIndex);
+    return waterColumnDepth.index({latIndex, lonIndex});
+}
+
+std::vector<GeodeticGridStructure::ModelFile>& GeodeticGridStructure::getModelFiles() {
+    return modelFiles;
 }

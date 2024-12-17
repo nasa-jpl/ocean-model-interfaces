@@ -1,6 +1,8 @@
 #ifndef GEODETIC_GRID_STRUCTURE_H
 #define GEODETIC_GRID_STRUCTURE_H
 
+#include <netcdf>
+
 #include <list>
 #include <unordered_map>
 #include <cstddef>
@@ -8,22 +10,22 @@
 #include <memory>
 #include <limits>
 
-#include <netcdf>
 
-#include "ocean_model_interfaces/utlities/MultiDimensionalVector.h"
+#include "ocean_model_interfaces/geodetic_grid/GeodeticGridParameters.h"
+#include "ocean_model_interfaces/util/MultiDimensionalVector.h"
 
 namespace ocean_model_interfaces
 {
 
 /**
- * Class used to load and query FVCOM structure data. This data is always stored in memory
+ * Class used to load and query the structure of GeodeticGrid data. This data is always stored in memory
  * and is used to determine what chunks need to be loaded to retrieve specific parts of the model.
  */
 class GeodeticGridStructure
 {
 public:
 
-    FVCOMStructure(GeodeticGridParameters parameters);
+    GeodeticGridStructure(GeodeticGridParameters parameters);
 
     struct Point
     {
@@ -44,7 +46,7 @@ public:
         double d;
 
         Plane();
-        Plane(FVCOMStructure::Point& p0, FVCOMStructure::Point& p1, FVCOMStructure::Point& p2);
+        Plane(GeodeticGridStructure::Point& p0, GeodeticGridStructure::Point& p1, GeodeticGridStructure::Point& p2);
 
         double getHeight(Point& interpolatePoint);
     };
@@ -97,19 +99,23 @@ public:
     /**
      * @brief Get the full ChunkInfo struct for a chunk that the given indicies are in.
      */
-    ChunkInfo GeodeticGridStructure::getGridChunkInfo(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex);
+    ChunkInfo getGridChunkInfo(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex);
 
     /**
      * @brief Get just the chunkID that the given indicies are in
      */
-    unsigned int GeodeticGridStructure::getChunkIdFromIndicies(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex);
+    unsigned int getChunkIdFromIndicies(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex);
 
-    bool GeodeticGridStructure::isInRange(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex);
+    bool isInRange(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex);
 
-    double GeodeticGridStructure::getWaterColumnDepth(unsigned int latIndex, unsigned int lonIndex);
+    double getWaterColumnDepth(unsigned int latIndex, unsigned int lonIndex);
+
+    std::vector<ModelFile>& getModelFiles();
 
 private:
     void loadStructureData();
+    void loadTime();
+    void determineChunksPerDimension();
 
 private:
     std::vector<ModelFile> modelFiles;

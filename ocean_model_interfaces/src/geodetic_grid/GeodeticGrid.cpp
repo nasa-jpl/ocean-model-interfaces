@@ -1,4 +1,4 @@
-#include "ocean_model_interfaces/fvcom/GeodeticGrid.h"
+#include "ocean_model_interfaces/geodetic_grid/GeodeticGrid.h"
 #include "ocean_model_interfaces/model_interface/ModelData.h"
 
 #include <stdexcept>
@@ -8,9 +8,8 @@
 using namespace ocean_model_interfaces;
 
 
-GeodeticGrid::GeodeticGrid(GeodeticGridParameters parameters) {
-    this->parameters = parameters;
-    this->structure = GeodeticGridStructure(parameters);
+GeodeticGrid::GeodeticGrid(GeodeticGridParameters parameters) : structure(GeodeticGridStructure(parameters)),
+                                                                parameters(parameters){
 }
 
 void GeodeticGrid::setLoadFunction(std::function<void(void)> startLoad, std::function<void(void)> endLoad) {
@@ -18,7 +17,7 @@ void GeodeticGrid::setLoadFunction(std::function<void(void)> startLoad, std::fun
     this->endLoad = endLoad;
 }
 
-ModelData GeodeticGrid::indexModelData(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex) {
+const ModelData GeodeticGrid::indexModelData(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex) {
     if(!structure.isInRange(timeIndex, depthIndex, latIndex, lonIndex)) {
         throw std::runtime_error("Requested model indicies are out of range.");
     }
@@ -30,7 +29,7 @@ ModelData GeodeticGrid::indexModelData(unsigned int timeIndex, unsigned int dept
         }
 
         GeodeticGridStructure::ChunkInfo info = structure.getGridChunkInfo(timeIndex, depthIndex, latIndex, lonIndex);
-        chunkCache.put(info.id, GeodeticChunk(info, modelFiles));
+        chunkCache.put(info.id, GeodeticGridChunk(info, structure.getModelFiles()));
 
         if(endLoad) {
             endLoad();
@@ -38,7 +37,7 @@ ModelData GeodeticGrid::indexModelData(unsigned int timeIndex, unsigned int dept
     }
 
     GeodeticGridChunk& chunk = chunkCache.get(chunkId);
-    const ModelData modelData = chunk.getData(timeIndex, depthIndex, latIndex, lonIndex);
+    ModelData modelData = chunk.getData(timeIndex, depthIndex, latIndex, lonIndex);
     modelData.depth = structure.getWaterColumnDepth(latIndex, lonIndex);
 
     return modelData;
