@@ -1,5 +1,6 @@
 #include "ocean_model_interfaces/fvcom/FVCOM.h"
 #include "ocean_model_interfaces/model_interface/ModelData.h"
+#include "ocean_model_interfaces/util/Point.h"
 
 #include <stdexcept>
 #include <math.h>
@@ -48,7 +49,7 @@ FVCOM::FVCOM(std::string filename,
         endLoad(endLoad)
 {}
 
-ModelData FVCOM::interpolate(FVCOMStructure::Point interpolatePoint, double time)
+ModelData FVCOM::interpolate(Point interpolatePoint, double time)
 {    
     int time1Index, time2Index;
     double time1Percent;
@@ -124,14 +125,14 @@ ModelData FVCOM::interpolate(FVCOMStructure::Point interpolatePoint, double time
     return returnData;
 }
 
-FVCOMChunk::NodeDataInterp FVCOM::nodeInterpolation(const FVCOMStructure::Point& interpolatePoint, int containingTriangle, int siglayIndex, int timeIndex)
+FVCOMChunk::NodeDataInterp FVCOM::nodeInterpolation(const Point& interpolatePoint, int containingTriangle, int siglayIndex, int timeIndex)
 {
     FVCOMChunk::NodeDataInterp interpolatedData;
     const std::vector<int>& surroundingNodes = structure.getNodesInTriangle(containingTriangle);
 
-    FVCOMStructure::Point p1 = structure.getNodePointWithH(surroundingNodes[0]);
-    FVCOMStructure::Point p2 = structure.getNodePointWithH(surroundingNodes[1]);
-    FVCOMStructure::Point p3 = structure.getNodePointWithH(surroundingNodes[2]);
+    Point p1 = structure.getNodePointWithH(surroundingNodes[0]);
+    Point p2 = structure.getNodePointWithH(surroundingNodes[1]);
+    Point p3 = structure.getNodePointWithH(surroundingNodes[2]);
 
     const FVCOMChunk::NodeData& p1Data = getNodeData(surroundingNodes[0], siglayIndex, timeIndex);
     const FVCOMChunk::NodeData& p2Data = getNodeData(surroundingNodes[1], siglayIndex, timeIndex);
@@ -152,7 +153,7 @@ FVCOMChunk::NodeDataInterp FVCOM::nodeInterpolation(const FVCOMStructure::Point&
     return interpolatedData;
 }
 
-FVCOMChunk::TriangleDataInterp FVCOM::triangleInterpolation(const FVCOMStructure::Point& interpolatedPoint, int containingTriangle, int siglayIndex, int timeIndex)
+FVCOMChunk::TriangleDataInterp FVCOM::triangleInterpolation(const Point& interpolatedPoint, int containingTriangle, int siglayIndex, int timeIndex)
 {
     FVCOMChunk::TriangleDataInterp interpolatedData;
     FVCOMChunk::TriangleData triData = getTriangleData(containingTriangle, siglayIndex, timeIndex);
@@ -163,7 +164,7 @@ FVCOMChunk::TriangleDataInterp FVCOM::triangleInterpolation(const FVCOMStructure
     return interpolatedData;
 }
 
-const double FVCOM::areaOfTriangle(const FVCOMStructure::Point& p1, const FVCOMStructure::Point& p2, const FVCOMStructure::Point& p3) const
+const double FVCOM::areaOfTriangle(const Point& p1, const Point& p2, const Point& p3) const
 {
     double a = sqrt((p1.x - p2.x) * (p1.x - p2.x) + (p1.y - p2.y) * (p1.y - p2.y));
     double b = sqrt((p1.x - p3.x) * (p1.x - p3.x) + (p1.y - p3.y) * (p1.y - p3.y));
@@ -175,7 +176,7 @@ const double FVCOM::areaOfTriangle(const FVCOMStructure::Point& p1, const FVCOMS
 
 const ModelData FVCOM::getDataHelper(double x, double y, double z, double time)
 {
-    FVCOMStructure::Point interpolatePoint;
+    Point interpolatePoint;
     interpolatePoint.x = x;
     interpolatePoint.y = y;
     interpolatePoint.z = z;
@@ -194,7 +195,7 @@ const ModelData FVCOM::getDataOutOfRangeHelper(double x, double y, double z, dou
     //if out of range XY then get closest node
     //if out of range time then get closest time
 
-    FVCOMStructure::Point interpolatePoint;
+    Point interpolatePoint;
     interpolatePoint.x = x;
     interpolatePoint.y = y;
     interpolatePoint.z = z;
@@ -203,7 +204,7 @@ const ModelData FVCOM::getDataOutOfRangeHelper(double x, double y, double z, dou
     if(!structure.xyInModel(interpolatePoint))
     {
         int node = structure.getClosestNode(interpolatePoint);
-        FVCOMStructure::Point nodePoint = structure.getNodePointWithH(node);
+        Point nodePoint = structure.getNodePointWithH(node);
 
         data.depth = nodePoint.z;
         data.u = std::numeric_limits<double>::quiet_NaN();

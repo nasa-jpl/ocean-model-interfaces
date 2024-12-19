@@ -30,6 +30,12 @@ namespace ocean_model_interfaces
 class GeodeticGrid : public ModelInterface
 {
 public:
+
+    /**
+     * Default constructor just so we don't need to initialize it right away if we don't want to.
+     */
+    GeodeticGrid();
+
     /**
      * Initalize GeodeticGrid class with no data file.
      */
@@ -43,9 +49,30 @@ public:
      */
     void setLoadFunction(std::function<void(void)> startLoad, std::function<void(void)> endLoad);
 
-private:
+    const ModelData getDataAtIndex(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex);
 
-    const ModelData indexModelData(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex);
+protected:
+    /**
+     * @brief Interpolates the model at the given location. Note that x is longitude and y is latitude
+     * 
+     * @param x Longitude for the request
+     * @param y Latitude for the request
+     * @param z Depth for the request
+     * @param time Time for the request
+     * @return const ModelData 
+     */
+    const ModelData getDataHelper(double x, double y, double z, double time) override;
+
+    /**
+     * @brief Interpolates the model at the given location if that location is outside the model. Note that x is longitude and y is latitude
+     * 
+     * @param x Longitude for the request
+     * @param y Latitude for the request
+     * @param z Depth for the request
+     * @param time Time for the request
+     * @return const ModelData 
+     */
+    const ModelData getDataOutOfRangeHelper(double x, double y, double z, double time) override;
 
 private:
     LRUCache<unsigned int, GeodeticGridChunk> chunkCache;
@@ -53,7 +80,6 @@ private:
     GeodeticGridParameters parameters;
     std::function<void(void)> startLoad;
     std::function<void(void)> endLoad;
-
 };
 
 }

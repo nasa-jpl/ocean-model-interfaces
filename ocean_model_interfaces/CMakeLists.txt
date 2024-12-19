@@ -35,6 +35,8 @@ add_library(ocean_model_interfaces SHARED
     src/general_models/OceanFrontModel.cpp
     src/model_interface/ModelInterface.cpp
     src/util/UtilityFunctions.cpp
+    src/util/Plane.cpp
+    src/util/Point.cpp
 )
 
 #Set the version of the target

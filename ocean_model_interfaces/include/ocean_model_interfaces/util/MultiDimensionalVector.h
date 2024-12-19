@@ -30,7 +30,8 @@ public:
 
         for(int i = 0; i < indicies.size(); i++) {
             if(0 > indicies[i] || indicies[i] >= dimensionSizes[i]) {
-                throw std::runtime_error("MultiDimensionalVector index out of bounds.");
+                std::string message = "MultiDimensionalVector index out of bounds: dimension=" + std::to_string(i) + " index=" + std::to_string(indicies[i]) + " size=" + std::to_string(dimensionSizes[i]);
+                throw std::runtime_error(message);
             }
         }
 

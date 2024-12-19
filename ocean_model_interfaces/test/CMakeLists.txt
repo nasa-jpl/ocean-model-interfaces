@@ -20,6 +20,16 @@ target_include_directories(GeodeticGridStructure_test PRIVATE ${NetCDFCxx_INCLUD
 target_link_libraries(GeodeticGridStructure_test gtest ocean_model_interfaces ${netCDF_LIBRARIES} ${NetCDFCxx_LIBRARIES})
 add_test(NAME GeodeticGridStructure_test COMMAND GeodeticGridStructure_test WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 
+add_executable(GeodeticGridChunk_test GeodeticGridChunk_test.cpp)
+target_include_directories(GeodeticGridChunk_test PRIVATE ${NetCDFCxx_INCLUDE_DIR} ${netCDF_INCLUDE_DIR})
+target_link_libraries(GeodeticGridChunk_test gtest ocean_model_interfaces ${netCDF_LIBRARIES} ${NetCDFCxx_LIBRARIES})
+add_test(NAME GeodeticGridChunk_test COMMAND GeodeticGridChunk_test WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+add_executable(GeodeticGrid_test GeodeticGrid_test.cpp)
+target_include_directories(GeodeticGrid_test PRIVATE ${NetCDFCxx_INCLUDE_DIR} ${netCDF_INCLUDE_DIR})
+target_link_libraries(GeodeticGrid_test gtest ocean_model_interfaces ${netCDF_LIBRARIES} ${NetCDFCxx_LIBRARIES})
+add_test(NAME GeodeticGrid_test COMMAND GeodeticGrid_test WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
 add_executable(lru_cache_test lru_cache_test.cpp)
 target_link_libraries(lru_cache_test gtest ocean_model_interfaces)
 add_test(NAME lru_cache_test COMMAND lru_cache_test WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
@@ -27,3 +37,7 @@ add_test(NAME lru_cache_test COMMAND lru_cache_test WORKING_DIRECTORY ${CMAKE_SO
 add_executable(OceanFrontModel_test OceanFrontModel_test.cpp)
 target_link_libraries(OceanFrontModel_test gtest ocean_model_interfaces)
 add_test(NAME OceanFrontModel_test COMMAND OceanFrontModel_test WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+
+add_executable(UtilityFunctions_test UtilityFunctions_test.cpp)
+target_link_libraries(UtilityFunctions_test gtest ocean_model_interfaces)
+add_test(NAME UtilityFunctions_test COMMAND UtilityFunctions_test WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})

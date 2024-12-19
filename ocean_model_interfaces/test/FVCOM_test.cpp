@@ -1,6 +1,8 @@
 #include "ocean_model_interfaces/fvcom/FVCOMStructure.h"
 #include "ocean_model_interfaces/fvcom/FVCOMChunk.h"
 #include "ocean_model_interfaces/fvcom/FVCOM.h"
+#include "ocean_model_interfaces/util/Plane.h"
+#include "ocean_model_interfaces/util/Point.h"
 
 #include "ocean_model_interfaces/model_interface/ModelData.h"
 
@@ -42,13 +44,13 @@ TEST(FVCOMTest, XYInterpolation)
     //temp: 3.801572406374122, 3.8022022400180635, 3.803271680277034
     //salinity: 34.31852681425481, 34.318431897839325, 34.31827073237096
     //dye: 0, 0, 0
-    FVCOMStructure::Point p1;
+    Point p1;
     p1.x = 12314;
     p1.y = -9648;
     p1.z = 0;
 
     ModelData data1 = fvcomMultiple.getData(12314, -9648, 0, 0 * SECONDS_IN_DAY);
-    FVCOMStructure::Plane plane1 = structure.getTriangleSiglayPlane(9152, 3);
+    Plane plane1 = structure.getTriangleSiglayPlane(9152, 3);
     double height = (-plane1.d - plane1.a * p1.x - plane1.b * p1.y) / plane1.c;
 
     ModelData data2 = fvcomMultiple.getData(12314, -9648, height, 0 * SECONDS_IN_DAY);
@@ -89,12 +91,12 @@ TEST(FVCOMTest, TimeInterpolation)
     //salinity: 34.31724704864192, 34.31724689708151
     //dye: 0,0,0
 
-    FVCOMStructure::Point p1;
+    Point p1;
     p1.x = -96.5869768;
     p1.y = 50.2484645;
     p1.z = 0;
     
-    FVCOMStructure::Plane plane1 = structure.getTriangleSiglayPlane(13325, 3);
+    Plane plane1 = structure.getTriangleSiglayPlane(13325, 3);
     double height = (-plane1.d - plane1.a * p1.x - plane1.b * p1.y) / plane1.c;
     ModelData data1 = fvcomMultiple.getData(-96.5869768, 50.2484645, 0, 0.11);
     ModelData data2 = fvcomMultiple.getData(-96.5869768, 50.2484645, height, 0.11);

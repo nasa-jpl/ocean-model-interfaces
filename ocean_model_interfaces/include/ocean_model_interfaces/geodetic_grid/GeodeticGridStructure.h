@@ -13,6 +13,7 @@
 
 #include "ocean_model_interfaces/geodetic_grid/GeodeticGridParameters.h"
 #include "ocean_model_interfaces/util/MultiDimensionalVector.h"
+#include "ocean_model_interfaces/util/Point.h"
 
 namespace ocean_model_interfaces
 {
@@ -24,32 +25,8 @@ namespace ocean_model_interfaces
 class GeodeticGridStructure
 {
 public:
-
+    GeodeticGridStructure();
     GeodeticGridStructure(GeodeticGridParameters parameters);
-
-    struct Point
-    {
-        double x;
-        double y;
-        double z;
-    };
-
-    /**
-     * Stores a 3d plane. Used to determine the direction of a point relative to a
-     * specific siglay.
-     */
-    struct Plane
-    {
-        double a;
-        double b;
-        double c;
-        double d;
-
-        Plane();
-        Plane(GeodeticGridStructure::Point& p0, GeodeticGridStructure::Point& p1, GeodeticGridStructure::Point& p2);
-
-        double getHeight(Point& interpolatePoint);
-    };
 
     /**
      * Stores information about where a chunk fits in the larger model
@@ -106,17 +83,31 @@ public:
      */
     unsigned int getChunkIdFromIndicies(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex);
 
-    bool isInRange(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex);
+    bool indexInRange(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex);
+    bool timeInModel(double time);
+    bool depthInModel(Point point);
+    bool xyInModel(Point point);
 
-    double getWaterColumnDepth(unsigned int latIndex, unsigned int lonIndex);
+    double indexWaterColumnDepth(unsigned int latIndex, unsigned int lonIndex);
+
+    double interpolateWaterColumnDepth(Point point);
 
     std::vector<ModelFile>& getModelFiles();
+
+    std::map<std::tuple<unsigned int, unsigned int, unsigned int, unsigned int>, double> getDataInterpolationWeights(Point point, double time);
 
 private:
     void loadStructureData();
     void loadTime();
     void determineChunksPerDimension();
 
+    std::map<unsigned int, double> getTimeInterpolationWeights(double time);
+    std::map<unsigned int, double> getDepthInterpolationWeights(Point point, std::map<std::pair<unsigned int, unsigned int>, double> xyWeights);
+    std::map<std::pair<unsigned int, unsigned int>, double> getXYInterpolationWeights(Point point);
+    Point latLonToLocalXY(Point origin, Point point);
+    double interpolateDepthLayer(std::map<std::pair<unsigned int, unsigned int>, double> xyWeights, unsigned int layer);
+    double xyMDegLon(double latOrigin);
+    double xyMDegLat(double latOrigin);
 private:
     std::vector<ModelFile> modelFiles;
     std::vector<double> times;

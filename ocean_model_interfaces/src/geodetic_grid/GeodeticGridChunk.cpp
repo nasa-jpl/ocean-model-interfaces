@@ -29,8 +29,8 @@ GeodeticGridChunk::GeodeticGridChunk(GeodeticGridStructure::ChunkInfo info, std:
 
             //Load data for each of the data fields
             for(uint j = 0; j < dataFieldStrings.size(); j++) {
-                netCDF::NcVar var = dataFile.getVar(dataFieldStrings[i]);
-                var.getVar(start, count, dataFields[dataFieldStrings[i]].getDataArrayAtIndex({currentTimeIndexLoading - info.timeStart,0,0,0}));
+                netCDF::NcVar var = dataFile.getVar(dataFieldStrings[j]);
+                var.getVar(start, count, dataFields[dataFieldStrings[j]].getDataArrayAtIndex({currentTimeIndexLoading - info.timeStart,0,0,0}));
             }
 
             currentTimeIndexLoading += timeDimToLoad;
