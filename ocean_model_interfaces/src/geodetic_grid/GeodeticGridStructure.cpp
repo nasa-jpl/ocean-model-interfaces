@@ -178,7 +178,7 @@ bool GeodeticGridStructure::indexInRange(unsigned int timeIndex, unsigned int de
 }
 
 bool GeodeticGridStructure::timeInModel(double time) {
-    return times[0] <= time && time < times[times.size() - 1];
+    return times[0] <= time && time <= times[times.size() - 1];
 }
 
 bool GeodeticGridStructure::depthInModel(Point point) {
@@ -188,8 +188,8 @@ bool GeodeticGridStructure::depthInModel(Point point) {
 }
 
 bool GeodeticGridStructure::xyInModel(Point point) {
-    return longitudes[0] <= point.x && point.x < longitudes[longitudes.size() - 1] && 
-           latitudes[0] <= point.y && point.y < latitudes[latitudes.size() - 1];
+    return longitudes[0] <= point.x && point.x <= longitudes[longitudes.size() - 1] && 
+           latitudes[0] <= point.y && point.y <= latitudes[latitudes.size() - 1];
 }
 
 double GeodeticGridStructure::indexWaterColumnDepth(unsigned int latIndex, unsigned int lonIndex) {
@@ -201,6 +201,7 @@ double GeodeticGridStructure::interpolateWaterColumnDepth(Point point) {
 
     double depth = 0;
     for (auto const& xyWeight : xyWeights) {
+
         depth += waterColumnDepth.index({xyWeight.first.first, xyWeight.first.second}) * xyWeight.second;
     }
 
@@ -384,7 +385,6 @@ std::map<unsigned int, double> GeodeticGridStructure::getDepthInterpolationWeigh
             }
         }
     } else {
-
         //If depth[0] is the seafloor
         if(point.z < interpDepths[0]) {
             depthIndexShallow = 0;
@@ -420,10 +420,11 @@ std::map<unsigned int, double> GeodeticGridStructure::getDepthInterpolationWeigh
     return weights;
 }
 
-
 std::map<std::tuple<unsigned int, unsigned int, unsigned int, unsigned int>, double> GeodeticGridStructure::getDataInterpolationWeights(Point point, double time) {
     std::map<std::tuple<unsigned int, unsigned int, unsigned int, unsigned int>, double> weights;
 
+
+    std::cout << timeInModel(time) << " " << depthInModel(point) << " " << xyInModel(point) << std::endl;
     if(!timeInModel(time) || !depthInModel(point) || !xyInModel(point)) {
         throw std::out_of_range("GeodeticGrid request outside of model extent");
     }

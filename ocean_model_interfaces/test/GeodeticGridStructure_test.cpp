@@ -152,13 +152,13 @@ TEST_F(GeodeticGridStructureTest, TimeInModel)
     EXPECT_TRUE(structure1.timeInModel(2507120.0 - 1));
     EXPECT_FALSE(structure1.timeInModel(2507120.0 + 1));
 }
-/*
+
+
 TEST_F(GeodeticGridStructureTest, DepthInModel)
 {
-    //TODO: Implement
-
-    //EXPECT_TRUE(false);
-}*/
+    EXPECT_TRUE(structure1.depthInModel(Point(-169.2590, -14.57603, -4196.58100612 + 1)));
+    EXPECT_FALSE(structure1.depthInModel(Point(-169.2590, -14.57603, -4196.58100612 - 1)));
+}
 
 TEST_F(GeodeticGridStructureTest, XYInModel)
 {
@@ -182,30 +182,118 @@ TEST_F(GeodeticGridStructureTest, GetWaterColumnDepth)
 TEST_F(GeodeticGridStructureTest, GetDataInterpolationWeights)
 {
     //Test directly on Index 0,10,25,25
-    Point onNode = Point(-169.23809523809524, -14.555035041808177, -3546.6216406943277);
-    double onNodeTime = 2506504.0;
-    auto onNodeWeights = structure1.getDataInterpolationWeights(onNode, onNodeTime);
-    for(auto const& weight : onNodeWeights) {
-        std::cout << std::get<0>(weight.first) << " " << std::get<1>(weight.first) << " " << std::get<2>(weight.first) << " " << std::get<3>(weight.first) << " "<< std::endl;
-
+    Point onNode1 = Point(-169.23809523809524, -14.555035041808177, -3546.6216406943277);
+    double onNode1Time = 2506504.0;
+    auto onNode1Weights = structure1.getDataInterpolationWeights(onNode1, onNode1Time);
+    for(auto const& weight : onNode1Weights) {
         if(weight.first == std::make_tuple(0,10,25,25)) {
             EXPECT_DOUBLE_EQ(weight.second, 1.0);
         } else {
             EXPECT_DOUBLE_EQ(weight.second, 0.0);
         }
   }
-    //TODO: Test directly on Index 0,[depth value 0],0,0
-    //TODO: Test directly on Index 0,[depth value == water column depth]],49,49
 
 
+    //Test directly on Index 0,[depth value 0],0,0
+    Point onNode2 = Point(-169.2593537414966, -14.576293545209538, -4196.519895424129);
+    double onNodeTime2 = 2506504.0;
+    auto onNode2Weights = structure1.getDataInterpolationWeights(onNode2, onNodeTime2);
+    for(auto const& weight : onNode2Weights) {
+        if(weight.first == std::make_tuple(0,0,0,0)) {
+            EXPECT_DOUBLE_EQ(weight.second, 1.0);
+        } else {
+            EXPECT_DOUBLE_EQ(weight.second, 0.0);
+        }
+    }
 
-  //TODO: Test with points on nodes and between times
+    //Test directly on Index 1,[depth value == 0]],49,49
+    Point onNode3 = Point(-169.21768707482994, -14.53462687854287, 0);
+    double onNode3Time = 2507120.0;
+    auto onNode3Weights = structure1.getDataInterpolationWeights(onNode3, onNode3Time);
+    for(auto const& weight : onNode3Weights) {
+        //std::cout << std::get<0>(weight.first) << " "  << std::get<1>(weight.first) << " "  << std::get<2>(weight.first) << " "  << std::get<3>(weight.first) << std::endl;
+        if(weight.first == std::make_tuple(1,31,49,49)) {
+            EXPECT_DOUBLE_EQ(weight.second, 1.0);
+        } else {
+            EXPECT_DOUBLE_EQ(weight.second, 0.0);
+        }
+    }
 
-  //TODO: Test with points on nodes and between depths
+    //Test on node [depth value == water column depth],0,0, but between index 0 and 1 on time
+    Point betweenTime = Point(-169.2593537414966, -14.576293545209538, -4196.519895424129);
+    double betweenTimeTime = 2506688.8;
+    auto betweenTimeWeights = structure1.getDataInterpolationWeights(betweenTime, betweenTimeTime);
+    for(auto const& weight : betweenTimeWeights) {
+        if(weight.first == std::make_tuple(0,0,0,0)) {
+            EXPECT_FLOAT_EQ(weight.second, 0.7);
+        } else if(weight.first == std::make_tuple(1,0,0,0)){
+            EXPECT_FLOAT_EQ(weight.second, 0.3);
+        } else {
+            EXPECT_FLOAT_EQ(weight.second, 0.0);
+        }
+    }
 
-  //TODO: Test with points between nodes on the depth plane
+    //Test on node 0,[between depths],0,0
+    Point betweenDepths = Point(-169.2593537414966, -14.576293545209538, -4174.92410497);
+    double betweenDepthsTime = 2506504.0;
+    auto betweenDepthsWeights = structure1.getDataInterpolationWeights(betweenDepths, betweenDepthsTime);
+    for(auto const& weight : betweenDepthsWeights) {
+        if(weight.first == std::make_tuple(0,0,0,0)) {
+            EXPECT_FLOAT_EQ(weight.second, 0.7);
+        } else if(weight.first == std::make_tuple(0,1,0,0)){
+            EXPECT_FLOAT_EQ(weight.second, 0.3);
+        } else {
+            EXPECT_FLOAT_EQ(weight.second, 0.0);
+        }
+    }
 
-  //TODO: Test with points between all axis
+    //Test on node 0,[at the seafloor], and between lat,lon nodes
+    Point betweenXY = Point(-169.2590, -14.57603, -4190);
+    double betweenXYTime = 2506504.0;
+    auto betweenXYWeights = structure1.getDataInterpolationWeights(betweenXY, betweenXYTime);
+    for(auto const& weight : betweenXYWeights) {
+        if(weight.first == std::make_tuple(0,0,0,0)) {
+            EXPECT_FLOAT_EQ(weight.second, 0.27407083);
+        } else if(weight.first == std::make_tuple(0,0,0,1)){
+            EXPECT_FLOAT_EQ(weight.second, 0.416);
+        } else if(weight.first == std::make_tuple(0,0,1,0)){
+            EXPECT_FLOAT_EQ(weight.second, 0.30992916);
+        } else {
+            EXPECT_FLOAT_EQ(weight.second, 0.0);
+        }
+    }
+
+
+    Point betweenAll = Point(-169.2590, -14.57603, -4177.89994465);
+    double betweenAllTime = 2506688.8;
+    auto betweenAllWeights = structure1.getDataInterpolationWeights(betweenAll, betweenAllTime);
+    for(auto const& weight : betweenAllWeights) {
+        if(weight.first == std::make_tuple(0,0,0,0)) {
+            EXPECT_NEAR(weight.second, (0.27407083 * 0.8 * 0.7), 0.001);
+        } else if(weight.first == std::make_tuple(0,0,0,1)) {
+            EXPECT_NEAR(weight.second, (0.416 * 0.8 * 0.7), 0.001);
+        } else if(weight.first == std::make_tuple(0,0,1,0)) {
+            EXPECT_NEAR(weight.second, (0.30992916 * 0.8 * 0.7), 0.001);
+        } else if(weight.first == std::make_tuple(0,1,0,0)) {
+            EXPECT_NEAR(weight.second, (0.27407083 * 0.2 * 0.7), 0.001);
+        } else if(weight.first == std::make_tuple(0,1,0,1)) {
+            EXPECT_NEAR(weight.second, (0.416 * 0.2 * 0.7), 0.001);
+        } else if(weight.first == std::make_tuple(0,1,1,0)) {
+            EXPECT_NEAR(weight.second, (0.30992916 * 0.2 * 0.7), 0.001);
+        } else if(weight.first == std::make_tuple(1,0,0,0)) {
+            EXPECT_NEAR(weight.second, (0.27407083 * 0.8 * 0.3), 0.001);
+        } else if(weight.first == std::make_tuple(1,0,0,1)) {
+            EXPECT_NEAR(weight.second, (0.416 * 0.8 * 0.3), 0.001);
+        } else if(weight.first == std::make_tuple(1,0,1,0)) {
+            EXPECT_NEAR(weight.second, (0.30992916 * 0.8 * 0.3), 0.001);
+        } else if(weight.first == std::make_tuple(1,1,0,0)) {
+            EXPECT_NEAR(weight.second, (0.27407083 * 0.2 * 0.3), 0.001);
+        } else if(weight.first == std::make_tuple(1,1,0,1)) {
+            EXPECT_NEAR(weight.second, (0.416 * 0.2 * 0.3), 0.001);
+        } else if(weight.first == std::make_tuple(1,1,1,0)) {
+            EXPECT_NEAR(weight.second, (0.30992916 * 0.2 * 0.3), 0.001);
+        }
+    }
 }
 
 
