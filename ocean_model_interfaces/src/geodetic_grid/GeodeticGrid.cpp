@@ -12,6 +12,7 @@ GeodeticGrid::GeodeticGrid() {}
 
 GeodeticGrid::GeodeticGrid(GeodeticGridParameters parameters) : structure(GeodeticGridStructure(parameters)),
                                                                 parameters(parameters){
+    chunkCache = LRUCache<unsigned int, GeodeticGridChunk>(parameters.cacheSize);
 }
 
 void GeodeticGrid::setLoadFunction(std::function<void(void)> startLoad, std::function<void(void)> endLoad) {
@@ -58,7 +59,6 @@ const ModelData GeodeticGrid::getDataHelper(double x, double y, double z, double
     data.temp = 0;
     data.dye = 0;
     data.depth = structure.interpolateWaterColumnDepth(Point(x,y,z));
-
     auto weights = structure.getDataInterpolationWeights(Point(x,y,z), time);
 
     for (auto weight : weights) {
@@ -69,6 +69,9 @@ const ModelData GeodeticGrid::getDataHelper(double x, double y, double z, double
         data.salt += indexData.salt * weight.second;
         data.temp += indexData.temp * weight.second;
         data.dye += indexData.dye * weight.second;
+
+       // std::cout << "WEIGHT/INDEX: " << weight.second << " " <<  std::get<0>(weight.first) << " " << std::get<1>(weight.first) << " " << std::get<2>(weight.first) << " " << std::get<3>(weight.first) << std::endl;
+      //  std::cout << "VALUE: " << indexData.dye << std::endl;
     }
 
     return data;

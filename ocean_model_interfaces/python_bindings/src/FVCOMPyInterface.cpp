@@ -49,4 +49,30 @@ ModelDataPy getDataFVCOM(void* ptr, double x, double y, double z, double time) {
     return returnModelData;
 }
 
+
+ModelDataPy getDataOutOfRangeFVCOM(void* ptr, double x, double y, double z, double time) {
+    struct ModelDataPy returnModelData;
+    returnModelData.u = -1;
+    returnModelData.v = -1;
+    returnModelData.w = -1;
+    returnModelData.temp = -1;
+    returnModelData.salt = -1;
+    returnModelData.dye = -1;
+    returnModelData.depth = -1;
+
+    ocean_model_interfaces::ModelInterface * ref = reinterpret_cast<ocean_model_interfaces::ModelInterface *>(ptr);
+
+    ocean_model_interfaces::ModelData data = ref->getDataOutOfRange(x,y,z,time);
+
+    returnModelData.u = data.u;
+    returnModelData.v = data.v;
+    returnModelData.w = data.w;
+    returnModelData.temp = data.temp;
+    returnModelData.salt = data.salt;
+    returnModelData.dye = data.dye;
+    returnModelData.depth = data.depth;
+
+    return returnModelData;
+}
+
 }

@@ -30,7 +30,6 @@ protected:
 
     GeodeticGrid model1;
     GeodeticGrid model2;
-
 };
 
 TEST_F(GeodeticGridTest, IndexModelData)

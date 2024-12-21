@@ -37,7 +37,6 @@ void GeodeticGridStructure::loadStructureData() {
     latitudes.resize(latDim);
     longitudes.resize(lonDim);
 
-
     //Sanity check that this is indeed a north aligned grid
     std::vector<double> latGridCheck;
     std::vector<double> lonGridCheck;
@@ -306,7 +305,7 @@ std::map<std::pair<unsigned int, unsigned int>, double> GeodeticGridStructure::g
     std::vector<Point> tri2XY;
     std::vector<std::pair<unsigned int, unsigned int>> tri2Index;
 
-    Point origin = Point(latBefore, lonBefore,0);
+    Point origin = Point(lonBefore,latBefore,0);
     Point xyPoint = latLonToLocalXY(origin, point);
 
     tri1Index.push_back(std::make_pair(latBeforeIndex, lonBeforeIndex));
@@ -423,8 +422,6 @@ std::map<unsigned int, double> GeodeticGridStructure::getDepthInterpolationWeigh
 std::map<std::tuple<unsigned int, unsigned int, unsigned int, unsigned int>, double> GeodeticGridStructure::getDataInterpolationWeights(Point point, double time) {
     std::map<std::tuple<unsigned int, unsigned int, unsigned int, unsigned int>, double> weights;
 
-
-    std::cout << timeInModel(time) << " " << depthInModel(point) << " " << xyInModel(point) << std::endl;
     if(!timeInModel(time) || !depthInModel(point) || !xyInModel(point)) {
         throw std::out_of_range("GeodeticGrid request outside of model extent");
     }

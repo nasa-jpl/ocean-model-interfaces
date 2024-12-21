@@ -38,7 +38,7 @@ def main(args):
         paths.append(os.path.join(args.output_path, os.path.basename(p)))
         
     print("Save Regularized NetCDF Model Files")
-    xr.save_mfdataset(datasets, paths)
+    xr.save_mfdataset(datasets, paths, format="NETCDF3_64BIT")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
