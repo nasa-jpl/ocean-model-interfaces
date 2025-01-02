@@ -8,7 +8,7 @@ C++ library to provide random access to large ocean model data sets. Primarily i
 
 ## Coordinate Reference System
 
-Each model is queried in X,Y,Z. X and Y should be queried in the same coordinate reference system used by the loaded model (e.g. UTM, Polar Stereographic, WGS-84, etc.). The same model type could potentially have different coordinate reference systems. Z+ should always be positive, with 0 at the sea surface. If a loaded model is different from this, then the model implementation should handle to accept the correct Z axis direction. If a model has a free-surface, Z=0 should be the mean sea surface, not the free-surface. This ensures a constant, non-moving reference frame.
+Each model is queried in X,Y,Z, where the units of X and Y are dependent on the model type. Z+ should always be up, with 0 at the sea surface. If a loaded model is different from this, then the model implementation should handle to accept the correct Z axis direction. If a model has a free-surface, Z=0 should be the mean sea surface, not the free-surface. This ensures a constant, non-moving reference frame.
 
 Future work is to create a general method of allowing a model to be queried in an arbitrary CRS and have that converted to the correct CRS for the specific loaded model.
 
@@ -34,7 +34,7 @@ Generally, only the FVCOM class needs to be used directly. Although, in unique c
 
 ## General Geodetic Gridded Model /w Sigma Layers
 
-This model is a generalized rectilinear geodetic (lat,lon) gridded model with sigma vertical layers. This is useful for re-griding models such as ROMS to a form that is more suitable for random-access. 
+This model is a generalized rectilinear geodetic (lat,lon) gridded model with sigma vertical layers. This is useful for re-griding models such as ROMS to a form that is more suitable for random-access. In this model X should be longitude and Y should be latitude when querying the model.
 
 ### Assumptions
 - Fixed water column depth
