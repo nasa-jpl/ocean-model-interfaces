@@ -12,7 +12,7 @@
 
 #include "ocean_model_interfaces/fvcom/FVCOMStructure.h"
 #include "ocean_model_interfaces/fvcom/FVCOMChunk.h"
-#include "ocean_model_interfaces/fvcom/LRUCache.h"
+#include "ocean_model_interfaces/util/LRUCache.h"
 
 #include "ocean_model_interfaces/model_interface/ModelInterface.h"
 #include "ocean_model_interfaces/model_interface/ModelData.h"
@@ -161,7 +161,7 @@ private:
      * 
      * @return The interpolated data.
      */
-    ModelData interpolate(FVCOMStructure::Point p, double time);
+    ModelData interpolate(Point p, double time);
 
     /**
      * Performs XY barycentric linear interpolation of the model variables stored at the 
@@ -173,7 +173,7 @@ private:
      * 
      * @return Data interpolated at the given point.
      */
-    FVCOMChunk::NodeDataInterp nodeInterpolation(const FVCOMStructure::Point& interpolatedPoint, int containingTriangle, int siglayIndex, int timeIndex);
+    FVCOMChunk::NodeDataInterp nodeInterpolation(const Point& interpolatedPoint, int containingTriangle, int siglayIndex, int timeIndex);
     
     /**
      * Performs interpolations of the model variables stored at the triangles
@@ -186,7 +186,7 @@ private:
      * 
      * @return Data interpolated at the given point.
      */
-    FVCOMChunk::TriangleDataInterp triangleInterpolation(const FVCOMStructure::Point& interpolatedPoint, int containingTriangle, int siglayIndex, int timeIndex);
+    FVCOMChunk::TriangleDataInterp triangleInterpolation(const Point& interpolatedPoint, int containingTriangle, int siglayIndex, int timeIndex);
     
     /**
      * Finds the area of a given triangle
@@ -195,7 +195,7 @@ private:
      * @param p3 Point 3 of the triangle
      * @return The area of the triangle as specified by the provided 3 points.
      */
-    const double areaOfTriangle(const FVCOMStructure::Point& p1, const FVCOMStructure::Point& p2, const FVCOMStructure::Point& p3) const;
+    const double areaOfTriangle(const Point& p1, const Point& p2, const Point& p3) const;
 
 private:
     LRUCache<unsigned int, FVCOMChunk> chunkCache;

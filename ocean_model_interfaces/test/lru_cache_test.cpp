@@ -33,7 +33,7 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "ocean_model_interfaces/fvcom/LRUCache.h"
+#include "ocean_model_interfaces/util/LRUCache.h"
 #include <gtest/gtest.h>
 
 using namespace ocean_model_interfaces;

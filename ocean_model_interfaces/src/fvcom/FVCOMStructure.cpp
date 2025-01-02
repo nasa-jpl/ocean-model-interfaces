@@ -1,5 +1,6 @@
 #include "ocean_model_interfaces/fvcom/FVCOMStructure.h"
 #include "ocean_model_interfaces/fvcom/FVCOM.h"
+#include "ocean_model_interfaces/util/UtilityFunctions.h"
 
 #include <netcdf>
 #include <memory>
@@ -7,9 +8,6 @@
 #include <limits>
 #include <algorithm>
 #include <iterator>
-
-#include <boost/filesystem.hpp>
-namespace fs = boost::filesystem;
 
 using namespace ocean_model_interfaces;
 
@@ -25,59 +23,6 @@ FVCOMStructure::FVCOMStructure(const std::string filename, int xChunkSize, int y
     loadStructureData(filename);
 
     splitIntoChunks();
-}
-
-FVCOMStructure::Plane::Plane() {}
-
-FVCOMStructure::Plane::Plane(FVCOMStructure::Point& p0, FVCOMStructure::Point& p1, FVCOMStructure::Point& p2)
-{
-    double ab[3];
-    double ac[3];
-
-    ab[0] = p1.x - p0.x;
-    ab[1] = p1.y - p0.y;
-    ab[2] = p1.z - p0.z;
-
-    ac[0] = p2.x - p0.x;
-    ac[1] = p2.y - p0.y;
-    ac[2] = p2.z - p0.z;
-
-    a = (ab[1] * ac[2]) - (ab[2] * ac[1]);
-    b = (ab[2] * ac[0]) - (ab[0] * ac[2]);
-    c = (ab[0] * ac[1]) - (ab[1] * ac[0]);
-
-    double magnitude = sqrt(a * a +  b * b +  c * c);
-    a /= magnitude;
-    b /= magnitude;
-    c /= magnitude;
-
-    d = -(p0.x * a + p0.y * b + p0.z * c);
-}
-
-double FVCOMStructure::Plane::getHeight(Point& interpolatePoint)
-{
-    return (-d - a * interpolatePoint.x - b * interpolatePoint.y) / c;
-}
-
-std::vector<std::string> FVCOMStructure::traverseDataFiles(const std::string filename)
-{
-    std::vector<std::string> filenames;
-    fs::path p1 = filename;
-    if(fs::is_directory(p1))
-    {
-        for(auto& p: fs::directory_iterator(p1))
-        {
-            if(!fs::is_directory(p))
-            {
-                filenames.push_back(p.path().string());
-            }
-        }
-    }
-    else
-    {
-        filenames.push_back(filename);
-    }
-    return filenames;
 }
 
 void FVCOMStructure::loadStructureData(const std::string directory)
@@ -434,28 +379,28 @@ float FVCOMStructure::getTime(int timeIndex) const
     return times[timeIndex];
 }
 
-FVCOMStructure::Plane FVCOMStructure::getTrianglePlane(int triangle) const
+Plane FVCOMStructure::getTrianglePlane(int triangle) const
 {
     const std::vector<int>& surroundingNodes = triangleToNodes[triangle];
 
-    FVCOMStructure::Point p0 = getNodePointWithH(surroundingNodes[0]);
-    FVCOMStructure::Point p1 = getNodePointWithH(surroundingNodes[1]);
-    FVCOMStructure::Point p2 = getNodePointWithH(surroundingNodes[2]);
+    Point p0 = getNodePointWithH(surroundingNodes[0]);
+    Point p1 = getNodePointWithH(surroundingNodes[1]);
+    Point p2 = getNodePointWithH(surroundingNodes[2]);
     
-    FVCOMStructure::Plane plane(p0, p1, p2);
+    Plane plane(p0, p1, p2);
 
     return plane;
 }
 
-FVCOMStructure::Plane FVCOMStructure::getTriangleSiglayPlane(int triangle, unsigned int siglay) const
+Plane FVCOMStructure::getTriangleSiglayPlane(int triangle, unsigned int siglay) const
 {
     const std::vector<int>& surroundingNodes = triangleToNodes[triangle];
 
-    FVCOMStructure::Point p0 = getNodePointAtSiglay(surroundingNodes[0], siglay);
-    FVCOMStructure::Point p1 = getNodePointAtSiglay(surroundingNodes[1], siglay);
-    FVCOMStructure::Point p2 = getNodePointAtSiglay(surroundingNodes[2], siglay);
+    Point p0 = getNodePointAtSiglay(surroundingNodes[0], siglay);
+    Point p1 = getNodePointAtSiglay(surroundingNodes[1], siglay);
+    Point p2 = getNodePointAtSiglay(surroundingNodes[2], siglay);
     
-    FVCOMStructure::Plane plane(p0, p1, p2);
+    Plane plane(p0, p1, p2);
 
     return plane;
 }
@@ -470,14 +415,14 @@ double FVCOMStructure::distanceSquared(Point p0, Point p1) const
     return (p0.x - p1.x)*(p0.x - p1.x) + (p0.y - p1.y)*(p0.y - p1.y);
 }
 
-const FVCOMStructure::Point FVCOMStructure::getNodePointWithH(int node) const
+const Point FVCOMStructure::getNodePointWithH(int node) const
 {
     return nodes[node];
 }
 
-const FVCOMStructure::Point FVCOMStructure::getNodePointAtSiglay(int node, int siglay) const
+const Point FVCOMStructure::getNodePointAtSiglay(int node, int siglay) const
 {
-    FVCOMStructure::Point returnPoint = nodes[node];
+    Point returnPoint = nodes[node];
     returnPoint.z = returnPoint.z * nodeSiglay[node][siglay];
 
     return returnPoint;
@@ -608,20 +553,20 @@ void FVCOMStructure::timeInterpolation(double time, int& time1Index, int& time2I
 }
 
 
-void FVCOMStructure::siglayInterpolation(FVCOMStructure::Point& interpolatePoint, int& siglay1Index, int& siglay2Index, double& siglay1Percent)
+void FVCOMStructure::siglayInterpolation(Point& interpolatePoint, int& siglay1Index, int& siglay2Index, double& siglay1Percent)
 {
     int containingTriangle = getContainingTriangle(interpolatePoint);
     siglayInterpolation(interpolatePoint, siglay1Index, siglay2Index, siglay1Percent, containingTriangle);
 }
 
-void FVCOMStructure::siglayInterpolation(FVCOMStructure::Point& interpolatePoint, int& siglay1Index, int& siglay2Index, double& siglay1Percent, int containingTriangle)
+void FVCOMStructure::siglayInterpolation(Point& interpolatePoint, int& siglay1Index, int& siglay2Index, double& siglay1Percent, int containingTriangle)
 {
     siglay1Index = siglay2Index = -1;
 
     double prevDot = 0;
     for(uint i = 0; i < getNumSiglays(); i++)
     {
-        FVCOMStructure::Plane plane = getTriangleSiglayPlane(containingTriangle, i);
+        Plane plane = getTriangleSiglayPlane(containingTriangle, i);
 
         //calculate the dot product with the plane and the point to determine which side of the plane it is on
         double dot = plane.a * interpolatePoint.x + plane.b * interpolatePoint.y + plane.c * interpolatePoint.z + plane.d;
@@ -668,8 +613,8 @@ void FVCOMStructure::siglayInterpolation(FVCOMStructure::Point& interpolatePoint
     }
     else
     {
-        FVCOMStructure::Plane upperPlane = getTriangleSiglayPlane(containingTriangle, siglay1Index);
-        FVCOMStructure::Plane lowerPlane = getTriangleSiglayPlane(containingTriangle, siglay2Index);
+        Plane upperPlane = getTriangleSiglayPlane(containingTriangle, siglay1Index);
+        Plane lowerPlane = getTriangleSiglayPlane(containingTriangle, siglay2Index);
 
         double upperH = (-upperPlane.d - upperPlane.a * interpolatePoint.x - upperPlane.b * interpolatePoint.y) / upperPlane.c;
         double lowerH = (-lowerPlane.d - lowerPlane.a * interpolatePoint.x - lowerPlane.b * interpolatePoint.y) / lowerPlane.c;
@@ -678,30 +623,30 @@ void FVCOMStructure::siglayInterpolation(FVCOMStructure::Point& interpolatePoint
     }
 }
 
-double FVCOMStructure::getDepthAtPoint(FVCOMStructure::Point& interpolatePoint, int containingTriangle)
+double FVCOMStructure::getDepthAtPoint(Point& interpolatePoint, int containingTriangle)
 {
     const std::vector<int>& surroundingNodes = getNodesInTriangle(containingTriangle);
 
-    FVCOMStructure::Point p1 = getNodePointWithH(surroundingNodes[0]);
-    FVCOMStructure::Point p2 = getNodePointWithH(surroundingNodes[1]);
-    FVCOMStructure::Point p3 = getNodePointWithH(surroundingNodes[2]);
+    Point p1 = getNodePointWithH(surroundingNodes[0]);
+    Point p2 = getNodePointWithH(surroundingNodes[1]);
+    Point p3 = getNodePointWithH(surroundingNodes[2]);
 
-    FVCOMStructure::Plane groundPlane(p1,p2,p3);
+    Plane groundPlane(p1,p2,p3);
 
     return groundPlane.getHeight(interpolatePoint);
 }
 
-double FVCOMStructure::getDepthAtPoint(FVCOMStructure::Point& interpolatePoint)
+double FVCOMStructure::getDepthAtPoint(Point& interpolatePoint)
 {
     int containingTriangle = getContainingTriangle(interpolatePoint);
 
     const std::vector<int>& surroundingNodes = getNodesInTriangle(containingTriangle);
 
-    FVCOMStructure::Point p1 = getNodePointWithH(surroundingNodes[0]);
-    FVCOMStructure::Point p2 = getNodePointWithH(surroundingNodes[1]);
-    FVCOMStructure::Point p3 = getNodePointWithH(surroundingNodes[2]);
+    Point p1 = getNodePointWithH(surroundingNodes[0]);
+    Point p2 = getNodePointWithH(surroundingNodes[1]);
+    Point p3 = getNodePointWithH(surroundingNodes[2]);
 
-    FVCOMStructure::Plane groundPlane(p1,p2,p3);
+    Plane groundPlane(p1,p2,p3);
 
     return groundPlane.getHeight(interpolatePoint);
 }

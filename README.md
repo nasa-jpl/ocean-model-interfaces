@@ -3,10 +3,12 @@ C++ library to provide random access to large ocean model data sets. Primarily i
 
 ## Currently included model interfaces
 - FVCOM
+- General Rectilinear Gridded Model /w Sigma Layers
 - Miscellaneous primitive "models"
 
 ## Coordinate Reference System
-Each model is queried in X,Y,Z. X and Y should be queried in the same coordiante reference system used by the loaded model (e.g. UTM, Polar Stereographic, WGS-84, etc.). The same model type could potentially have different coordainte reference systems. Z+ should always be positive, with 0 at the sea surface. If a loaded model is different from this, then the model implementation should handle to accept the correct Z axis direction.
+
+Each model is queried in X,Y,Z, where the units of X and Y are dependent on the model type. Z+ should always be up, with 0 at the sea surface. If a loaded model is different from this, then the model implementation should handle to accept the correct Z axis direction. If a model has a free-surface, Z=0 should be the mean sea surface, not the free-surface. This ensures a constant, non-moving reference frame.
 
 Future work is to create a general method of allowing a model to be queried in an arbitrary CRS and have that converted to the correct CRS for the specific loaded model.
 
@@ -29,6 +31,17 @@ This limitation in the x and y dimension for variables located at triangle cente
 See unit tests at `ocean_model_interfaces/test/FVCOM_test.cpp`
 
 Generally, only the FVCOM class needs to be used directly. Although, in unique cases or debugging purposes the FVCOMStructure class could be useful.
+
+## General Geodetic Gridded Model /w Sigma Layers
+
+This model is a generalized rectilinear geodetic (lat,lon) gridded model with sigma vertical layers. This is useful for re-griding models such as ROMS to a form that is more suitable for random-access. In this model X should be longitude and Y should be latitude when querying the model.
+
+### Assumptions
+- Fixed water column depth
+- No free-surface (i.e. depth of data points are constant in time)
+- North aligned lat/lon grid
+- Pre-processed model data that includes the point depths in the file, instead of just the sigma layer information.
+
 
 ## Miscellaneous Primitive "Models"
 
@@ -130,7 +143,7 @@ When not using cmake link to the `ocean_model_interfaces` library in the standar
 
 # Copyright
 
-Copyright 2021, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology.
+Copyright 2024, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology.
 
 # Point of Contact
 

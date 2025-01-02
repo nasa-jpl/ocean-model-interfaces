@@ -1,5 +1,8 @@
-#include "ocean_model_interfaces/fvcom/FVCOMStructure.h"
 #include <gtest/gtest.h>
+
+#include "ocean_model_interfaces/fvcom/FVCOMStructure.h"
+#include "ocean_model_interfaces/util/Plane.h"
+#include "ocean_model_interfaces/util/Point.h"
 
 using namespace ocean_model_interfaces;
 
@@ -40,8 +43,8 @@ TEST(FVCOMStructureTest, GetTriangleSiglayPlane)
     // (-150000.0, -105000.0), (-145675.094, -103157.913), (-145675.008, -108157.064)
     //siglay 0: -0.003937007859349251
     //siglay 1: -0.027559055015444756
-    FVCOMStructure::Plane plane0 = structureAxial.getTriangleSiglayPlane(100, 0);
-    FVCOMStructure::Plane plane1 = structureAxial.getTriangleSiglayPlane(100, 3);
+    Plane plane0 = structureAxial.getTriangleSiglayPlane(100, 0);
+    Plane plane1 = structureAxial.getTriangleSiglayPlane(100, 3);
 
     ASSERT_FLOAT_EQ(0, plane0.a);
     ASSERT_FLOAT_EQ(0, plane0.b);
@@ -56,9 +59,9 @@ TEST(FVCOMStructureTest, GetTriangleSiglayPlane)
 
 TEST(FVCOMStructureTest, CreatePlane)
 {
-    FVCOMStructure::Point p0;
-    FVCOMStructure::Point p1;
-    FVCOMStructure::Point p2;
+    Point p0;
+    Point p1;
+    Point p2;
 
     p0.x = 10;
     p0.y = 10;
@@ -74,7 +77,7 @@ TEST(FVCOMStructureTest, CreatePlane)
     //v2: 11,17,-8
     //cross: -19; 65; 112
     //cross normalized: -0.235244, 0.794745, -0.5595
-    FVCOMStructure::Plane plane0(p0, p1, p2);
+    Plane plane0(p0, p1, p2);
     
     ASSERT_FLOAT_EQ(-0.14516935, plane0.a);
     ASSERT_FLOAT_EQ(0.496632, plane0.b);
@@ -87,7 +90,7 @@ TEST(FVCOMStructureTest, InterpolateSiglay)
 {
 
     //Above first siglay
-    FVCOMStructure::Point p0;
+    Point p0;
     p0.x = 0;
     p0.y = 0;
     p0.z = -5;
@@ -99,7 +102,7 @@ TEST(FVCOMStructureTest, InterpolateSiglay)
     structureAxial.siglayInterpolation(p0, siglay1IndexP0, siglay2IndexP0, siglay1PercentP0);
 
     //Below last siglay
-    FVCOMStructure::Point p1;
+    Point p1;
     p1.x = 50000.0;
     p1.y = -150000.0;
     p1.z = -2798;
@@ -117,7 +120,7 @@ TEST(FVCOMStructureTest, InterpolateSiglay)
 
 
     //On siglay
-    FVCOMStructure::Point p2;
+    Point p2;
     p2.x = 0;
     p2.y = 0;
     p2.z = 0;
@@ -128,7 +131,7 @@ TEST(FVCOMStructureTest, InterpolateSiglay)
 
     
     int triangle2 = structureAxial.getContainingTriangle(p2);
-    FVCOMStructure::Plane plane2 = structureAxial.getTriangleSiglayPlane(triangle2, 18);
+    Plane plane2 = structureAxial.getTriangleSiglayPlane(triangle2, 18);
     p2.z = (-plane2.d - plane2.a * p2.x - plane2.b * p2.y) / plane2.c;
 
     structureAxial.siglayInterpolation(p2, siglay1IndexP2, siglay2IndexP2, siglay1PercentP2);
@@ -142,7 +145,7 @@ TEST(FVCOMStructureTest, InterpolateSiglay)
     //6781, 6783, 6782 (index)
     //1555.529154
     // siglay 7,8
-    FVCOMStructure::Point p3;
+    Point p3;
     p3.x = 0;
     p3.y = 0;
     p3.z = -100;
@@ -153,8 +156,8 @@ TEST(FVCOMStructureTest, InterpolateSiglay)
 
     structureAxial.siglayInterpolation(p3, siglay1IndexP3, siglay2IndexP3, siglay1PercentP3);
 
-    FVCOMStructure::Plane plane3a = structureAxial.getTriangleSiglayPlane(13325, 7);
-    FVCOMStructure::Plane plane3b = structureAxial.getTriangleSiglayPlane(13325, 8);
+    Plane plane3a = structureAxial.getTriangleSiglayPlane(13325, 7);
+    Plane plane3b = structureAxial.getTriangleSiglayPlane(13325, 8);
 
     double upperH = (-plane3a.d - plane3a.a * p3.x - plane3a.b * p3.y) / plane3a.c;
     double lowerH = (-plane3b.d - plane3b.a * p3.x - plane3b.b * p3.y) / plane3b.c;
@@ -189,9 +192,9 @@ TEST(FVCOMStructureTest, GetClosestTime) {
 }
 
 TEST(FVCOMStructureTest, PointInTriangle) {
-    FVCOMStructure::Point pIn;
-    FVCOMStructure::Point pOut;
-    FVCOMStructure::Point pEdge;
+    Point pIn;
+    Point pOut;
+    Point pEdge;
 
 
     //Triangle 1
@@ -199,7 +202,7 @@ TEST(FVCOMStructureTest, PointInTriangle) {
     //////X,Y 385: -48.038475, 10
     //////X,Y 329: -56.69873, 5
     //////X,Y 342: -56.69873, 15.0
-    FVCOMStructure::Point node385 = structure.getNodePointWithH(385); //Get the exact x and y for edge point
+    Point node385 = structure.getNodePointWithH(385); //Get the exact x and y for edge point
     pEdge.x = node385.x;
     pEdge.y = node385.y;
     pOut.x = 0;
@@ -220,16 +223,16 @@ TEST(FVCOMStructureTest, PointInTriangle) {
 }
 
 TEST(FVCOMStructureTest, GetContainingTriangle) {
-    FVCOMStructure::Point pIn;
-    FVCOMStructure::Point pOut;
-    FVCOMStructure::Point pEdge;
+    Point pIn;
+    Point pOut;
+    Point pEdge;
 
     //Triangle 1
     ////Nodes: 385, 329,342
     //////X,Y 385: -48.038475, 10
     //////X,Y 329: -56.69873, 5
     //////X,Y 342: -56.69873, 15.0
-    FVCOMStructure::Point node385 = structure.getNodePointWithH(385); //Get the exact x and y for edge point
+    Point node385 = structure.getNodePointWithH(385); //Get the exact x and y for edge point
     pEdge.x = node385.x;
     pEdge.y = node385.y;
     pOut.x = 0;
@@ -249,9 +252,9 @@ TEST(FVCOMStructureTest, GetContainingTriangle) {
 
 
 TEST(FVCOMStructureTest, GetClosestNode) {
-    FVCOMStructure::Point p1;
-    FVCOMStructure::Point p2;
-    FVCOMStructure::Point p3;
+    Point p1;
+    Point p2;
+    Point p3;
 
     //Triangle 1
     ////Nodes: 385, 329,342
@@ -277,9 +280,9 @@ TEST(FVCOMStructureTest, GetClosestNode) {
 
 
 TEST(FVCOMStructureTest, Distance) {
-    FVCOMStructure::Point p1;
-    FVCOMStructure::Point p2;
-    FVCOMStructure::Point p3;
+    Point p1;
+    Point p2;
+    Point p3;
 
     p1.x = 0;
     p1.y = 0;
@@ -415,11 +418,11 @@ TEST(FVCOMStructureTest, GetChunkForTriangle) {
 }
 
 TEST(FVCOMStructureTest, PointInModel) {
-    FVCOMStructure::Point inside;
-    FVCOMStructure::Point positionOutside1;
-    FVCOMStructure::Point depthOutside1;
-    FVCOMStructure::Point positionOutside2;
-    FVCOMStructure::Point depthOutside2;
+    Point inside;
+    Point positionOutside1;
+    Point depthOutside1;
+    Point positionOutside2;
+    Point depthOutside2;
 
     inside.x = 0;
     inside.y = 0;

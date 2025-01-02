@@ -67,8 +67,7 @@ FVCOMChunk::FVCOMChunk(const std::vector<FVCOMStructure::ModelFile> modelFiles, 
             //set start and count variables
             std::vector<size_t> start = {adjustedTimeIndex, chunkInfo.siglayStart, nodesToLoad[i]};
             std::vector<size_t> count = {timeCount, chunkInfo.siglaySize, 1};
-
-
+ 
             //load data
             tempVar.getVar(start, count, tempLoad.data() + dataIndex);
             saltVar.getVar(start, count, saltLoad.data() + dataIndex);
