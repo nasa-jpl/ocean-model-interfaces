@@ -42,6 +42,9 @@ This model is a generalized rectilinear geodetic (lat,lon) gridded model with si
 - North aligned lat/lon grid
 - Pre-processed model data that includes the point depths in the file, instead of just the sigma layer information.
 
+### ROMS Model Regularization
+
+The script `scripts/roms_model_regularization.py` should be used to regularize a ROMS model to fit the assumptions above (i.e. north-aligned and all data points on a shared geodetic grid).
 
 ## Miscellaneous Primitive "Models"
 
