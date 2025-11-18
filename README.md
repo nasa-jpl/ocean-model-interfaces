@@ -44,7 +44,7 @@ This model is a generalized rectilinear geodetic (lat,lon) gridded model with si
 
 ### ROMS Model Regularization
 
-The script `scripts/roms_model_regularization.py` should be used to regularize a ROMS model to fit the assumptions above (i.e. north-aligned and all data points on a shared geodetic grid).
+The script `scripts/roms_model_regularization.py` should be used to regularize a ROMS model to fit the assumptions above. ROMS by default is not neseccarily north aligned, data points are on a C-Grid, and it can have a free-surface, so it needs to be regularized to fit the General Geodetic Gridded Model /w Sigma Layers
 
 ## Miscellaneous Primitive "Models"
 
