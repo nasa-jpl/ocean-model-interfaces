@@ -2,6 +2,8 @@
 #define UTILITY_FUNCTIONS_H
 
 #include <vector>
+#include <string>
+
 #include "ocean_model_interfaces/util/Point.h"
 
 namespace ocean_model_interfaces

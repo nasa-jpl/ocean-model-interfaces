@@ -5,6 +5,7 @@
 #include "ocean_model_interfaces/fvcom/FVCOM.h"
 
 #include <stdio.h>    
+#include <math.h>
 
 extern "C"
 {
