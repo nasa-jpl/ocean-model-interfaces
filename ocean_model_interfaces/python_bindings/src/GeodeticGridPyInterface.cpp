@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <math.h>
+#include <iostream>
 
 extern "C"
 {
@@ -15,20 +16,20 @@ extern "C"
 void* newGeodeticGrid(struct GeodeticGridParametersPy parameters) {
     ocean_model_interfaces::GeodeticGridParameters cxxParameters;
     cxxParameters.modelDirectory = std::string(parameters.modelDirectory);
+
     cxxParameters.timeChunkSize = parameters.timeChunkSize;
     cxxParameters.depthChunkSize = parameters.depthChunkSize;
     cxxParameters.latChunkSize = parameters.latChunkSize;
     cxxParameters.lonChunkSize = parameters.lonChunkSize;
     cxxParameters.cacheSize = parameters.cacheSize;
-    //return 0;
     return new(std::nothrow) ocean_model_interfaces::GeodeticGrid(cxxParameters);
 }
 
 void deleteGeodeticGrid(void* ptr) {
     try
     {
-     //   ocean_model_interfaces::GeodeticGrid * ref = reinterpret_cast<ocean_model_interfaces::GeodeticGrid *>(ptr);
-      //  delete ref;
+        ocean_model_interfaces::GeodeticGrid * ref = reinterpret_cast<ocean_model_interfaces::GeodeticGrid *>(ptr);
+        delete ref;
     } catch(...) {
         //Don't throw any exceptions because ctypes does not handle them well.
     }

@@ -43,7 +43,7 @@ public:
     void setOrigin(Point origin);
 
     enum CoordinateType {
-        XY,
+        XY = 0,
         LATLON,
     };
     void setCoordinateType(CoordinateType type);
