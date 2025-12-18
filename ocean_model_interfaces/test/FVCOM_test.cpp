@@ -3,6 +3,7 @@
 #include "ocean_model_interfaces/fvcom/FVCOM.h"
 #include "ocean_model_interfaces/util/Plane.h"
 #include "ocean_model_interfaces/util/Point.h"
+#include "ocean_model_interfaces/util/UtilityFunctions.h"
 
 #include "ocean_model_interfaces/model_interface/ModelData.h"
 
@@ -156,8 +157,18 @@ TEST(FVCOMTest, AllInterpolation)
     //siglay 5: -0.04330708645284176
     //siglay 6: -0.05118110217154026
 
+    Point origin(-169, 14,0);
+    fvcomMultiple.setOrigin(origin);
+    fvcomMultiple.setOffsets(0,0,0,0);
 
-    ModelData data1 = fvcomMultiple.getData(12314, -9648, -89, 0.11 * SECONDS_IN_DAY);
+    fvcomMultiple.setCoordinateType(ModelInterface::CoordinateType::XY);
+    ModelData dataXY = fvcomMultiple.getData(12314, -9648, -89, 0.11 * SECONDS_IN_DAY);
+
+    fvcomMultiple.setCoordinateType(ModelInterface::CoordinateType::LATLON);
+    Point latLonPos = localXYToLatLon(origin, Point(12314, -9648, -89));
+
+    ModelData dataLatLon = fvcomMultiple.getData(latLonPos.x, latLonPos.y, -89, 0.11 * SECONDS_IN_DAY);
+    fvcomMultiple.setCoordinateType(ModelInterface::CoordinateType::XY);
 
     //siglay: 5, time 2
     //temp: 3.7756120834702616
@@ -186,14 +197,22 @@ TEST(FVCOMTest, AllInterpolation)
     //siglay 5 h: -81.8777  0.52157265784
     //siglay 6 h: -96.7646  0.47842734216
 
-    EXPECT_FLOAT_EQ(3.7692957782, data1.temp);
-    EXPECT_FLOAT_EQ(34.3233909259, data1.salt);
-    EXPECT_FLOAT_EQ(0.0, data1.dye);
+    EXPECT_FLOAT_EQ(3.7692957782, dataXY.temp);
+    EXPECT_FLOAT_EQ(34.3233909259, dataXY.salt);
+    EXPECT_FLOAT_EQ(0.0, dataXY.dye);
+
+    EXPECT_FLOAT_EQ(3.7692957782, dataLatLon.temp);
+    EXPECT_FLOAT_EQ(34.3233909259, dataLatLon.salt);
+    EXPECT_FLOAT_EQ(0.0, dataLatLon.dye);
+
 }
 
 TEST(FVCOMTest, AllInterpolationOffset)
 {
-    //Same ass AllInterpolation just with offsets
+    //Same as AllInterpolation just with offsets
+
+    Point origin(-169, 14,0);
+    fvcomMultiple.setOrigin(origin);
 
     double offsetX = 100;
     double offsetY = -150;
@@ -201,14 +220,31 @@ TEST(FVCOMTest, AllInterpolationOffset)
     double offsetTime = 0.2;
     fvcomMultiple.setOffsets(offsetX, offsetY, offsetZ, offsetTime);
 
-    ModelData data1 = fvcomMultiple.getData(12314 + offsetX, 
-                                            -9648 + offsetY, 
-                                            -89 + offsetZ, 
-                                            0.11 * SECONDS_IN_DAY + offsetTime);
+    fvcomMultiple.setCoordinateType(ModelInterface::CoordinateType::XY);
+    ModelData dataXY = fvcomMultiple.getData(12314 - offsetX, 
+                                            -9648 - offsetY, 
+                                            -89 - offsetZ, 
+                                            0.11 * SECONDS_IN_DAY - offsetTime);
 
-    EXPECT_FLOAT_EQ(3.7692957782, data1.temp);
-    EXPECT_FLOAT_EQ(34.3233909259, data1.salt);
-    EXPECT_FLOAT_EQ(0.0, data1.dye);
+    fvcomMultiple.setCoordinateType(ModelInterface::CoordinateType::LATLON);
+    Point latLonPos = localXYToLatLon(origin, Point(12314 - offsetX, -9648 - offsetY, -89));
+
+    ModelData dataLatLon = fvcomMultiple.getData(latLonPos.x, 
+                                                latLonPos.y, 
+                                                -89 - offsetZ, 
+                                                0.11 * SECONDS_IN_DAY - offsetTime);
+
+    fvcomMultiple.setCoordinateType(ModelInterface::CoordinateType::XY);
+
+
+
+    EXPECT_FLOAT_EQ(3.7692957782, dataXY.temp);
+    EXPECT_FLOAT_EQ(34.3233909259, dataXY.salt);
+    EXPECT_FLOAT_EQ(0.0, dataXY.dye);
+
+    EXPECT_FLOAT_EQ(3.7692957782, dataLatLon.temp);
+    EXPECT_FLOAT_EQ(34.3233909259, dataLatLon.salt);
+    EXPECT_FLOAT_EQ(0.0, dataLatLon.dye);
 
     //Reset offsets to 0 for next tests
     fvcomMultiple.setOffsets(0, 0, 0, 0);

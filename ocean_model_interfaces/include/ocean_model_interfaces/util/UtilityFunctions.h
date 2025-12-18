@@ -13,6 +13,11 @@ std::vector<std::string> traverseDataFiles(const std::string filename);
 
 std::tuple<double, double, double> calculateBarycentricCoordinates(Point p0, Point p1, Point p2, Point testPoint);
 
+Point latLonToLocalXY(Point origin, Point point);
+Point localXYToLatLon(Point origin, Point point);
+double xyMDegLon(double latOrigin);
+double xyMDegLat(double latOrigin);
+
 }
 
 #endif

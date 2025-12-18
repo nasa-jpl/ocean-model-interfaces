@@ -46,7 +46,6 @@ ModelDataPy getDataGeodeticGrid(void* ptr, double x, double y, double z, double 
 
     ocean_model_interfaces::ModelInterface * ref = reinterpret_cast<ocean_model_interfaces::ModelInterface *>(ptr);
 
-    ocean_model_interfaces::ModelData data;
     try{
         ocean_model_interfaces::ModelData data = ref->getData(x,y,z,time);
         returnModelData.u = data.u;

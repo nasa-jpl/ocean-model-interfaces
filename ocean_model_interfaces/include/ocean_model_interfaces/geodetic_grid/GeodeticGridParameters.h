@@ -2,6 +2,7 @@
 #define GEODETIC_GRID_PARAMETERS_H
 
 #include <string>
+#include <functional>
 
 namespace ocean_model_interfaces
 {
@@ -18,6 +19,10 @@ struct GeodeticGridParameters {
 
     //The size of the cache used for storing loaded chunks
     unsigned int cacheSize = 10;
+
+    //Functions called when starting or ending loading model from disk.
+    std::function<void(void)> startLoad;
+    std::function<void(void)> endLoad;
 };
 }
 #endif

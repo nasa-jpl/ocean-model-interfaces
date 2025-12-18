@@ -1,10 +1,12 @@
 #include "ocean_model_interfaces/geodetic_grid/GeodeticGrid.h"
 #include "ocean_model_interfaces/model_interface/ModelData.h"
 #include "ocean_model_interfaces/util/Point.h"
+#include "ocean_model_interfaces/util/UtilityFunctions.h"
 
 #include <stdexcept>
 #include <math.h>
 #include  <limits>
+#include <assert.h>
 
 using namespace ocean_model_interfaces;
 
@@ -15,9 +17,61 @@ GeodeticGrid::GeodeticGrid(GeodeticGridParameters parameters) : structure(Geodet
     chunkCache = LRUCache<unsigned int, GeodeticGridChunk>(parameters.cacheSize);
 }
 
+const ModelData GeodeticGrid::getData(double x, double y, double z, double time)
+{
+    if(positionType == CoordinateType::XY) {
+        Point offsetPointLatLon = localXYToLatLon(origin, Point(x + offsetX, y + offsetY, z + offsetZ));
+        return this->getDataHelper(offsetPointLatLon.x, offsetPointLatLon.y, offsetPointLatLon.z, time + offsetTime);
+
+    } else {
+        assert(positionType == CoordinateType::LATLON);
+
+        double shiftedX = x;
+        double shiftedY = y;
+        if(offsetX != 0.0 || offsetY != 0.0) {
+            Point pointXY = latLonToLocalXY(origin, Point(x,y,z));
+
+            pointXY.x += offsetX;
+            pointXY.y += offsetY;
+
+            Point offsetPointLatLon = localXYToLatLon(origin, pointXY);
+            shiftedX = offsetPointLatLon.x;
+            shiftedY = offsetPointLatLon.y;
+        }
+
+        return this->getDataHelper(shiftedX, shiftedY, z + offsetZ, time + offsetTime);
+    }
+}
+
+const ModelData GeodeticGrid::getDataOutOfRange(double x, double y, double z, double time)
+{
+    if(positionType == CoordinateType::XY) {
+        Point offsetPointLatLon = localXYToLatLon(origin, Point(x + offsetX, y + offsetY, z + offsetZ));
+        return this->getDataOutOfRangeHelper(offsetPointLatLon.x, offsetPointLatLon.y, offsetPointLatLon.z, time + offsetTime);
+
+    } else {
+        assert(positionType == CoordinateType::LATLON);
+
+        double shiftedX = x;
+        double shiftedY = y;
+        if(offsetX != 0.0 || offsetY != 0.0) {
+            Point pointXY = latLonToLocalXY(origin, Point(x,y,z));
+
+            pointXY.x += offsetX;
+            pointXY.y += offsetY;
+
+            Point offsetPointLatLon = localXYToLatLon(origin, pointXY);
+            shiftedX = offsetPointLatLon.x;
+            shiftedY = offsetPointLatLon.y;
+        }
+
+        return this->getDataOutOfRangeHelper(shiftedX, shiftedY, z + offsetZ, time + offsetTime);
+    }
+}
+
 void GeodeticGrid::setLoadFunction(std::function<void(void)> startLoad, std::function<void(void)> endLoad) {
-    this->startLoad = startLoad;
-    this->endLoad = endLoad;
+    parameters.startLoad = startLoad;
+    parameters.endLoad = endLoad;
 }
 
 const ModelData GeodeticGrid::getDataAtIndex(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex) {
@@ -27,15 +81,15 @@ const ModelData GeodeticGrid::getDataAtIndex(unsigned int timeIndex, unsigned in
     unsigned int chunkId = structure.getChunkIdFromIndicies(timeIndex, depthIndex, latIndex, lonIndex);
 
     if(!chunkCache.exists(chunkId)) {
-        if(startLoad) {
-            startLoad();
+        if(parameters.startLoad) {
+            parameters.startLoad();
         }
 
         GeodeticGridStructure::ChunkInfo info = structure.getGridChunkInfo(timeIndex, depthIndex, latIndex, lonIndex);
         chunkCache.put(info.id, GeodeticGridChunk(info, structure.getModelFiles()));
 
-        if(endLoad) {
-            endLoad();
+        if(parameters.endLoad) {
+            parameters.endLoad();
         }
     }
 

@@ -51,6 +51,9 @@ public:
 
     const ModelData getDataAtIndex(unsigned int timeIndex, unsigned int depthIndex, unsigned int latIndex, unsigned int lonIndex);
 
+    const ModelData getData(double x, double y, double z, double time) override;
+    const ModelData getDataOutOfRange(double x, double y, double z, double time) override;
+
 protected:
     /**
      * @brief Interpolates the model at the given location. Note that x is longitude and y is latitude
@@ -78,8 +81,6 @@ private:
     LRUCache<unsigned int, GeodeticGridChunk> chunkCache;
     GeodeticGridStructure structure;
     GeodeticGridParameters parameters;
-    std::function<void(void)> startLoad;
-    std::function<void(void)> endLoad;
 };
 
 }
