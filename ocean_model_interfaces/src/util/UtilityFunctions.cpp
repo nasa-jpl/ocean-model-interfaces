@@ -1,6 +1,8 @@
 #include "ocean_model_interfaces/util/UtilityFunctions.h"
 #include <boost/filesystem.hpp>
 #include <iostream>
+#include <math.h>
+
 namespace fs = boost::filesystem;
 
 std::vector<std::string> ocean_model_interfaces::traverseDataFiles(const std::string filename)
