@@ -36,7 +36,7 @@ Generally, only the FVCOM class needs to be used directly. Although, in unique c
 
 ## General Geodetic Gridded Model /w Sigma Layers
 
-This model is a generalized rectilinear geodetic (lat,lon) gridded model with sigma vertical layers. This is useful for re-griding models such as ROMS to a form that is more suitable for random-access.
+This model is a generalized rectilinear geodetic (lat,lon) gridded model with sigma vertical layers. This can be used for either models that are native to a geodetic grid or can be easily converted into one such as ROMS.
 
 ### Assumptions
 - Fixed water column depth
@@ -44,9 +44,12 @@ This model is a generalized rectilinear geodetic (lat,lon) gridded model with si
 - North aligned lat/lon grid
 - Pre-processed model data that includes the point depths in the file, instead of just the sigma layer information.
 
+### Examples
+An example of using this model type can be found in `scripts/geodetic_grid_plotting_example.ipynb`
+
 ### ROMS Model Regularization
 
-The script `scripts/roms_model_regularization.py` should be used to regularize a ROMS model to fit the assumptions above. ROMS by default is not neseccarily north aligned, data points are on a C-Grid, and it can have a free-surface, so it needs to be regularized to fit the General Geodetic Gridded Model /w Sigma Layers
+The script `scripts/roms_model_regularization.py` should be used to regularize a ROMS model to fit the assumptions above. ROMS by default is not neseccarily north aligned, data points are on a C-Grid, and it can have a free-surface, so it needs to be regularized to fit the General Geodetic Gridded Model /w Sigma Layers. This script will check that the model is north aligned and interpolate all points from the C-grid to a lat/lon grid.
 
 ## Miscellaneous Primitive "Models"
 
