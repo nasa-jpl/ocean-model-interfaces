@@ -1,5 +1,5 @@
 # Ocean Model Interfaces Library
-C++ library to provide random access to large ocean model data sets. Primarily intended for use with autonomous underwater vehicle simulations.
+C++ library, with python bindings, to provide random access to large ocean model data sets. Primarily intended for use with autonomous underwater vehicle simulations.
 
 ## Currently included model interfaces
 - FVCOM
@@ -154,10 +154,8 @@ When not using cmake link to the `ocean_model_interfaces` library in the standar
 
 # Copyright
 
-Copyright 2024, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology.
+Copyright 2026, by the California Institute of Technology. ALL RIGHTS RESERVED. United States Government Sponsorship acknowledged. Any commercial use must be negotiated with the Office of Technology Transfer at the California Institute of Technology.
 
 # Point of Contact
 
-Andrew Branch
-
-andrew.branch@jpl.nasa.gov
+Andrew Branch - andrew.branch@jpl.nasa.gov
