@@ -36,7 +36,10 @@ Generally, only the FVCOM class needs to be used directly. Although, in unique c
 
 ## General Geodetic Gridded Model /w Sigma Layers
 
-This model is a generalized rectilinear geodetic (lat,lon) gridded model with sigma vertical layers. This can be used for either models that are native to a geodetic grid or can be easily converted into one such as ROMS.
+This model is a generalized rectilinear geodetic (lat,lon) gridded model with sigma vertical layers. This can be used for either models that are native to a geodetic grid or can be easily converted into one such as ROMS. Similar to the FVCOM models, it is assumed that the geodetic grid models are too large to load into memory at once, so only the general structure is loaded and data is loaded on demand in chunks and stored in an LRU cache.
+
+### Interpolation
+Linear interpolation is done in all four dimensions. This is done by projecting the relevant lat/lon values needed for interpolation only a local XY grid and interpolating on that XY grid.
 
 ### Assumptions
 - Fixed water column depth
