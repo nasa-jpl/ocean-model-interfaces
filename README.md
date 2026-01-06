@@ -7,10 +7,12 @@ C++ library to provide random access to large ocean model data sets. Primarily i
 - Miscellaneous primitive "models"
 
 ## Coordinate Reference System
-
-Each model is queried in X,Y,Z, where the units of X and Y are dependent on the model type. Z+ should always be up, with 0 at the sea surface. If a loaded model is different from this, then the model implementation should handle to accept the correct Z axis direction. If a model has a free-surface, Z=0 should be the mean sea surface, not the free-surface. This ensures a constant, non-moving reference frame.
+The coordinate system type can be set with the `ModelInterface::setCoordinateType()` function. The lat/lon origin should also be set with the `ModelInterface::setOrigin()` function. The two available options at XY (meters) and LATLON. The model implementation should correctly handle both XY and LATLON options. The  `ModelInterface::getData(double, double, double, double)` and `ModelInterface::getDataOutOfRange(double, double, double, double)` by default assume that the underlying model uses an XY coordinate system, but they should be override if needed (see GeodeticGrid for an example of this). Z+ should always be up, with 0 at the sea surface. If a loaded model is different from this, then the model implementation should handle to accept the correct Z axis direction. If a model has a free-surface, Z=0 should be the mean sea surface, not the free-surface. This ensures a constant, non-moving reference frame.
 
 Future work is to create a general method of allowing a model to be queried in an arbitrary CRS and have that converted to the correct CRS for the specific loaded model.
+
+### LATLON Usage Note
+When using the coordainte type of LATLON the x and y parameters for `ModelInterface::getData(double, double, double, double)` and `ModelInterface::getDataOutOfRange(double, double, double, double)` should be set as follows: x=lon, y=lat.
 
 ## FVCOM
 See the [FVCOM Website](http://fvcom.smast.umassd.edu/fvcom/) for more information on the model itself. Below is a summary of our implementation to provide quick random access to the FVCOM model.
@@ -34,7 +36,7 @@ Generally, only the FVCOM class needs to be used directly. Although, in unique c
 
 ## General Geodetic Gridded Model /w Sigma Layers
 
-This model is a generalized rectilinear geodetic (lat,lon) gridded model with sigma vertical layers. This is useful for re-griding models such as ROMS to a form that is more suitable for random-access. In this model X should be longitude and Y should be latitude when querying the model.
+This model is a generalized rectilinear geodetic (lat,lon) gridded model with sigma vertical layers. This is useful for re-griding models such as ROMS to a form that is more suitable for random-access.
 
 ### Assumptions
 - Fixed water column depth

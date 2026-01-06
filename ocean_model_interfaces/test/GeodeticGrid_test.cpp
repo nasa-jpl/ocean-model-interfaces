@@ -1,5 +1,7 @@
 #include "ocean_model_interfaces/geodetic_grid/GeodeticGrid.h"
 #include "ocean_model_interfaces/model_interface/ModelData.h"
+#include "ocean_model_interfaces/util/Point.h"
+#include "ocean_model_interfaces/util/UtilityFunctions.h"
 
 #include <gtest/gtest.h>
 
@@ -17,6 +19,7 @@ protected:
         parameters1.lonChunkSize = 6;
 
         model1 = GeodeticGrid(parameters1);
+        model1.setOrigin(Point(-169.2590, -14.57603, 0));
 
         GeodeticGridParameters parameters2;
         parameters2.modelDirectory = "./ocean_model_interfaces/test_data/geodetic_grid_test/";
@@ -26,6 +29,7 @@ protected:
         parameters2.lonChunkSize = 6;
 
         model2 = GeodeticGrid(parameters2);
+        model2.setOrigin(Point(-169.2590, -14.57603, 0));
     }
 
     GeodeticGrid model1;
@@ -91,7 +95,11 @@ TEST_F(GeodeticGridTest, IndexModelData)
 
 TEST_F(GeodeticGridTest, GetModelData)
 {
-    ModelData data = model1.getData(-169.2590, -14.57603, -4177.89994465, 2506688.8);
+    model1.setCoordinateType(ModelInterface::CoordinateType::LATLON);
+    ModelData dataLatLon = model1.getData(-169.2590, -14.57603, -4177.89994465, 2506688.8);
+
+    model1.setCoordinateType(ModelInterface::CoordinateType::XY);
+    ModelData dataXY = model1.getData(0, 0, -4177.89994465, 2506688.8);
 
     std::map<std::tuple<unsigned int, unsigned int, unsigned int, unsigned int>,ModelData> indexData;
     indexData.insert({std::make_tuple(0,0,0,0), model1.getDataAtIndex(0,0,0,0)});
@@ -191,14 +199,157 @@ TEST_F(GeodeticGridTest, GetModelData)
     finalDye += indexData[std::make_tuple(1,1,0,1)].dye * (0.416 * 0.2 * 0.3);
     finalDye += indexData[std::make_tuple(1,1,1,0)].dye * (0.30992916 * 0.2 * 0.3);
 
-    EXPECT_NEAR(data.u, finalU, 0.000001);
-    EXPECT_NEAR(data.v, finalV, 0.000001);
-    EXPECT_NEAR(data.w, finalW, 0.000001);
-    EXPECT_NEAR(data.temp, finalTemp, 0.000001);
-    EXPECT_NEAR(data.salt, finalSalt, 0.000001);
-    EXPECT_NEAR(data.dye, finalDye, 0.000001);
+    EXPECT_NEAR(dataLatLon.u, finalU, 0.000001);
+    EXPECT_NEAR(dataLatLon.v, finalV, 0.000001);
+    EXPECT_NEAR(dataLatLon.w, finalW, 0.000001);
+    EXPECT_NEAR(dataLatLon.temp, finalTemp, 0.000001);
+    EXPECT_NEAR(dataLatLon.salt, finalSalt, 0.000001);
+    EXPECT_NEAR(dataLatLon.dye, finalDye, 0.000001);
+    EXPECT_FLOAT_EQ(dataLatLon.depth, 4196.58100612);
 
-    EXPECT_FLOAT_EQ(data.depth, 4196.58100612);
+    EXPECT_NEAR(dataXY.u, finalU, 0.000001);
+    EXPECT_NEAR(dataXY.v, finalV, 0.000001);
+    EXPECT_NEAR(dataXY.w, finalW, 0.000001);
+    EXPECT_NEAR(dataXY.temp, finalTemp, 0.000001);
+    EXPECT_NEAR(dataXY.salt, finalSalt, 0.000001);
+    EXPECT_NEAR(dataXY.dye, finalDye, 0.000001);
+    EXPECT_FLOAT_EQ(dataXY.depth, 4196.58100612);
+}
+
+TEST_F(GeodeticGridTest, OffSetGetModelData)
+{
+
+    double xOffset = 200.0;
+    double yOffset = 150.0;
+    double zOffset = -50.0;
+    double tOffset = 100.0;
+
+    model1.setOffsets(xOffset,yOffset, zOffset, tOffset);
+
+    model1.setCoordinateType(ModelInterface::CoordinateType::LATLON);
+    Point offsetLatLon = localXYToLatLon(Point(-169.2590, -14.57603,0), Point(-xOffset, -yOffset,0));
+    ModelData dataLatLon = model1.getData(offsetLatLon.x, offsetLatLon.y, -4177.89994465 - zOffset, 2506688.8 - tOffset);
+
+    model1.setCoordinateType(ModelInterface::CoordinateType::XY);
+    std::cout << -xOffset << " " << -yOffset << std::endl;
+
+    ModelData dataXY = model1.getData(-xOffset, -yOffset, -4177.89994465 - zOffset, 2506688.8 - tOffset);
+
+    model1.setOffsets(0,0,0,0);
+
+    std::map<std::tuple<unsigned int, unsigned int, unsigned int, unsigned int>,ModelData> indexData;
+    indexData.insert({std::make_tuple(0,0,0,0), model1.getDataAtIndex(0,0,0,0)});
+    indexData.insert({std::make_tuple(0,0,0,1), model1.getDataAtIndex(0,0,0,1)});
+    indexData.insert({std::make_tuple(0,0,1,0), model1.getDataAtIndex(0,0,1,0)});
+    indexData.insert({std::make_tuple(0,1,0,0), model1.getDataAtIndex(0,1,0,0)});
+    indexData.insert({std::make_tuple(0,1,0,1), model1.getDataAtIndex(0,1,0,1)});
+    indexData.insert({std::make_tuple(0,1,1,0), model1.getDataAtIndex(0,1,1,0)});
+    indexData.insert({std::make_tuple(1,0,0,0), model1.getDataAtIndex(1,0,0,0)});
+    indexData.insert({std::make_tuple(1,0,0,1), model1.getDataAtIndex(1,0,0,1)});
+    indexData.insert({std::make_tuple(1,0,1,0), model1.getDataAtIndex(1,0,1,0)});
+    indexData.insert({std::make_tuple(1,1,0,0), model1.getDataAtIndex(1,1,0,0)});
+    indexData.insert({std::make_tuple(1,1,0,1), model1.getDataAtIndex(1,1,0,1)});
+    indexData.insert({std::make_tuple(1,1,1,0), model1.getDataAtIndex(1,1,1,0)});
+
+    double finalU = 0;
+    finalU += indexData[std::make_tuple(0,0,0,0)].u * (0.27407083 * 0.8 * 0.7);
+    finalU += indexData[std::make_tuple(0,0,0,1)].u * (0.416 * 0.8 * 0.7);
+    finalU += indexData[std::make_tuple(0,0,1,0)].u * (0.30992916 * 0.8 * 0.7);
+    finalU += indexData[std::make_tuple(0,1,0,0)].u * (0.27407083 * 0.2 * 0.7);
+    finalU += indexData[std::make_tuple(0,1,0,1)].u * (0.416 * 0.2 * 0.7);
+    finalU += indexData[std::make_tuple(0,1,1,0)].u * (0.30992916 * 0.2 * 0.7);
+    finalU += indexData[std::make_tuple(1,0,0,0)].u * (0.27407083 * 0.8 * 0.3);
+    finalU += indexData[std::make_tuple(1,0,0,1)].u * (0.416 * 0.8 * 0.3);
+    finalU += indexData[std::make_tuple(1,0,1,0)].u * (0.30992916 * 0.8 * 0.3);
+    finalU += indexData[std::make_tuple(1,1,0,0)].u * (0.27407083 * 0.2 * 0.3);
+    finalU += indexData[std::make_tuple(1,1,0,1)].u * (0.416 * 0.2 * 0.3);
+    finalU += indexData[std::make_tuple(1,1,1,0)].u * (0.30992916 * 0.2 * 0.3);
+
+    double finalV = 0;
+    finalV += indexData[std::make_tuple(0,0,0,0)].v * (0.27407083 * 0.8 * 0.7);
+    finalV += indexData[std::make_tuple(0,0,0,1)].v * (0.416 * 0.8 * 0.7);
+    finalV += indexData[std::make_tuple(0,0,1,0)].v * (0.30992916 * 0.8 * 0.7);
+    finalV += indexData[std::make_tuple(0,1,0,0)].v * (0.27407083 * 0.2 * 0.7);
+    finalV += indexData[std::make_tuple(0,1,0,1)].v * (0.416 * 0.2 * 0.7);
+    finalV += indexData[std::make_tuple(0,1,1,0)].v * (0.30992916 * 0.2 * 0.7);
+    finalV += indexData[std::make_tuple(1,0,0,0)].v * (0.27407083 * 0.8 * 0.3);
+    finalV += indexData[std::make_tuple(1,0,0,1)].v * (0.416 * 0.8 * 0.3);
+    finalV += indexData[std::make_tuple(1,0,1,0)].v * (0.30992916 * 0.8 * 0.3);
+    finalV += indexData[std::make_tuple(1,1,0,0)].v * (0.27407083 * 0.2 * 0.3);
+    finalV += indexData[std::make_tuple(1,1,0,1)].v * (0.416 * 0.2 * 0.3);
+    finalV += indexData[std::make_tuple(1,1,1,0)].v * (0.30992916 * 0.2 * 0.3);
+
+    double finalW = 0;
+    finalW += indexData[std::make_tuple(0,0,0,0)].w * (0.27407083 * 0.8 * 0.7);
+    finalW += indexData[std::make_tuple(0,0,0,1)].w * (0.416 * 0.8 * 0.7);
+    finalW += indexData[std::make_tuple(0,0,1,0)].w * (0.30992916 * 0.8 * 0.7);
+    finalW += indexData[std::make_tuple(0,1,0,0)].w * (0.27407083 * 0.2 * 0.7);
+    finalW += indexData[std::make_tuple(0,1,0,1)].w * (0.416 * 0.2 * 0.7);
+    finalW += indexData[std::make_tuple(0,1,1,0)].w * (0.30992916 * 0.2 * 0.7);
+    finalW += indexData[std::make_tuple(1,0,0,0)].w * (0.27407083 * 0.8 * 0.3);
+    finalW += indexData[std::make_tuple(1,0,0,1)].w * (0.416 * 0.8 * 0.3);
+    finalW += indexData[std::make_tuple(1,0,1,0)].w * (0.30992916 * 0.8 * 0.3);
+    finalW += indexData[std::make_tuple(1,1,0,0)].w * (0.27407083 * 0.2 * 0.3);
+    finalW += indexData[std::make_tuple(1,1,0,1)].w * (0.416 * 0.2 * 0.3);
+    finalW += indexData[std::make_tuple(1,1,1,0)].w * (0.30992916 * 0.2 * 0.3);
+
+    double finalSalt = 0;
+    finalSalt += indexData[std::make_tuple(0,0,0,0)].salt * (0.27407083 * 0.8 * 0.7);
+    finalSalt += indexData[std::make_tuple(0,0,0,1)].salt * (0.416 * 0.8 * 0.7);
+    finalSalt += indexData[std::make_tuple(0,0,1,0)].salt * (0.30992916 * 0.8 * 0.7);
+    finalSalt += indexData[std::make_tuple(0,1,0,0)].salt * (0.27407083 * 0.2 * 0.7);
+    finalSalt += indexData[std::make_tuple(0,1,0,1)].salt * (0.416 * 0.2 * 0.7);
+    finalSalt += indexData[std::make_tuple(0,1,1,0)].salt * (0.30992916 * 0.2 * 0.7);
+    finalSalt += indexData[std::make_tuple(1,0,0,0)].salt * (0.27407083 * 0.8 * 0.3);
+    finalSalt += indexData[std::make_tuple(1,0,0,1)].salt * (0.416 * 0.8 * 0.3);
+    finalSalt += indexData[std::make_tuple(1,0,1,0)].salt * (0.30992916 * 0.8 * 0.3);
+    finalSalt += indexData[std::make_tuple(1,1,0,0)].salt * (0.27407083 * 0.2 * 0.3);
+    finalSalt += indexData[std::make_tuple(1,1,0,1)].salt * (0.416 * 0.2 * 0.3);
+    finalSalt += indexData[std::make_tuple(1,1,1,0)].salt * (0.30992916 * 0.2 * 0.3);
+
+    double finalTemp = 0;
+    finalTemp += indexData[std::make_tuple(0,0,0,0)].temp * (0.27407083 * 0.8 * 0.7);
+    finalTemp += indexData[std::make_tuple(0,0,0,1)].temp * (0.416 * 0.8 * 0.7);
+    finalTemp += indexData[std::make_tuple(0,0,1,0)].temp * (0.30992916 * 0.8 * 0.7);
+    finalTemp += indexData[std::make_tuple(0,1,0,0)].temp * (0.27407083 * 0.2 * 0.7);
+    finalTemp += indexData[std::make_tuple(0,1,0,1)].temp * (0.416 * 0.2 * 0.7);
+    finalTemp += indexData[std::make_tuple(0,1,1,0)].temp * (0.30992916 * 0.2 * 0.7);
+    finalTemp += indexData[std::make_tuple(1,0,0,0)].temp * (0.27407083 * 0.8 * 0.3);
+    finalTemp += indexData[std::make_tuple(1,0,0,1)].temp * (0.416 * 0.8 * 0.3);
+    finalTemp += indexData[std::make_tuple(1,0,1,0)].temp * (0.30992916 * 0.8 * 0.3);
+    finalTemp += indexData[std::make_tuple(1,1,0,0)].temp * (0.27407083 * 0.2 * 0.3);
+    finalTemp += indexData[std::make_tuple(1,1,0,1)].temp * (0.416 * 0.2 * 0.3);
+    finalTemp += indexData[std::make_tuple(1,1,1,0)].temp * (0.30992916 * 0.2 * 0.3);
+
+    double finalDye = 0;
+    finalDye += indexData[std::make_tuple(0,0,0,0)].dye * (0.27407083 * 0.8 * 0.7);
+    finalDye += indexData[std::make_tuple(0,0,0,1)].dye * (0.416 * 0.8 * 0.7);
+    finalDye += indexData[std::make_tuple(0,0,1,0)].dye * (0.30992916 * 0.8 * 0.7);
+    finalDye += indexData[std::make_tuple(0,1,0,0)].dye * (0.27407083 * 0.2 * 0.7);
+    finalDye += indexData[std::make_tuple(0,1,0,1)].dye * (0.416 * 0.2 * 0.7);
+    finalDye += indexData[std::make_tuple(0,1,1,0)].dye * (0.30992916 * 0.2 * 0.7);
+    finalDye += indexData[std::make_tuple(1,0,0,0)].dye * (0.27407083 * 0.8 * 0.3);
+    finalDye += indexData[std::make_tuple(1,0,0,1)].dye * (0.416 * 0.8 * 0.3);
+    finalDye += indexData[std::make_tuple(1,0,1,0)].dye * (0.30992916 * 0.8 * 0.3);
+    finalDye += indexData[std::make_tuple(1,1,0,0)].dye * (0.27407083 * 0.2 * 0.3);
+    finalDye += indexData[std::make_tuple(1,1,0,1)].dye * (0.416 * 0.2 * 0.3);
+    finalDye += indexData[std::make_tuple(1,1,1,0)].dye * (0.30992916 * 0.2 * 0.3);
+
+    EXPECT_NEAR(dataLatLon.u, finalU, 0.000001);
+    EXPECT_NEAR(dataLatLon.v, finalV, 0.000001);
+    EXPECT_NEAR(dataLatLon.w, finalW, 0.000001);
+    EXPECT_NEAR(dataLatLon.temp, finalTemp, 0.000001);
+    EXPECT_NEAR(dataLatLon.salt, finalSalt, 0.000001);
+    EXPECT_NEAR(dataLatLon.dye, finalDye, 0.000001);
+    EXPECT_FLOAT_EQ(dataLatLon.depth, 4196.58100612);
+
+    EXPECT_NEAR(dataXY.u, finalU, 0.000001);
+    EXPECT_NEAR(dataXY.v, finalV, 0.000001);
+    EXPECT_NEAR(dataXY.w, finalW, 0.000001);
+    EXPECT_NEAR(dataXY.temp, finalTemp, 0.000001);
+    EXPECT_NEAR(dataXY.salt, finalSalt, 0.000001);
+    EXPECT_NEAR(dataXY.dye, finalDye, 0.000001);
+    EXPECT_FLOAT_EQ(dataXY.depth, 4196.58100612);
 }
 
 int main(int argc, char **argv)

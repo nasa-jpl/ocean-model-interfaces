@@ -1,4 +1,5 @@
 import ctypes
+from  ocean_model_interfaces import ModelInterface
 
 class ModelData(ctypes.Structure):
     _fields_ = [('u',ctypes.c_double),
@@ -9,10 +10,10 @@ class ModelData(ctypes.Structure):
                 ('dye',ctypes.c_double),
                 ('depth',ctypes.c_double)]
 
-class FVCOM:
+class FVCOM(ModelInterface.ModelInterface):
     def __init__(self, filename):
-        ctypes.CDLL('/usr/local/lib/libocean_model_interfaces.so') #For some reason python can't find this by itself.
-        self.lib = ctypes.CDLL('/usr/local/lib/libocean_model_interfaces_py.so')
+        super().__init__()
+
         self.filename = filename
 
         utf8_filename = filename.encode('utf-8')
@@ -36,7 +37,8 @@ class FVCOM:
         self.handle = self.new_fvcom(utf8_filename)
 
     def __del__(self):
-        self.del_fvcom(self.handle)
+        if self.handle is not None:
+            self.del_fvcom(self.handle)
 
     def get_data(self, x, y, z, time):
         x = float(x)

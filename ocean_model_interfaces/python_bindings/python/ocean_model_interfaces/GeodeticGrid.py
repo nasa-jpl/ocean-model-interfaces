@@ -1,4 +1,5 @@
 import ctypes
+from  ocean_model_interfaces import ModelInterface
 
 class ModelData(ctypes.Structure):
     _fields_ = [('u',ctypes.c_double),
@@ -26,10 +27,10 @@ class GeodeticGridParameters(ctypes.Structure):
         self.lonChunkSize = ctypes.c_uint(lonChunkSize)
         self.cacheSize = ctypes.c_uint(cacheSize)
 
-class GeodeticGrid:
+class GeodeticGrid(ModelInterface.ModelInterface):
     def __init__(self, parameters):
-        ctypes.CDLL('/usr/local/lib/libocean_model_interfaces.dylib') #For some reason python can't find this by itself.
-        self.lib = ctypes.CDLL('/usr/local/lib/libocean_model_interfaces_py.dylib')
+        super().__init__()
+
         self.parameters = parameters
 
         self.get_data_geodetic_grid = self.lib.getDataGeodeticGrid
@@ -51,7 +52,8 @@ class GeodeticGrid:
         self.handle = self.new_geodetic_grid(self.parameters)
 
     def __del__(self):
-        self.del_geodetic_grid(self.handle)
+        if self.handle is not None:
+            self.del_geodetic_grid(self.handle)
 
     def get_data(self, x, y, z, time):
         x = float(x)

@@ -104,10 +104,9 @@ private:
     std::map<unsigned int, double> getTimeInterpolationWeights(double time);
     std::map<unsigned int, double> getDepthInterpolationWeights(Point point, std::map<std::pair<unsigned int, unsigned int>, double> xyWeights);
     std::map<std::pair<unsigned int, unsigned int>, double> getXYInterpolationWeights(Point point);
-    Point latLonToLocalXY(Point origin, Point point);
+
     double interpolateDepthLayer(std::map<std::pair<unsigned int, unsigned int>, double> xyWeights, unsigned int layer);
-    double xyMDegLon(double latOrigin);
-    double xyMDegLat(double latOrigin);
+
 private:
     std::vector<ModelFile> modelFiles;
     std::vector<double> times;

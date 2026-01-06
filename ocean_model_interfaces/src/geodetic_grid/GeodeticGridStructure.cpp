@@ -240,31 +240,6 @@ std::map<unsigned int, double> GeodeticGridStructure::getTimeInterpolationWeight
 }
 
 
-double GeodeticGridStructure::xyMDegLon(double latOrigin) {
-    double latOriginRad = latOrigin * M_PI / 180.0;
-    return (111415.13 * std::cos(latOriginRad)
-            - 94.55 * std::cos(3.0 * latOriginRad)
-            - 0.12 * std::cos(5.0 * latOriginRad));
-}
-
-double GeodeticGridStructure::xyMDegLat(double latOrigin) {
-    double latOriginRad = latOrigin * M_PI / 180.0;
-    return (111132.09 - 566.05 * std::cos(2.0 * latOriginRad)
-            + 1.20 * std::cos(4.0 * latOriginRad)
-            - 0.002 * std::cos(6.0 * latOriginRad));
-}
-
-
-Point GeodeticGridStructure::latLonToLocalXY(Point origin, Point point) {
-    double mDegLon = xyMDegLon(origin.y);
-    double mDegLat = xyMDegLat(origin.y);
-
-    double x = (point.x - origin.x) * mDegLon;
-    double y = (point.y - origin.y) * mDegLat;
-
-    return Point(x, y, point.z);
-}
-
 std::map<std::pair<unsigned int, unsigned int>, double> GeodeticGridStructure::getXYInterpolationWeights(Point point) {
     // Search for first element x such that i ≤ x
     auto latFirstElementGreater = std::lower_bound(latitudes.begin(), latitudes.end(), point.y);

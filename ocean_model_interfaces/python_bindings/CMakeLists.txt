@@ -1,8 +1,9 @@
 add_library(ocean_model_interfaces_py SHARED
     src/FVCOMPyInterface.cpp
     src/GeodeticGridPyInterface.cpp
-
+    src/ModelInterfacePyInterface.cpp
 )
+
 set_target_properties(ocean_model_interfaces_py PROPERTIES VERSION ${PROJECT_VERSION})
 
 
