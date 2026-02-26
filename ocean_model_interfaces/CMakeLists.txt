@@ -44,7 +44,7 @@ set_target_properties(ocean_model_interfaces PROPERTIES VERSION ${PROJECT_VERSIO
 
 #Include all required directories
 #Some library includes are only here incase they are installed in unconventional locations
-target_include_directories(ocean_model_interfaces PRIVATE ${NetCDFCxx_INCLUDE_DIR} ${netCDF_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
+target_include_directories(ocean_model_interfaces PRIVATE ${netCDFCxx_INCLUDE_DIR} ${netCDF_INCLUDE_DIR} ${Boost_INCLUDE_DIR})
 target_include_directories(ocean_model_interfaces PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/ocean_model_interfaces>)
@@ -55,7 +55,7 @@ link_directories(${netCDF_LIB_DIR})
 target_link_libraries(ocean_model_interfaces PRIVATE
     ${Boost_LIBRARIES} 
     ${netCDF_LIBRARIES} 
-    ${NetCDFCxx_LIBRARIES}
+    ${netCDFCxx_LIBRARIES}
 )
 
 install(DIRECTORY include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
