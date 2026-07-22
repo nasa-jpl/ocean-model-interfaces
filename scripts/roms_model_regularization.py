@@ -3,43 +3,73 @@ import os
 import xroms
 import xarray as xr
 
-def main(args):
-    
-    ds = xr.open_mfdataset(args.model_files, compat='override', combine='by_coords',
-                      data_vars='minimal', coords='minimal', parallel=True, chunks={'ocean_time':1})
+def process_single_file(input_file, output_file):
+    """Process a single ROMS file to avoid memory issues"""
+    print(f"\nProcessing: {os.path.basename(input_file)}")
+
+    # Load single file
+    ds = xr.open_dataset(input_file)
     ds, xgrid = xroms.roms_dataset(ds, include_cell_volume=True, include_Z0=True)
     ds.xroms.set_grid(xgrid)
 
-    if (not (ds["lat_rho"][0,0] == ds["lat_rho"][0,:]).all() or
-       not (ds["lon_rho"][0,0] == ds["lon_rho"][:,0]).all()):
-        raise NotImplementedError("The lat/lon grid is not north aligned, so it needs to be interpolated to north aligned, but this is not implemented yet")
-
-    #interpolate u,v,w to rho points
+    # Interpolate u,v,w to rho points
+    print("  Interpolating to rho grid...")
     w_at_rho = xroms.to_grid(ds.w, xgrid, hcoord='rho', scoord='s_rho')
     u_at_rho = xroms.to_grid(ds.u, xgrid, hcoord='rho', scoord='s_rho')
     v_at_rho = xroms.to_grid(ds.v, xgrid, hcoord='rho', scoord='s_rho')
 
-    #rotate them to be north/east facing instead of eta/xi facing
+    # Rotate velocity vectors
+    print("  Rotating vectors...")
     rotated_u_at_rho, rotated_v_at_rho = xroms.vector.rotate_vectors(u_at_rho, v_at_rho, ds['angle'], xgrid=xgrid)
 
-    #Drop the fields we don't care about
+    # Drop unnecessary fields
     data_fields_to_save = set(["u", "v", "w", "temp", "salt", "dye_01", "ocean_time", "s_rho", "lon_rho", "lat_rho", "h", "z_rho0"])
     data_fields_to_drop = set(ds.variables.keys()) - data_fields_to_save
     ds = ds.drop_vars(data_fields_to_drop)
 
-    #Update the w,u, and v in the dataset before saving it
+    # Update the dataset with interpolated/rotated values
     ds["w"] = w_at_rho
     ds["u"] = rotated_u_at_rho
     ds["v"] = rotated_v_at_rho
 
-    #Save regularized dataset
-    _, datasets = zip(*ds.groupby("ocean_time"))
-    paths = []
-    for p in args.model_files:
-        paths.append(os.path.join(args.output_path, os.path.basename(p)))
-        
-    print("Save Regularized NetCDF Model Files")
-    xr.save_mfdataset(datasets, paths, format="NETCDF3_64BIT")
+    # Compute and save
+    print(f"  Computing and saving to {os.path.basename(output_file)}...")
+    ds = ds.compute()
+    ds.to_netcdf(output_file, format="NETCDF3_64BIT")
+
+    print(f"  ✓ Saved: {os.path.basename(output_file)}")
+    ds.close()
+
+def main(args):
+    # Create output directory if it doesn't exist
+    os.makedirs(args.output_path, exist_ok=True)
+    print(f"Output directory: {args.output_path}")
+    print(f"Processing {len(args.model_files)} files...")
+
+    # Check grid alignment with first file
+    print("\nChecking grid alignment (first file)...")
+    ds_check = xr.open_dataset(args.model_files[0])
+    if (not (ds_check["lat_rho"][0,0] == ds_check["lat_rho"][0,:]).all() or
+       not (ds_check["lon_rho"][0,0] == ds_check["lon_rho"][:,0]).all()):
+        ds_check.close()
+        raise NotImplementedError("The lat/lon grid is not north aligned, so it needs to be interpolated to north aligned, but this is not implemented yet")
+    ds_check.close()
+    print("✓ Grid is north-aligned")
+
+    # Process each file individually to avoid memory issues
+    for i, input_file in enumerate(args.model_files, 1):
+        output_file = os.path.join(args.output_path, os.path.basename(input_file))
+        print(f"\n[{i}/{len(args.model_files)}]", end=" ")
+
+        try:
+            process_single_file(input_file, output_file)
+        except Exception as e:
+            print(f"  ✗ Error processing {os.path.basename(input_file)}: {e}")
+            raise
+
+    print(f"\n{'='*60}")
+    print(f"Done! Processed {len(args.model_files)} files successfully.")
+    print(f"Output location: {args.output_path}")
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
